@@ -1,0 +1,59 @@
+name: '🔌 New Importer Proposal'
+description: 'Propose a new platform importer (e.g., Spotify, Ghost, Substack, Kindle, Apple Notes).'
+labels: ['importer', 'enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Propose adding a new centralized service to the **x2nostr** migration catalog.
+  - type: input
+    id: source_platform
+    attributes:
+      label: Source Platform Name
+      description: What service are we migrating from?
+      placeholder: e.g. Spotify, Substack, Pocket, Letterboxd, Ghost
+    validations:
+      required: true
+  - type: dropdown
+    id: data_format
+    attributes:
+      label: Export Data Format
+      description: What export format does the source platform provide?
+      options:
+        - CSV
+        - JSON
+        - XML / RSS
+        - ZIP / Folder Archive
+        - Markdown with Frontmatter
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: target_nip
+    attributes:
+      label: Target Nostr Kind / NIP Standard
+      description: What Nostr event kind best fits this data?
+      options:
+        - NIP-51 Lists (Kind 30001 / 30003)
+        - NIP-23 Long-Form Articles (Kind 30023)
+        - NIP-32 Labels & Reviews (Kind 1985 / 31985)
+        - NIP-01 Short Notes (Kind 1)
+        - NIP-68 Picture Posts (Kind 20)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: schema_details
+    attributes:
+      label: Sample Export Structure or API Docs
+      description: Provide sample columns/fields or links to export format documentation.
+      placeholder: |
+        Columns: Track Name, Artist Name, Album, Spotify URI...
+    validations:
+      required: true
+  - type: checkboxes
+    id: implementation_intent
+    attributes:
+      label: Implementation
+      options:
+        - label: I would like to submit a Pull Request implementing this importer plugin myself.

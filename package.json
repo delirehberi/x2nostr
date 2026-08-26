@@ -1,0 +1,54 @@
+{
+  "name": "x2nostr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Universal client-side data migration platform from centralized services to Nostr (x2nostr.emre.xyz)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "deploy": "pnpm build && wrangler pages deploy dist --project-name=x2nostr",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/delirehberi/x2nostr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/delirehberi/x2nostr/issues"
+  },
+  "homepage": "https://x2nostr.emre.xyz",
+  "keywords": [
+    "nostr",
+    "importer",
+    "migration",
+    "goodreads",
+    "bookstr",
+    "nip-07",
+    "nip-51",
+    "nip-32",
+    "hono",
+    "cloudflare-pages"
+  ],
+  "author": "Emre Yılmaz <emre@emre.xyz> (https://emre.xyz)",
+  "license": "MIT",
+  "dependencies": {
+    "hono": "^4.6.14",
+    "lucide": "^0.468.0",
+    "nostr-tools": "^2.10.4",
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.2",
+    "@types/papaparse": "^5.3.15",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.9",
+    "wrangler": "^3.95.0"
+  }
+}

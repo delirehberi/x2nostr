@@ -1,0 +1,31 @@
+name: '💡 Feature Request'
+description: 'Suggest an idea, enhancement, or new integration for x2nostr.'
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make data migration to Nostr even better? We’d love to hear it!
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: What feature or enhancement would you like to see?
+      placeholder: Describe the feature clearly and concisely.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Use Case
+      description: What problem does this solve or what workflow does this enable?
+      placeholder: As a user migrating from ..., I want to ... so that ...
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Proposed Solution / Design Ideas
+      description: Any thoughts on how this could be implemented or how the UI should look?
+    validations:
+      required: false

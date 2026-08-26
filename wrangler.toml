@@ -1,0 +1,9 @@
+name = "x2nostr"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist"
+
+[vars]
+ENVIRONMENT = "production"
+CUSTOM_DOMAIN = "x2nostr.emre.xyz"
+APP_TITLE = "x2nostr — Move to Nostr"

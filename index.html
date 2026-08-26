@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>x2nostr — Move to Nostr ⚡ Reclaim Your Data Sovereignty</title>
+    <meta name="description" content="Universal client-side data migration platform from centralized services (Goodreads, Blogs, IMDb, Letterboxd, Twitter, Spotify) to Nostr." />
+    
+    <!-- OpenGraph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://x2nostr.emre.xyz/" />
+    <meta property="og:title" content="x2nostr — Move to Nostr ⚡" />
+    <meta property="og:description" content="Sovereign, client-side data migration from centralized walled gardens to the decentralized Nostr protocol." />
+    <meta property="og:image" content="https://x2nostr.emre.xyz/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="x2nostr — Move to Nostr ⚡" />
+    <meta property="twitter:description" content="Sovereign, client-side data migration from centralized walled gardens to the decentralized Nostr protocol." />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237c3aed'><polygon points='13 2 3 14 12 14 11 22 21 10 12 10 13 2'/></svg>" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased selection:bg-purple-500 selection:text-white">
+    <!-- Background subtle gradient -->
+    <div class="fixed inset-0 pointer-events-none bg-radial-gradient z-0"></div>
+
+    <!-- Application Root Container -->
+    <div id="app" class="relative z-10 flex flex-col min-h-screen"></div>
+
+    <!-- Modal Portal -->
+    <div id="modal-root"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-root" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
