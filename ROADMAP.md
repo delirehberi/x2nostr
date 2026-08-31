@@ -30,7 +30,35 @@ This document outlines the phased development roadmap for **x2nostr**, tracking 
 
 ---
 
-## Phase 2: Long-Form Blog Importer (NIP-23) 🟡
+## Phase 1: Goodreads to Bookstr Importer 🟢 *(Completed)*
+
+- [x] **Project Scaffolding & Blueprint**:
+  - Hono on Cloudflare Pages setup (`wrangler.toml` targeting `x2nostr.emre.xyz`).
+  - TypeScript, Vite, Tailwind CSS v4, `.nvmrc` (Node 22+).
+  - Autonomous agent operating documentation (`AGENT.md`, `ARCHITECTURE.md`).
+- [x] **High-Converting Landing Page & Newbie Onboarding**:
+  - Educational portal & "Yeni Başlayanlar İçin Nostr" (Nostr for Newbies) wizard.
+  - Client-side key generation (`nsec`/`npub`), Amber bunker guidance, and ecosystem showcase (Bookstr, Ditto.pub, Yakihonne, Damus, Amethyst, Primal, Wavelake, ZapStream).
+  - Multilingual support (`tr` Turkish-first, `en`, `es`) with live locale switcher.
+- [x] **Goodreads to Bookstr Importer**:
+  - `PapaParse` CSV parser with Goodreads sanitization.
+  - Open Library API resolver with in-memory caching and polite 350ms rate-limiting queue.
+  - Modular Nostr event builder (NIP-51 Kind 30003 lists, Bookstr Kinds 10073-10075 & Kind 31985 reviews).
+
+---
+
+## Phase 2: Film & Cinema Importers (IMDb & Letterboxd) 🟢 *(Completed)*
+
+- [x] **Supported Formats**:
+  - IMDb ratings & watchlist CSV exports.
+  - Letterboxd diary, ratings, and watchlist CSV exports.
+- [x] **Metadata Resolution & Event Building**:
+  - Open Movie Database (OMDb) title enrichment.
+  - NIP-51 Cinema Lists (Kind 30003) & NIP-32 Rating Events (Kind 31985).
+
+---
+
+## Phase 3: Long-Form Blog Importer (NIP-23) 🟡 *(Next Milestone)*
 
 - [ ] **Supported Formats**:
   - Hugo (Markdown + YAML Frontmatter)
@@ -39,42 +67,22 @@ This document outlines the phased development roadmap for **x2nostr**, tracking 
   - WordPress (eXtended RSS XML)
 - [ ] **Nostr Target**:
   - NIP-23 Kind `30023` Long-form Content Events.
-  - Compatible with [Habla.news](https://habla.news), [Yakihonne](https://yakihonne.com), and [Highlighter](https://highlighter.com).
+  - Compatible with [Ditto.pub](https://ditto.pub), [Yakihonne](https://yakihonne.com), and [Highlighter](https://highlighter.com).
 - [ ] **Features**:
   - Slug preservation, tags extraction, published timestamp backdating, image embedding preservation.
 
 ---
 
-## Phase 3: Film & Cinema Importers (IMDb & Letterboxd) 🟡
+## Phase 4: Music & Audio Playlist Importer 🟡
 
-- [ ] **Supported Formats**:
-  - IMDb ratings & watchlist CSV exports.
-  - Letterboxd diary, reviews, and lists CSV exports.
-- [ ] **Metadata Resolution**:
-  - The Movie Database (TMDB) API & Open Movie Database (OMDb) integration.
-- [ ] **Nostr Target**:
-  - NIP-51 Film Lists (Kind `30001` with `d` tags: `watched`, `watchlist`, `favorites`).
-  - Film review & rating events (Kind `1985`).
-
----
-
-## Phase 4: Social Media & Music Importers 🟡
-
-- [ ] **Twitter / X Archive Importer**:
-  - Ingestion of Twitter data archive (`tweets.js`).
-  - Thread reconstruction into Nostr root notes and replies (Kind `1`).
-- [ ] **Instagram Media Importer**:
-  - Ingestion of Instagram photo & video archive.
-  - Media hosting via NIP-96 / Blossom servers.
-  - Picture post events (NIP-68 / Kind `20`).
-- [ ] **Spotify Playlist & Favorites Importer**:
+- [ ] **Spotify & Music Archives**:
   - Ingestion of Spotify JSON/CSV track exports.
   - Track matching with decentralized music platforms ([Wavelake](https://wavelake.com), [Stemstr](https://stemstr.app)).
-  - Music bookmark lists (Kind `30001`).
+  - Music bookmark lists (Kind `30003`).
 
 ---
 
-## Phase 5: Advanced Ecosystem & Reliability ⚪
+## Phase 5: Ecosystem Reliability & Sovereign Backup ⚪
 
 - [ ] **Relay Sync & Verification**:
   - Post-migration event query to confirm successful relay indexing.

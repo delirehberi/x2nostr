@@ -27,10 +27,6 @@ export function renderFooter(container: HTMLElement): void {
               ${icons.externalLink}
               <span>${t('roadmapLink')}</span>
             </a>
-            <a href="https://bookstr.xyz" target="_blank" rel="noopener noreferrer" class="hover:text-purple-600 transition-colors flex items-center gap-1.5 text-slate-600">
-              ${icons.bookOpen}
-              <span>Bookstr.xyz</span>
-            </a>
           </div>
           <div class="text-[11px] text-slate-500">
             ${t('footerAuthor', { author: '<a href="https://emre.xyz" target="_blank" rel="noopener" class="text-slate-700 hover:text-purple-600 font-medium">Emre Yılmaz (@delirehberi)</a>' })}

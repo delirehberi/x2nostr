@@ -3,6 +3,8 @@ import { en, TranslationKey } from '../locales/en';
 import { tr } from '../locales/tr';
 import { es } from '../locales/es';
 
+export type { TranslationKey };
+
 const STORAGE_KEY = 'x2nostr_locale';
 
 const dictionaries: Record<SupportedLocale, Record<TranslationKey, string>> = {

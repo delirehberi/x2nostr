@@ -1,4 +1,4 @@
-import { ImportSession, MigrationOptions } from '../types';
+import { ImportSession } from '../types';
 
 /** localStorage key prefix — all session entries share this prefix for easy enumeration. */
 const SESSION_PREFIX = 'x2nostr_session_';
@@ -99,7 +99,7 @@ class ImportSessionService {
     pubkeyHex: string,
     csvFingerprint: string,
     totalBooks: number,
-    options: Omit<MigrationOptions, 'resumeSession'>
+    options: Record<string, unknown>
   ): ImportSession {
     const pubkeyPrefix = pubkeyHex.slice(0, 8);
     const sessionKey = buildSessionKey(importerID, pubkeyPrefix, csvFingerprint);

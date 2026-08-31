@@ -23,48 +23,30 @@ const MENU_ITEMS: ImporterMenuItem[] = [
     phase: 1,
   },
   {
-    id: 'blogs',
-    nameKey: 'blogsName',
-    descKey: 'blogsDesc',
-    targetKey: 'blogsTarget',
-    iconName: 'fileText',
-    status: 'coming-soon',
-    phase: 2,
-  },
-  {
     id: 'movies',
     nameKey: 'moviesName',
     descKey: 'moviesDesc',
     targetKey: 'moviesTarget',
     iconName: 'film',
     status: 'active',
-    phase: 1,
+    phase: 2,
   },
   {
-    id: 'letterboxd',
-    nameKey: 'letterboxdName',
-    descKey: 'letterboxdDesc',
-    targetKey: 'letterboxdTarget',
-    iconName: 'clapperboard',
-    status: 'coming-soon',
+    id: 'blogs',
+    nameKey: 'blogsName',
+    descKey: 'blogsDesc',
+    targetKey: 'blogsTarget',
+    iconName: 'fileText',
+    status: 'active',
     phase: 3,
   },
   {
-    id: 'twitter',
-    nameKey: 'twitterName',
-    descKey: 'twitterDesc',
-    targetKey: 'twitterTarget',
-    iconName: 'twitter',
-    status: 'coming-soon',
-    phase: 4,
-  },
-  {
-    id: 'instagram',
-    nameKey: 'instagramName',
-    descKey: 'instagramDesc',
-    targetKey: 'instagramTarget',
-    iconName: 'camera',
-    status: 'coming-soon',
+    id: 'gists',
+    nameKey: 'gistsName',
+    descKey: 'gistsDesc',
+    targetKey: 'gistsTarget',
+    iconName: 'code',
+    status: 'active',
     phase: 4,
   },
   {
@@ -74,7 +56,7 @@ const MENU_ITEMS: ImporterMenuItem[] = [
     targetKey: 'spotifyTarget',
     iconName: 'music',
     status: 'coming-soon',
-    phase: 4,
+    phase: 5,
   },
 ];
 
@@ -86,12 +68,12 @@ export function renderImporterMenu(container: HTMLElement, activeImporterId = 'g
     return `
       <div 
         data-importer-id="${item.id}"
-        class="importer-tab-card cursor-pointer p-4 rounded-2xl border transition-all flex flex-col justify-between ${
+        class="importer-tab-card cursor-pointer p-4 rounded-2xl border border-slate-200 transition-all flex flex-col justify-between ${
           isActive
-            ? 'bg-purple-50/80 border-purple-400 shadow-sm ring-1 ring-purple-400'
+            ? 'bg-purple-50/80 shadow-xs'
             : isReady
-            ? 'glass-card bg-white hover:bg-slate-50/80 border-slate-200 shadow-xs hover:border-purple-300 hover:shadow-md'
-            : 'glass-card bg-slate-50/60 opacity-80 hover:opacity-100 hover:bg-slate-100/80 border-slate-200 hover:border-amber-300 shadow-xs'
+            ? 'glass-card bg-white hover:bg-slate-50/80 shadow-xs hover:shadow-md'
+            : 'glass-card bg-slate-50/60 opacity-80 hover:opacity-100 hover:bg-slate-100/80 shadow-xs'
         }"
       >
         <div>
@@ -127,7 +109,7 @@ export function renderImporterMenu(container: HTMLElement, activeImporterId = 'g
           <p class="text-sm text-slate-500 mt-1">${t('importersSubtitle')}</p>
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         ${cardsHtml}
       </div>
     </div>

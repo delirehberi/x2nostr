@@ -69,7 +69,7 @@
 
 /* Subtle light radial background */
 .bg-radial-gradient {
-  background: radial-gradient(circle at 50% -10%, rgba(147, 51, 234, 0.06) 0%, rgba(248, 250, 252, 0) 65%);
+  background: radial-gradient(circle at 50% -10%, rgba(147, 51, 234, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
 }
 
 .pulse-slow {
@@ -84,4 +84,21 @@
     opacity: 0.8;
   }
 }
+
+/* Modal Animation */
+.modal-enter {
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 

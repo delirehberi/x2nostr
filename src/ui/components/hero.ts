@@ -1,5 +1,6 @@
 import { t } from '../../services/i18n';
 import { icons } from '../icons';
+import { router } from '../../services/router';
 
 export function renderHero(container: HTMLElement): void {
   container.innerHTML = `
@@ -25,11 +26,15 @@ export function renderHero(container: HTMLElement): void {
 
       <!-- Action Buttons -->
       <div class="flex flex-wrap items-center justify-center gap-4 mb-20">
-        <a href="#migration-hub" class="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold text-sm sm:text-base shadow-md shadow-purple-600/25 hover:shadow-lg hover:shadow-purple-600/30 hover:scale-[1.02] transition-all cursor-pointer">
+        <button id="btn-hero-start" class="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold text-sm sm:text-base shadow-md shadow-purple-600/25 hover:shadow-lg hover:shadow-purple-600/30 hover:scale-[1.02] transition-all cursor-pointer">
           ${icons.upload}
           <span>${t('getStarted')}</span>
           ${icons.arrowRight}
-        </a>
+        </button>
+        <button id="btn-hero-newbie-guide" class="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 font-semibold text-sm sm:text-base border border-purple-200 hover:border-purple-300 shadow-xs hover:scale-[1.02] transition-all cursor-pointer">
+          ${icons.helpCircle}
+          <span>${t('btnNewbieGuide')}</span>
+        </button>
         <a href="#ecosystem" class="flex items-center gap-2 px-6 py-3.5 rounded-xl glass-card bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm sm:text-base border border-slate-200 hover:border-purple-300 shadow-xs hover:scale-[1.02] transition-all">
           ${icons.globe}
           <span>${t('exploreEcosystem')}</span>
@@ -101,4 +106,18 @@ export function renderHero(container: HTMLElement): void {
       </div>
     </section>
   `;
+
+  const btnHeroStart = container.querySelector('#btn-hero-start') as HTMLButtonElement | null;
+  if (btnHeroStart) {
+    btnHeroStart.addEventListener('click', () => {
+      router.navigate('/importers');
+    });
+  }
+
+  const btnHeroNewbie = container.querySelector('#btn-hero-newbie-guide') as HTMLButtonElement | null;
+  if (btnHeroNewbie) {
+    btnHeroNewbie.addEventListener('click', () => {
+      router.navigate('/getting-started');
+    });
+  }
 }

@@ -72,6 +72,72 @@ export interface MovieMigrationOptions {
   resumeSession?: ImportSession;
 }
 
+export interface WordPressPostRecord {
+  id: string;
+  wpPostId: string;
+  title: string;
+  slug: string;
+  contentHtml: string;
+  contentMarkdown: string;
+  summary: string;
+  author: string;
+  publishedDate: string;
+  publishedAtTimestamp: number;
+  postType: string; // e.g. 'post' | 'page'
+  status: string; // e.g. 'publish' | 'draft'
+  categories: string[];
+  tags: string[];
+  featuredImageUrl?: string;
+  imageUrls: string[];
+  selected?: boolean;
+  blossomCoverUrl?: string;
+  blossomImageMap?: Record<string, string>;
+}
+
+export interface WordPressMigrationOptions {
+  generateKind30023: boolean; // Kind 30023 Long-Form Articles
+  uploadImagesToBlossom: boolean;
+  blossomServers: string[];
+  includeDrafts: boolean;
+  deletePreviousPostsBeforeImport?: boolean; // NIP-09 Kind 5 deletion of Kind 30023 events
+  publishToCustomRelaysOnly: boolean;
+  resumeSession?: ImportSession;
+}
+
+export interface GistSnippetRecord {
+  id: string; // Internal unique ID
+  gistId: string; // GitHub Gist ID or source identifier
+  name: string; // Filename (e.g. 'quicksort.py', 'server.ts')
+  extension: string; // Extension without dot (e.g. 'py', 'ts')
+  language: string; // Lowercase language identifier (e.g. 'python', 'typescript')
+  description: string; // Summary of what the code does
+  content: string; // Raw code snippet text
+  runtime?: string; // e.g. 'node v22', 'python 3.12'
+  license?: string; // SPDX identifier e.g. 'MIT', 'Apache-2.0'
+  dependencies?: string[];
+  repoUrl?: string; // Original URL e.g. https://gist.github.com/alice/12345
+  rawUrl?: string; // CDN raw file URL
+  createdAtTimestamp: number; // Unix timestamp in seconds
+  sizeBytes: number;
+  isPublic: boolean; // true = public gist, false = secret/private gist
+  selected?: boolean;
+  tags?: string[];
+}
+
+export type GistFilterCategory = 'all' | 'public' | 'secret';
+
+export interface GistMigrationOptions {
+  generateKind1337: boolean; // NIP-C0 Kind 1337 for public snippets
+  encryptPrivateGists: boolean; // NIP-44 self-encryption into Kind 30078 for secret gists
+  defaultLicense?: string; // Default SPDX license (e.g. 'MIT')
+  defaultRuntime?: string; // Default runtime environment
+  publishToCustomRelaysOnly: boolean;
+  deletePreviousSnippetsBeforeImport?: boolean; // NIP-09 Kind 5 deletion
+  resumeSession?: ImportSession;
+}
+
+
+
 export interface UnsignedNostrEvent {
   kind: number;
   created_at: number;

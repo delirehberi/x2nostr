@@ -14,6 +14,14 @@ declare global {
         pubkey?: string;
       }): Promise<SignedNostrEvent>;
       getRelays?(): Promise<Record<string, { read: boolean; write: boolean }>>;
+      nip44?: {
+        encrypt(pubkey: string, plaintext: string): Promise<string>;
+        decrypt(pubkey: string, ciphertext: string): Promise<string>;
+      };
+      nip04?: {
+        encrypt(pubkey: string, plaintext: string): Promise<string>;
+        decrypt(pubkey: string, ciphertext: string): Promise<string>;
+      };
     };
   }
 }
@@ -346,6 +354,29 @@ class NostrService {
     };
 
     return await window.nostr.signEvent(payload);
+  }
+
+  /**
+   * Encrypts plaintext for a recipient (or self-encryption) using NIP-44 with NIP-04 fallback.
+   */
+  public async encryptPayload(recipientPubkey: string, plaintext: string): Promise<string> {
+    if (!this.hasExtension() || !window.nostr) {
+      throw new Error('NIP-07 Nostr extension not available for encryption.');
+    }
+
+    if (window.nostr.nip44?.encrypt) {
+      try {
+        return await window.nostr.nip44.encrypt(recipientPubkey, plaintext);
+      } catch (nip44Err) {
+        console.warn('NIP-44 encryption failed, attempting NIP-04 fallback:', nip44Err);
+      }
+    }
+
+    if (window.nostr.nip04?.encrypt) {
+      return await window.nostr.nip04.encrypt(recipientPubkey, plaintext);
+    }
+
+    throw new Error('Your Nostr extension does not support NIP-44 or NIP-04 encryption.');
   }
 
   /**

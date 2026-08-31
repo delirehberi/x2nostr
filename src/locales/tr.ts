@@ -43,6 +43,8 @@ export const tr: Record<TranslationKey, string> = {
   ecosystemSubtitle: 'Verileriniz Nostr rölelerine yayınlandığında, bu açık kaynaklı istemcilerde anında okunabilir ve etkileşime geçilebilir hale gelir.',
   appBookstrTitle: 'Bookstr',
   appBookstrDesc: 'Nostr üzerinde inşa edilmiş merkeziyetsiz okuma takipçisi, kitaplık yöneticisi ve kitap inceleme sosyal ağı (NIP-51 Listeleri, Kinds 10073-10075 & 31985).',
+  appDittoTitle: 'Ditto.pub',
+  appDittoDesc: 'Nostr protokolü tarafından desteklenen merkeziyetsiz sosyal ağ ve uzun format yayın platformu.',
   appHablaTitle: 'Habla.news',
   appHablaDesc: 'Yerel Lightning para kazanma özelliğiyle NIP-23 içerik etkinlikleriyle desteklenen merkeziyetsiz uzun blog platformu.',
   appYakihonneTitle: 'Yakihonne',
@@ -58,6 +60,135 @@ export const tr: Record<TranslationKey, string> = {
   appZapStreamTitle: 'ZapStream',
   appZapStreamDesc: 'Gerçek zamanlı sohbet, zap\'ler ve merkeziyetsiz yayın dağıtımı ile Nostr üzerinde canlı yayın platformu.',
   openApp: 'Uygulamayı Aç',
+
+  // Navigation Links
+  navHome: 'Ana Sayfa',
+  navImporters: 'Taşıma Merkezi',
+  navGettingStarted: 'Başlangıç',
+  navDocs: 'Dokümanlar',
+  navSupport: 'Destek',
+  configureRelays: 'Röleleri Yapılandır',
+  relaysSummary: '{count} Aktif Röle',
+  userProfile: 'Kullanıcı Profili',
+
+  // Ecosystem Categories
+  catBooks: 'Kitaplar ve Okuma',
+  catSocialBlogs: 'Sosyal Ağlar ve Bloglar',
+  catPublishing: 'Yayıncılık ve Medya',
+  catSocialMobile: 'Sosyal Mobil Uygulamalar',
+  catSocialMedia: 'Sosyal ve Medya',
+  catWebMobile: 'Web ve Mobil',
+  catMusic: 'Müzik ve Podcast',
+  catVideo: 'Canlı Yayın ve Video',
+
+  // Documentation Hub
+  docsTitle: 'Nostr Bilgi Bankası ve Rehberler',
+  docsSubtitle: 'Egemen anahtar yönetimi, NIP-07 eklentileri, NIP-51 listeleri, Amber bunker ve veri taşıma hakkında detaylı rehberler.',
+  doc1Title: '1. Nostr Anahtar Güvenliği ve Egemen Kimlik',
+  doc1Summary: 'Kriptografik açık (npub) ve özel (nsec) anahtarların geleneksel şifrelerin ve merkezi platform girişlerinin yerini nasıl aldığını öğrenin.',
+  doc2Title: '2. Android\'de Amber Bunker (NIP-46) Yapılandırması',
+  doc2Summary: 'Amber\'ı uzak imzalayıcı bunker olarak kullanarak özel anahtarınızı üçüncü taraf web sitelerine ve uygulamalara göstermeden işlem imzalayın.',
+  doc3Title: '3. Goodreads\'ten Bookstr\'a (NIP-51 & NIP-32) Taşıma Rehberi',
+  doc3Summary: 'Goodreads CSV ayrıştırma, Open Library kapak zenginleştirme ve Bookstr okuma listesi indeksleme rehberi.',
+  doc4Title: '4. IMDb & Letterboxd Puanlarını Nostr Sinema Listelerine Aktarma',
+  doc4Summary: 'Film izleme listenizi ve puan arşivlerinizi NIP-51 sinema listelerine ve NIP-32 incelemelerine dönüştürün.',
+  doc5Title: '5. NIP-23 Uzun Format Yayıncılık (Ditto.pub & Yakihonne)',
+  doc5Summary: 'Hugo, Ghost ve WordPress blog yazılarını egemen NIP-23 içerik etkinliklerine dönüştürme rehberi.',
+  doc6Title: '6. Dijital Özgürlüğün Kullanım Kılavuzu: x2nostr Dokümantasyonu Neden Var?',
+  doc6Summary: 'Yıllardır merkezi platformlarda biriktirdiğimiz verileri Nostr protokolüne taşırken neden şeffaf ve güçlü bir dokümantasyona ihtiyaç duyduk?',
+
+  // Documentation Body Contents (Turkish)
+  doc1Content: `<div class="space-y-4 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-900">Nostr Kriptografik Anahtar Çiftlerini Anlamak</h3>
+    <p>Kimliğinizin şirket sunucularında saklanan e-posta ve şifrelere bağlı olduğu geleneksel sosyal ağların (Twitter, Goodreads, IMDb) aksine Nostr, standart <strong>schnorr imza anahtar çiftlerini</strong> (secp256k1) kullanır.</p>
+    <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
+      <h4 class="font-bold text-purple-900">Anahtar Çifti Genel Bakış:</h4>
+      <ul class="list-disc list-inside space-y-1 text-xs text-purple-950">
+        <li><strong>npub (Açık Genel Anahtar):</strong> Evrensel Nostr adresinizdir (kullanıcı adı veya cüzdan adresi gibi). Herkesle özgürce paylaşabilirsiniz.</li>
+        <li><strong>nsec (Gizli Özel Anahtar):</strong> Kriptografik imzalama gizli anahtarınızdır. <em>nsec anahtarınızı ASLA hiçbir web sitesi veya kişiyle paylaşmayın.</em></li>
+      </ul>
+    </div>
+    <h4 class="font-bold text-slate-900">Önerilen Tarayıcı Eklentileri (NIP-07):</h4>
+    <p>Nostr web uygulamalarına <code>nsec</code> anahtarınızı yapıştırmadan güvenle giriş yapmak için bir NIP-07 tarayıcı eklentisi yükleyin:</p>
+  </div>`,
+
+  doc2Content: `<div class="space-y-4 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-900">Android'de Amber Bunker (NIP-46) Yapılandırması</h3>
+    <p><strong>Amber</strong>, korumalı bir Nostr imzalayıcısı (bunker) olarak çalışan açık kaynaklı bir Android uygulamasıdır. <code>nsec</code> gizli anahtarınızı telefonunuzun güvenli kasasında tutarak mobil uygulamaların ham anahtarınıza erişmeden işlem imzalamasını sağlar.</p>
+    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+      <h4 class="font-bold text-slate-900">Amber Uzak İmzalama Nasıl Çalışır:</h4>
+      <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-700">
+        <li>Amber uygulamasını GitHub veya F-Droid üzerinden indirin.</li>
+        <li><code>nsec</code> anahtarınızı Amber içine aktarın veya yeni bir anahtar oluşturun.</li>
+        <li>Nostr istemcilerini (Amethyst veya NIP-46 bağlantı dizili web uygulamaları) açtığınızda <strong>Amber ile İmzala</strong> seçeneğini belirleyin.</li>
+        <li>Amber, imzalamadan önce işlem türünü ve içeriğini gösteren bir onay ekranı açacaktır.</li>
+      </ol>
+    </div>
+  </div>`,
+
+  doc3Content: `<div class="space-y-4 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-900">Goodreads'ten Bookstr'a Taşıma Rehberi</h3>
+    <p>Goodreads kütüphanenizi taşımak, standart kitap dışa aktarımlarını egemen Nostr liste etkinliklerine ve puanlama incelemelerine dönüştürür.</p>
+    <h4 class="font-bold text-slate-900">Hedef Protokol Özellikleri:</h4>
+    <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-700">
+      <li><strong>Kind 30003 (NIP-51 Yer İmi Setleri):</strong> <code>read</code>, <code>currently-reading</code> ve <code>to-read</code> etiketli derlenmiş kitap listeleri.</li>
+      <li><strong>Bookstr Yerel Listeleri (Kinds 10073, 10074, 10075):</strong> ISBN etiketleri (<code>["k", "isbn"]</code>) ve kapak üstverileri içeren indekslenmiş raflar.</li>
+      <li><strong>Kind 31985 (NIP-32 İncelemeleri):</strong> 1-5 yıldız puanı, kişisel notlar ve zaman damgaları içeren değiştirilebilir inceleme etkinlikleri.</li>
+    </ul>
+  </div>`,
+
+  doc4Content: `<div class="space-y-4 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-900">IMDb ve Letterboxd Puanlarını Nostr Sinema Listelerine Aktarma</h3>
+    <p>IMDb veya Letterboxd üzerindeki film puanlarınızı ve izleme listelerinizi dışa aktarmak, açık kaynaklı Nostr film takipçileriyle uyumlu merkeziyetsiz film koleksiyon etkinlikleri oluşturur.</p>
+    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+      <h4 class="font-bold text-slate-900 font-mono text-xs">OMDb ile Meta Veri Zenginleştirme:</h4>
+      <p class="text-xs text-slate-600">x2nostr, etkinlikleri bağlı rölelere imzalamadan önce yönetmen, yayın yılı, süre, afiş ve tür etiketlerini Open Movie Database (OMDb) üzerinden zenginleştirir.</p>
+    </div>
+  </div>`,
+
+  doc5Content: `<div class="space-y-4 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-900">NIP-23 Uzun Format Yayıncılık (Ditto.pub ve Yakihonne)</h3>
+    <p>NIP-23, başlık etiketleri, özetler, yayın tarihleri ve kapak görselleri içeren Markdown formatındaki uzun içerik etkinliklerini (Kind <code>30023</code>) tanımlar.</p>
+  </div>`,
+
+  doc6Content: `<div class="space-y-4 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-900">Dijital Özgürlüğün Kullanım Kılavuzu: x2nostr Dokümantasyonu Neden Var?</h3>
+    <p>Daha önce <a href="https://blog.emre.xyz/posts/7492c6cf/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Teknofeodalizm - Dijital Toprak Ağalığı</a> yazımda da bahsettiğim gibi; yıllardır internet üzerinde ürettiğimiz tüm içerikleri, okuduğumuz kitap listelerini, izlediğimiz filmleri ve yazdığımız yazıları merkezi platformların insafına terk etmiş durumdayız. <strong>Goodreads</strong>, <strong>Letterboxd</strong>, <strong>Spotify</strong>, <strong>Medium</strong> veya <strong>Twitter</strong>... Adına ne derseniz deyin, günün sonunda hepimiz bu platformların ücretsiz (veya verimizle ödediğimiz) kiracılarıyız. Ev sahibi bir gün algoritmayı değiştirdiğinde veya hesabınızı askıya aldığında, yılların birikimi bir anda yok olabiliyor.</p>
+    <p>Bu veri gaspına karşı <a href="https://blog.emre.xyz/posts/nostr/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Nostr protokolünü</a> ve açık protokollerin getirdiği özgürlüğü savunuyoruz. Ancak "Verini kurtar!" demek yetmiyor. İnsanların bu verileri nasıl taşıyacağını, arka planda hangi NIP'lerin (Nostr Implementation Possibilities) çalıştığını ve şifreleme mekanizmasını anlaması gerekiyor. İşte bu yüzden <a href="https://x2nostr.emre.xyz" class="text-purple-600 underline hover:text-purple-800">x2nostr (move-to-nostr)</a> dokümantasyon sayfasını tamamen açık bir rehbere dönüştürdük.</p>
+
+    <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
+      <h4 class="font-bold text-purple-900">Dokümantasyon Neleri Kapsıyor?</h4>
+      <ul class="list-disc list-inside space-y-1.5 text-xs text-purple-950">
+        <li><strong>Gizlilik ve Güvenlik:</strong> x2nostr %100 tarayıcı içinde (<em>client-side sovereign</em>) çalışır. Tüm ayrıştırma, Open Library istekleri ve NIP-07 imzalama işlemleri tarayıcı sandbox'ınızda gerçekleşir. Sunucumuza tek bir bayt veri gitmez.</li>
+        <li><strong>Hangi NIP Nerede Kullanılıyor?:</strong> Kitap ve sinema listeleriniz <code>NIP-51</code> (Kind <code>30003</code>), incelemeleriniz <code>NIP-32</code> (Kind <code>31985</code>) ve blog yazılarınız <code>NIP-23</code> (Kind <code>30023</code>) standartlarına dönüştürülür.</li>
+        <li><strong>Açık Kaynak Katkı Kuralları:</strong> AI araçlarıyla katkıda bulunan geliştiriciler için <strong>500 satırlık diff sınırı</strong> getirerek kod incelemesini ve sürdürülebilirliği garantiye aldık.</li>
+      </ul>
+    </div>
+
+    <p class="text-xs text-slate-500 pt-2">Daha fazla detay için <a href="https://blog.emre.xyz/posts/nostr-nasil-gidiyor/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Nostr Nasıl Gidiyor?</a> ve <a href="https://blog.emre.xyz/posts/0d64aa67/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Hugo2Nostr</a> yazılarımı inceleyebilirsiniz.</p>
+  </div>`,
+
+
+  // Newbie Guide & Keygen
+  btnNewbieGuide: 'Yeni Başlayanlar Rehberi',
+  newbieGuideTitle: 'Yeni Başlayanlar İçin Nostr Rehberi',
+  newbieGuideSubtitle: 'Nostr protokolünü anlamanız, egemen anahtarınızı oluşturmanız ve verilerinizi sorunsuz taşımanız için ihtiyacınız olan her şey.',
+  newbieStep1Title: '1. Anahtarınızı Oluşturun veya Bağlayın',
+  newbieStep1Desc: 'Doğrudan tarayıcınızın güvenli ortamında yeni bir Nostr anahtar çifti oluşturun veya mevcut NIP-07 eklentinizi bağlayın.',
+  generateKeyBtn: 'Yeni Nostr Anahtarı Oluştur (nsec/npub)',
+  copyNsec: 'Özel Anahtarı Kopyala (nsec)',
+  copyNpub: 'Genel Anahtarı Kopyala (npub)',
+  keyGeneratedNotice: 'Anahtar çiftiniz başarıyla oluşturuldu! Lütfen nsec özel anahtarınızı bir şifre yöneticisine kopyalayıp hemen yedekleyin.',
+  newbieStep2Title: '2. İmzalayıcılar ve Bunker (Amber, Eklentiler)',
+  newbieStep2Desc: 'Masaüstünde NIP-07 tarayıcı eklentilerini (Alby, nos2x) veya Android\'de Amber\'ı (NIP-46 / NIP-55 uzak imzalayıcı bunker) kullanarak özel anahtarınızı web sitelerine göstermeden güvenle imzalayın.',
+  whySovereigntyTitle: 'Neden Veri Egemenliği Önemli?',
+  whySovereigntyDesc: 'Kriptografik özel anahtarınız kimliğinizin, okuma geçmişinizin ve incelemelerinizin tam mülkiyetini size verir. Hiçbir platform verilerinize el koyamaz veya sansürleyemez.',
+  newbieStep3Title: '3. Verilerinizi İçe Aktarın',
+  newbieStep3Desc: 'Goodreads (Kitaplar) veya IMDb/Letterboxd (Filmler ve Diziler) kütüphanelerinizi CSV dosyası olarak dışa aktarın ve Nostr rölelerine imzalayın.',
+  newbieStep4Title: '4. Önerilen Uygulamaları Keşfedin',
+  newbieStep4Desc: 'Taşınan verilerinize web ve mobilde önde gelen açık kaynaklı Nostr uygulamalarından erişin:',
+  recMobileApps: 'Önerilen Mobil Uygulamalar: Damus (iOS), Amethyst (Android), Primal (iOS & Android)',
+  recWebApps: 'Önerilen Web Uygulamaları: Bookstr.xyz (Kitaplar), Ditto.pub & Yakihonne (Bloglar), Primal.net (Sosyal Ağ)',
 
   // Importer Catalog Menu
   importersTitle: 'Taşıma Merkezi',
@@ -78,9 +209,13 @@ export const tr: Record<TranslationKey, string> = {
   moviesTarget: 'NIP-51 Sinema Listeleri (Kind 30003) & Kind 31985 İncelemeler',
   
   // Coming Soon Importers
-  blogsName: 'Uzun Format Bloglar',
-  blogsDesc: 'Hugo, Ghost, WordPress veya Blogger arşivlerinizi Habla ve Yakihonne için egemen NIP-23 makalelerine dönüştürün.',
-  blogsTarget: 'NIP-23 Uzun Format (Kind 30023)',
+  blogsName: 'WordPress (WXR XML)',
+  blogsDesc: 'WordPress blog yazılarınızı otomatik Markdown dönüştürme ve Blossom medya yüklemeleri ile egemen NIP-23 uzun yazılara aktarın.',
+  blogsTarget: 'NIP-23 Uzun Yazılar (Kind 30023)',
+  
+  gistsName: 'GitHub Gists',
+  gistsDesc: 'GitHub Gist\'lerinizi ve kod parçacıklarınızı merkeziyetsiz NIP-C0 (Kind 1337) kod etkinliklerine ve NIP-44 ile şifrelenmiş özel parçacıklara aktarın.',
+  gistsTarget: 'NIP-C0 Kod Parçacıkları (Kind 1337) & NIP-44 Şifreli (Kind 30078)',
   
   imdbName: 'Film ve Dizi Takipçisi',
   imdbDesc: 'İzleme listenizi, puanlarınızı ve film incelemelerinizi merkeziyetsiz film listelerine ve topluluk incelemelerine aktarın.',
@@ -249,4 +384,74 @@ export const tr: Record<TranslationKey, string> = {
   moviesMigrationCompleted: 'Film ve Dizi Aktarımı Başarıyla Tamamlandı!',
   moviesMigrationCompletedDesc: 'Film puanlarınız ve derlenen listeleriniz imzalanarak Nostr rölelerine yayınlandı.',
   moviesResumeBannerDescription: '{total} başlıktan {completed} tanesi zaten içe aktarıldı',
+
+  // WordPress Migration Wizard
+  wpImporterTitle: 'WordPress (WXR XML) -> Nostr Makaleleri',
+  wpImporterSubtitle: 'WordPress blog yazılarınızı egemen NIP-23 uzun yazılara aktarın. HTML içeriğini otomatik olarak Markdown formatına dönüştürür ve resimlerinizi Blossom sunucularına yükler.',
+  wpDropzoneTitle: 'WordPress WXR dışa aktarım dosyanızı buraya sürükleyip bırakın',
+  wpDropzoneSubtitle: 'veya bilgisayarınızdan dosya seçmek için tıklayın',
+  wpDropzoneSupport: 'Standart WordPress XML dışa aktarım dosyalarını destekler (.xml, .wxr)',
+  wpPostsLoaded: 'Yazı Yüklendi',
+  wpFilterPublished: 'Yayınlananlar',
+  wpFilterDrafts: 'Taslaklar',
+  wpColCategories: 'Kategoriler & Etiketler',
+  wpColMedia: 'Medya Varlıkları',
+  wpOptBlossomTitle: 'Yazı görsellerini Blossom sunucularına yükle (NIP-98 / Kind 24242)',
+  wpOptBlossomDesc: 'Satır içi görselleri ve kapak resimlerini çıkarır, Blossom yetkilendirme başlıklarını imzalar ve Markdown resim bağlantılarını günceller.',
+  wpBlossomServersLabel: 'Blossom Sunucuları (Virgülle Ayrılmış)',
+  wpOptDeleteTitle: 'Önce daha önce aktarılan blog yazılarını sil (NIP-09 Kind 5)',
+  wpOptDeleteDesc: 'Yeni aktarımdan önce önceki Kind 30023 makalelerini kaldırmak için bir silme etkinliği yayınlar.',
+  wpSyncTipTitle: 'Anlık Canlı Senkronizasyon mu Arıyorsunuz?',
+  wpSyncTipDesc: 'x2nostr, WXR dışa aktarım dosyalarından toplu aktarım için tasarlanmıştır. Canlı WordPress sitenizden Nostr rölelerine sürekli anlık çapraz paylaşım yapmak istiyorsanız, {link} eklentisini deneyebilirsiniz.',
+  postrPluginName: 'Postr for Nostr WordPress Eklentisi',
+
+  // GitHub Gists Migration Wizard
+  gistsStep1Title: '1. GitHub / Gist Bağlantısı',
+  gistsStep1Desc: 'GitHub kullanıcı adınızı veya belirli bir Gist URL\'sini girin ya da yerel kod dosyalarını yükleyin.',
+  gistsStep2Title: '2. Önizleme & Seçim',
+  gistsStep2Desc: 'Kod dosyası adlarını, programlama dillerini, genel/özel gizlilik durumlarını ve kod içeriklerini inceleyin.',
+  gistsStep3Title: '3. İmzala & Yayınla',
+  gistsStep3Desc: 'Genel NIP-C0 etkinliklerini ve NIP-44 ile kendinize şifrelenmiş özel kod parçacıklarını Nostr\'a imzalayın.',
+  gistsImporterTitle: 'GitHub Gist\'leri ve Kod Parçacıklarını Nostr\'a Aktarın',
+  gistsImporterSubtitle: 'GitHub Gist\'lerinizi ve kod parçacıklarınızı merkeziyetsiz Nostr etkinliklerine dönüştürün. Genel parçacıklar NIP-C0 (Kind 1337) olarak yayınlanır, gizli/özel Gist\'ler ise NIP-44 (Kind 30078) ile şifrelenir.',
+  gistsFetchTab: 'GitHub Gists API',
+  gistsUploadTab: 'Kod / JSON Yükle',
+  githubUsernameLabel: 'GitHub Kullanıcı Adı veya Gist URL',
+  githubUsernamePlaceholder: 'örn. torvalds veya https://gist.github.com/alice/12345',
+  githubTokenLabel: 'GitHub Kişisel Erişim Belirteci (İsteğe Bağlı)',
+  githubTokenPlaceholder: 'ghp_... (oran sınırını 5000/saat yapar ve gizli Gist\'leri dahil eder)',
+  githubFetchBtn: 'Gist\'leri Getir',
+  githubFetching: 'GitHub\'dan getiriliyor...',
+  rateLimitRemaining: '{limit} istekten {remaining} tanesi kaldı ({time} saatinde sıfırlanır)',
+  gistsDropzoneTitle: 'Kod dosyalarını (.js, .py, .rs, .ts vb.) veya Gist JSON dışa aktarımını buraya sürükleyip bırakın',
+  gistsDropzoneSubtitle: 'veya bilgisayarınızdan dosya seçmek için tıklayın',
+  gistsDropzoneSupport: 'Kaynak kod dosyalarını ve JSON kod parçacığı dizilerini destekler',
+  gistsFound: 'Kod Parçacığı Yüklendi',
+  filterPublic: 'Genel Parçacıklar',
+  filterSecret: 'Gizli / Özel',
+  colSnippetName: 'Parçacık & Dosya Adı',
+  colLanguage: 'Dil',
+  colPrivacy: 'Gizlilik',
+  colSize: 'Boyut',
+  colSource: 'Kaynak',
+  badgePublic: 'Genel',
+  badgeSecret: 'Gizli',
+  markAsSecret: 'Seçilenleri Gizli Yap 🔒',
+  markAsPublic: 'Seçilenleri Genel Yap 🌐',
+  previewCode: 'Kodu Önizle',
+  noSnippetsFound: 'Mevcut filtre veya arama kriterleriyle eşleşen kod parçacığı bulunamadı.',
+  optGenerateKind1337: 'Genel Parçacıkları NIP-C0 Kod Etkinliği Olarak Yayınla (Kind 1337)',
+  optGenerateKind1337Desc: 'Nostr kod istemcileri için dil, dosya adı ve açıklama etiketlerine sahip standart kod parçacığı etkinlikleri yayınlar.',
+  optEncryptPrivate: 'Gizli Gist\'leri NIP-44 ile Şifrele (Kind 30078)',
+  optEncryptPrivateDesc: 'Gizli Gist\'leri yalnızca özel anahtarınızı (nsec) elinde bulunduran sizin çözüp okuyabileceğiniz şekilde şifreler.',
+  optDefaultLicense: 'Varsayılan SPDX Lisansı',
+  optDefaultRuntime: 'Çalışma Zamanı / Ortam (İsteğe Bağlı)',
+  optDeletePreviousGists: 'Önce daha önce aktarılan kod parçacıklarını sil (NIP-09 Kind 5)',
+  optDeletePreviousGistsDesc: 'Önceki Kind 1337 ve Kind 30078 parçacık etkinliklerini kaldırmak için silme istekleri yayınlar.',
+  gistsMigrationCompleted: 'Gist ve Kod Parçacığı Aktarımı Başarıyla Tamamlandı!',
+  gistsMigrationCompletedDesc: 'Kod parçacıklarınız imzalandı ve Nostr rölelerine yayınlandı.',
+  gistsResumeBannerDescription: '{total} parçacıktan {completed} tanesi zaten içe aktarıldı',
+  secretGistsNoticeTitle: 'GitHub Gizli (Secret) Gist\'lerini İçe Aktarma',
+  secretGistsNoticeDesc: 'GitHub API\'si, gizli (unlisted) Gist\'leri toplu kullanıcı listelerinde döndürmez. Gizli Gist\'leri içe aktarmak için doğrudan Gist URL\'lerini veya kimliklerini (virgülle veya alt alta) belirtecinizle birlikte giriş alanına yapıştırabilir ya da aşağıdaki tablodan herhangi bir parçacığın gizlilik rozetine tıklayarak Gizli olarak işaretleyebilirsiniz.',
 };
+

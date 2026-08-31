@@ -31,11 +31,11 @@ Once you migrate your data using **x2nostr**, your content is instantly accessib
 | Category | Apps & Platforms | Nostr Kinds & NIPs |
 | :--- | :--- | :--- |
 | 📚 **Books & Reading** | [Bookstr.xyz](https://bookstr.xyz) | Kind `30003` (NIP-51 Bookmark Sets), Kinds `10073`-`10075`, Kind `31985` (NIP-32 Reviews) |
-| 📝 **Long-Form Blogs** | [Habla.news](https://habla.news), [Yakihonne](https://yakihonne.com), [Highlighter](https://highlighter.com) | Kind `30023` (NIP-23 Articles) |
+| 📝 **Long-Form Blogs** | [Ditto.pub](https://ditto.pub), [Yakihonne](https://yakihonne.com), [Highlighter](https://highlighter.com) | Kind `30023` (NIP-23 Articles) |
 | 💬 **Microblogging & Social** | [Damus](https://damus.io) (iOS), [Amethyst](https://github.com/vitorpamplona/amethyst) (Android), [Primal](https://primal.net), [Coracle](https://coracle.social), [Snort](https://snort.social) | Kind `1` (Notes), Kind `6` (Reposts) |
-| 🎵 **Music & Podcasts** | [Wavelake](https://wavelake.com), [Stemstr](https://stemstr.app) | Kind `30001` Playlists |
+| 🎵 **Music & Podcasts** | [Wavelake](https://wavelake.com), [Stemstr](https://stemstr.app) | Kind `30003` Playlists |
 | 🎥 **Video & Streaming** | [ZapStream](https://zapstream.com), [Flare](https://flare.pub) | Kind `30311` (Live Events), Kind `20` |
-| 🎬 **Movies & Reviews** | Nostr Film Trackers | Kind `30003` Sets & Kind `31985` (NIP-32 Reviews) |
+| 🎬 **Movies & Reviews** | Nostr Cinema Trackers | Kind `30003` Sets & Kind `31985` (NIP-32 Reviews) |
 
 ---
 
@@ -44,12 +44,9 @@ Once you migrate your data using **x2nostr**, your content is instantly accessib
 | Importer | Source Format | Target Nostr NIPs | Status |
 | :--- | :--- | :--- | :--- |
 | 📚 **Goodreads to Bookstr** | Goodreads CSV Export | NIP-51 (Kind `30003`), Bookstr (Kinds `10073`-`10075`), NIP-32 (Kind `31985`) | 🟢 **Active** |
-| 🎬 **IMDb to Nostr** | IMDb Ratings CSV | NIP-51 Curated Sets (Kind `30003`), NIP-32 Reviews (Kind `31985`) | 🟢 **Active** |
-| 🎞️ **Letterboxd to Nostr** | Letterboxd Diary CSV | NIP-51 Curated Sets (Kind `30003`), NIP-32 Reviews (Kind `31985`) | 🟡 **In Progress** |
-| 📝 **Blogs to Nostr** | Hugo / Ghost / WP / Markdown | NIP-23 Long-form Content (Kind `30023`) | 🟡 **Planned** |
-| 🐦 **Twitter / X Archive** | Twitter `tweets.js` Archive | NIP-01 Short Text Notes (Kind `1`) | 🟡 **Planned** |
-| 📸 **Instagram to Nostr** | Instagram Media Archive | NIP-68 Picture Posts (Kind `20`) + Blossom Hosting | 🟡 **Planned** |
-| 🎧 **Spotify to Nostr** | Spotify Playlists / Favorites | NIP-51 Audio Sets (Kind `30001`) | 🟡 **Planned** |
+| 🎬 **Filmler ve Diziler (IMDb & Letterboxd)** | IMDb & Letterboxd CSV | NIP-51 Curated Sets (Kind `30003`), NIP-32 Reviews (Kind `31985`) | 🟢 **Active** |
+| 📝 **Uzun Format Bloglar** | Hugo / Ghost / WordPress / Markdown | NIP-23 Long-form Content (Kind `30023`) | 🟡 **Next Up** |
+| 🎧 **Spotify Çalma Listeleri** | Spotify Playlists / Favorites CSV | NIP-51 Audio Sets (Kind `30003`) | 🟡 **Planned** |
 
 See [ROADMAP.md](ROADMAP.md) for detailed milestone tracking.
 
