@@ -59,6 +59,8 @@ export const es: Record<TranslationKey, string> = {
   appWavelakeDesc: 'Plataforma descentralizada de música y podcasts donde los creadores reciben valor por valor mediante Lightning.',
   appZapStreamTitle: 'ZapStream',
   appZapStreamDesc: 'Transmisión en vivo en Nostr con chat en tiempo real, zaps y distribución de video descentralizada.',
+  appGitWorkshopTitle: 'GitWorkshop',
+  appGitWorkshopDesc: 'Colaboración de código descentralizada en Nostr. Explora repositorios, revisa parches (PR) y gestiona problemas con NIP-34.',
   openApp: 'Abrir App',
 
   // Navigation Links
@@ -80,6 +82,7 @@ export const es: Record<TranslationKey, string> = {
   catWebMobile: 'Web y Móvil',
   catMusic: 'Música y Podcasts',
   catVideo: 'Transmisión en Vivo',
+  catCodeGit: 'Código y Git (NIP-34)',
 
   // Documentation Hub
   docsTitle: 'Base de Conocimiento y Guías Nostr',
@@ -332,9 +335,12 @@ export const es: Record<TranslationKey, string> = {
   // Footer
   footerTagline: 'Plataforma de migración de datos soberana y descentralizada para la web abierta.',
   footerClientSideOnly: '🔒 Cero retención en servidores. Todo el procesamiento de datos y firmado criptográfico ocurre exclusivamente en tu navegador.',
+  footerCommunity: 'Una iniciativa comunitaria de {link}',
   footerBuiltWith: 'Construido con TypeScript, Tailwind CSS, Hono y nostr-tools.',
   footerAuthor: 'Creado con 💜 por {author}',
   githubRepo: 'Repositorio GitHub',
+  gitWorkshopRepo: 'Repositorio Nostr (GitWorkshop)',
+  viewExampleRepo: 'Ver x2nostr en GitWorkshop',
   roadmapLink: 'Roadmap',
 
   // Resume Banner
@@ -453,5 +459,34 @@ export const es: Record<TranslationKey, string> = {
   gistsResumeBannerDescription: '{completed} de {total} fragmentos ya importados',
   secretGistsNoticeTitle: 'Importar Gists Secretos desde GitHub',
   secretGistsNoticeDesc: 'La API de GitHub no expone los Gists secretos (no listados) en listados masivos de usuarios. Para importar Gists secretos, pega sus URLs o IDs directos (separados por comas o saltos de línea) en el campo de entrada junto con tu token, o haz clic en el botón de privacidad de cualquier fragmento en la tabla para marcarlo como Secreto.',
+
+  // Git Repositories Migration Callout (GitWorkshop & ngit)
+  gistsRepoMigrationTitle: '¿Deseas Migrar Repositorios Completos de GitHub, GitLab o Bitbucket?',
+  gistsRepoMigrationSubtitle: 'Descentraliza tus repositorios Git, historiales de commits, ramas y PRs en Nostr mediante NIP-34.',
+  gistsRepoMigrationDesc: 'x2nostr migra fragmentos de código y Gists independientes directamente en tu navegador (NIP-C0 Kind 1337 y NIP-44 Kind 30078). Para migrar y colaborar en repositorios Git completos con historiales de commits, ramas, parches (PRs) e incidencias, utiliza el ecosistema soberano Nostr Git basado en NIP-34:',
+  gistsRepoMigrationNgitTitle: '1. Enviar Repositorios con la CLI ngit',
+  gistsRepoMigrationNgitDesc: 'Usa la herramienta oficial de línea de comandos ngit para inicializar, enviar y sincronizar cualquier repositorio Git existente (GitHub, GitLab, Bitbucket o local) directamente con repetidores Nostr:',
+  gistsRepoMigrationWebTitle: '2. Explorar y Colaborar en GitWorkshop.dev',
+  gistsRepoMigrationWebDesc: 'GitWorkshop.dev es una interfaz web soberana y descentralizada para navegar por repositorios Git de Nostr, revisar parches, abrir PRs y gestionar incidencias mediante NIP-34.',
+  btnOpenGitWorkshop: 'Abrir GitWorkshop.dev',
+  btnViewNgit: 'Ver ngit en GitHub',
+
+  // Dry Run & Event Inspector
+  dryRunBadge: 'Modo de Prueba (Dry Run)',
+  dryRunButton: 'Modo de Prueba (Inspeccionar Eventos)',
+  dryRunTitle: 'Modo de Prueba: Inspeccionar Eventos Nostr Generados',
+  dryRunSubtitle: 'Previsualiza todos los eventos no firmados antes de firmar o transmitir ({count} eventos generados).',
+  tabRenderedPreview: 'Vista Previa Renderizada',
+  tabRawContent: 'Contenido en Bruto',
+  tabNostrJson: 'JSON de Nostr',
+  copyJson: 'Copiar JSON',
+  copiedJson: '¡JSON copiado al portapapeles!',
+  copyContent: 'Copiar Contenido',
+  copiedContent: '¡Contenido copiado al portapapeles!',
+  copyAllEventsJson: 'Copiar Todos los Eventos (JSON)',
+  downloadJson: 'Descargar JSON',
+  proceedMigration: 'Proceder con la Migración',
+  dryRunNoSelection: 'Por favor, selecciona al menos un elemento para realizar una prueba.',
+  inspectRowEvent: 'Inspeccionar Evento',
 };
 

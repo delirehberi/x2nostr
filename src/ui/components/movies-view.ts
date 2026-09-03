@@ -5,7 +5,7 @@ import { nostrService } from '../../services/nostr';
 import { importSessionService } from '../../services/import-session';
 import { icons } from '../icons';
 import { showToast } from '../toast';
-import { showConfirmModal } from './modal';
+import { showConfirmModal, showDryRunModal } from './modal';
 
 export function renderMoviesView(container: HTMLElement): void {
   let activeFilter: MovieFilterCategory = 'all';
@@ -215,6 +215,7 @@ export function renderMoviesView(container: HTMLElement): void {
                     <th class="p-3 w-32">${t('colRating')}</th>
                     <th class="p-3 w-28">${t('colDateRead')}</th>
                     <th class="p-3 w-36">${t('colOmdbId')}</th>
+                    <th class="p-3 w-12 text-center">${t('inspectRowEvent')}</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -222,7 +223,7 @@ export function renderMoviesView(container: HTMLElement): void {
                     filteredMovies.length === 0
                       ? `
                     <tr>
-                      <td colspan="8" class="p-8 text-center text-slate-500">
+                      <td colspan="9" class="p-8 text-center text-slate-500">
                         ${t('noMoviesFound')}
                       </td>
                     </tr>
@@ -319,6 +320,10 @@ export function renderMoviesView(container: HTMLElement): void {
                     <button id="btn-start-migration" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-md shadow-purple-600/25 hover:shadow-lg transition-all cursor-pointer disabled:opacity-50">
                       ${icons.zap}
                       <span>${t('startMigration')}</span>
+                    </button>
+                    <button id="btn-dryrun-movies" class="flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-700 font-bold text-xs shadow-xs transition-all cursor-pointer">
+                      ${icons.eye}
+                      <span>${t('dryRunButton')}</span>
                     </button>
                   `
                       : `
@@ -449,6 +454,11 @@ export function renderMoviesView(container: HTMLElement): void {
         </td>
         <td class="p-3 font-mono text-[11px]">
           <span class="text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded font-medium">${m.omdbId}</span>
+        </td>
+        <td class="p-3 text-center">
+          <button class="btn-preview-movie-row p-1.5 rounded-lg bg-slate-100 hover:bg-purple-100 text-slate-600 hover:text-purple-700 transition-colors cursor-pointer" data-movie-id="${m.id}" title="${t('inspectRowEvent')}">
+            ${icons.eye}
+          </button>
         </td>
       </tr>
     `;
@@ -607,6 +617,43 @@ export function renderMoviesView(container: HTMLElement): void {
     if (optDeleteReviews) {
       optDeleteReviews.addEventListener('change', (e) => {
         deletePreviousReviews = (e.target as HTMLInputElement).checked;
+      });
+    }
+
+    // Row-level movie event preview
+    container.querySelectorAll('.btn-preview-movie-row').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const movieId = (e.currentTarget as HTMLElement).getAttribute('data-movie-id');
+        if (movieId) {
+          const event = moviesPipeline.generateSingleMovieEvent(movieId);
+          const movie = moviesPipeline.getMovies().find((m) => m.id === movieId);
+          if (event) {
+            showDryRunModal({
+              title: movie ? movie.title : 'Preview Movie Event',
+              events: [event],
+            });
+          }
+        }
+      });
+    });
+
+    // Dry Run Button
+    const btnDryRun = container.querySelector('#btn-dryrun-movies') as HTMLButtonElement | null;
+    if (btnDryRun) {
+      btnDryRun.addEventListener('click', () => {
+        const events = moviesPipeline.generateUnsignedEvents({
+          generateCuratedLists: generateLists,
+          generateReviewEvents: generateReviews,
+        });
+
+        showDryRunModal({
+          title: t('moviesName'),
+          events,
+          onProceed: () => {
+            btnStart?.click();
+          },
+        });
       });
     }
 

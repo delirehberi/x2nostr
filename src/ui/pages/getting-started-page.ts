@@ -164,6 +164,10 @@ export function renderGettingStartedPage(container: HTMLElement): void {
             <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">Yakihonne (Long-Form)</span>
             <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
           </a>
+          <a href="https://gitworkshop.dev" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
+            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">GitWorkshop (Code & Git)</span>
+            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+          </a>
         </div>
       </div>
     </div>

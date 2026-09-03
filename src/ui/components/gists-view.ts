@@ -1,9 +1,11 @@
 import { gistPipeline } from '../../importers/gists/pipeline';
 import { gitHubService } from '../../importers/gists/github-service';
-import { i18n } from '../../services/i18n';
+import { i18n, t } from '../../services/i18n';
 import { importSessionService } from '../../services/import-session';
 import { nostrService } from '../../services/nostr';
 import { GistFilterCategory, GistMigrationOptions, GistSnippetRecord, ImportSession } from '../../types';
+import { showToast } from '../toast';
+import { showDryRunModal } from './modal';
 
 declare global {
   interface Window {
@@ -37,6 +39,9 @@ export function renderGistsView(container: HTMLElement): void {
 
   // Code preview modal state
   let previewSnippet: GistSnippetRecord | null = null;
+
+  // Git repository migration accordion state
+  let isRepoAccordionOpen = false;
 
   // Session state
   let existingSession: ImportSession | null = null;
@@ -128,6 +133,141 @@ export function renderGistsView(container: HTMLElement): void {
               </p>
             </div>
           </div>
+        </div>
+
+        <!-- Collapsible Git Repositories Migration Accordion (GitWorkshop.dev & ngit) -->
+        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 border border-slate-700/80 rounded-3xl shadow-lg text-white overflow-hidden transition-all">
+          <button
+            id="btn-toggle-repo-accordion"
+            type="button"
+            class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/5 transition-colors select-none"
+            aria-expanded="${isRepoAccordionOpen}"
+          >
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-400 flex items-center justify-center shrink-0">
+                <i data-lucide="git-branch" class="w-4.5 h-4.5"></i>
+              </div>
+              <div class="min-w-0 space-y-0.5">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 text-[10px] font-semibold font-mono border border-emerald-500/30">
+                    <i data-lucide="sparkles" class="w-3 h-3"></i>
+                    NIP-34 Git Protocol
+                  </span>
+                  <span class="text-xs text-slate-400 hidden sm:inline">• GitHub / GitLab / Bitbucket</span>
+                </div>
+                <h3 class="text-sm sm:text-base font-bold text-white tracking-tight truncate">
+                  ${t('gistsRepoMigrationTitle')}
+                </h3>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 text-xs font-semibold text-slate-400">
+              <span class="hidden md:inline">${isRepoAccordionOpen ? 'Hide' : 'Learn more'}</span>
+              <div class="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center border border-slate-700 text-slate-300">
+                <i data-lucide="${isRepoAccordionOpen ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </button>
+
+          ${
+            isRepoAccordionOpen
+              ? `
+          <div class="p-5 sm:p-6 pt-0 space-y-5 border-t border-slate-800/80">
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed pt-4">
+              ${t('gistsRepoMigrationDesc')}
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <!-- Box 1: ngit CLI -->
+              <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-700/60 space-y-3 flex flex-col justify-between">
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-xs sm:text-sm text-white flex items-center gap-2">
+                      <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i>
+                      ${t('gistsRepoMigrationNgitTitle')}
+                    </h4>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">CLI Tool</span>
+                  </div>
+                  <p class="text-xs text-slate-400 leading-relaxed">
+                    ${t('gistsRepoMigrationNgitDesc')}
+                  </p>
+                  <div class="relative bg-slate-900 rounded-xl p-3 font-mono text-[11px] text-slate-200 border border-slate-800 space-y-1">
+                    <div class="text-slate-500"># 1. Install ngit CLI</div>
+                    <div class="text-emerald-400 font-bold">cargo install ngit</div>
+                    <div class="text-slate-500 pt-1"># 2. In your repo, initialize & push to Nostr</div>
+                    <div class="text-slate-300">ngit init</div>
+                    <div class="text-slate-300">ngit push</div>
+                  </div>
+                </div>
+
+                <div class="pt-2 flex items-center justify-between gap-2">
+                  <button
+                    id="btn-copy-ngit-cmd"
+                    class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer border border-slate-700"
+                  >
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    <span>Copy Commands</span>
+                  </button>
+                  <a
+                    href="https://github.com/DanConwayDev/ngit"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 text-xs font-semibold transition-colors flex items-center gap-1.5 border border-slate-700"
+                  >
+                    <span>${t('btnViewNgit')}</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Box 2: GitWorkshop.dev Web Client -->
+              <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-700/60 space-y-3 flex flex-col justify-between">
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-xs sm:text-sm text-white flex items-center gap-2">
+                      <i data-lucide="globe" class="w-4 h-4 text-cyan-400"></i>
+                      ${t('gistsRepoMigrationWebTitle')}
+                    </h4>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-cyan-950/60 text-cyan-300 border border-cyan-800">Web App</span>
+                  </div>
+                  <p class="text-xs text-slate-400 leading-relaxed">
+                    ${t('gistsRepoMigrationWebDesc')}
+                  </p>
+                  <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs">
+                    <div class="text-[11px] font-semibold text-slate-300">Key Capabilities:</div>
+                    <ul class="text-[11px] text-slate-400 space-y-1 list-disc list-inside">
+                      <li>Decentralized code browsing & commit graph</li>
+                      <li>NIP-34 patch management (PRs) & issue tracking</li>
+                      <li>Browser signer authentication (Alby, nos2x, Amber)</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row gap-2">
+                  <a
+                    href="https://gitworkshop.dev/delirehberi@emre.xyz/relay.ngit.dev/x2Nostr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="grow px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 border border-slate-700"
+                  >
+                    <i data-lucide="git-fork" class="w-3.5 h-3.5"></i>
+                    <span>${t('viewExampleRepo')}</span>
+                  </a>
+                  <a
+                    href="https://gitworkshop.dev"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                  >
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    <span>${t('btnOpenGitWorkshop')}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+              : ''
+          }
         </div>
 
         <!-- Ingestion Mode Selector Tabs -->
@@ -495,6 +635,13 @@ export function renderGistsView(container: HTMLElement): void {
                           >
                             ${t('previewCode')}
                           </button>
+                          <button
+                            data-inspect-event-id="${snippet.id}"
+                            class="btn-inspect-snippet-event p-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-blue-100 dark:hover:bg-blue-900 text-slate-700 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer"
+                            title="${t('inspectRowEvent')}"
+                          >
+                            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -612,6 +759,13 @@ export function renderGistsView(container: HTMLElement): void {
               >
                 <i data-lucide="zap" class="w-4 h-4"></i>
                 ${t('startMigration')}
+              </button>
+              <button
+                id="btn-dryrun-gists"
+                class="px-5 py-3 rounded-2xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 text-slate-800 dark:text-slate-200 font-bold text-xs shadow-xs transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <i data-lucide="eye" class="w-4 h-4 text-emerald-500"></i>
+                ${t('dryRunButton')}
               </button>
 
               ${
@@ -803,6 +957,15 @@ export function renderGistsView(container: HTMLElement): void {
   };
 
   const attachEventListeners = () => {
+    // Git Repositories Accordion Toggle
+    const btnToggleRepoAccordion = container.querySelector('#btn-toggle-repo-accordion') as HTMLButtonElement | null;
+    if (btnToggleRepoAccordion) {
+      btnToggleRepoAccordion.addEventListener('click', () => {
+        isRepoAccordionOpen = !isRepoAccordionOpen;
+        render();
+      });
+    }
+
     // Tabs
     const tabGithub = container.querySelector('#tab-btn-github') as HTMLButtonElement | null;
     const tabUpload = container.querySelector('#tab-btn-upload') as HTMLButtonElement | null;
@@ -822,6 +985,24 @@ export function renderGistsView(container: HTMLElement): void {
     if (usernameInput) {
       usernameInput.addEventListener('input', (e) => {
         githubInput = (e.target as HTMLInputElement).value;
+      });
+    }
+
+    // Copy ngit CLI commands button
+    const btnCopyNgit = container.querySelector('#btn-copy-ngit-cmd') as HTMLButtonElement | null;
+    if (btnCopyNgit) {
+      btnCopyNgit.addEventListener('click', () => {
+        const ngitCommands = `cargo install ngit\nngit init\nngit push`;
+        navigator.clipboard.writeText(ngitCommands);
+        showToast('ngit CLI commands copied to clipboard!', 'info');
+        btnCopyNgit.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> <span>Copied!</span>';
+        if (window.lucide) window.lucide.createIcons();
+        setTimeout(() => {
+          if (btnCopyNgit) {
+            btnCopyNgit.innerHTML = '<i data-lucide="copy" class="w-3.5 h-3.5"></i> <span>Copy Commands</span>';
+            if (window.lucide) window.lucide.createIcons();
+          }
+        }, 2000);
       });
     }
 
@@ -989,6 +1170,41 @@ export function renderGistsView(container: HTMLElement): void {
       });
     });
 
+    // Inspect Single Nostr Event buttons
+    const inspectEventBtns = container.querySelectorAll('.btn-inspect-snippet-event');
+    inspectEventBtns.forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-inspect-event-id');
+        if (id) {
+          const found = snippets.find((s) => s.id === id) || null;
+          if (found) {
+            if (!found.content && found.rawUrl) {
+              try {
+                found.content = await gitHubService.fetchRawContent(found.rawUrl);
+              } catch (fetchErr) {
+                console.warn('Failed to fetch snippet content for preview:', fetchErr);
+              }
+            }
+            const options: GistMigrationOptions = {
+              generateKind1337,
+              encryptPrivateGists,
+              defaultLicense: defaultLicense || undefined,
+              defaultRuntime: defaultRuntime || undefined,
+              publishToCustomRelaysOnly: false,
+            };
+            const event = await gistPipeline.generateSingleSnippetEvent(id, options);
+            if (event) {
+              showDryRunModal({
+                title: found.name,
+                events: [event],
+              });
+            }
+          }
+        }
+      });
+    });
+
     // Preview Code buttons
     const previewBtns = container.querySelectorAll('.btn-preview-snippet');
     previewBtns.forEach((btn) => {
@@ -1105,6 +1321,29 @@ export function renderGistsView(container: HTMLElement): void {
         existingSession = null;
         useResumeSession = false;
         render();
+      });
+    }
+
+    // Dry Run
+    const btnDryRun = container.querySelector('#btn-dryrun-gists') as HTMLButtonElement | null;
+    if (btnDryRun) {
+      btnDryRun.addEventListener('click', async () => {
+        const options: GistMigrationOptions = {
+          generateKind1337,
+          encryptPrivateGists,
+          defaultLicense: defaultLicense || undefined,
+          defaultRuntime: defaultRuntime || undefined,
+          publishToCustomRelaysOnly: false,
+        };
+
+        const events = await gistPipeline.generateUnsignedEvents(options);
+        showDryRunModal({
+          title: t('gistsImporterTitle'),
+          events,
+          onProceed: () => {
+            startMigrationProcess();
+          },
+        });
       });
     }
 

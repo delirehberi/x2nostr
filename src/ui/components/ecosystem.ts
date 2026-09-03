@@ -93,6 +93,16 @@ const APPS: EcosystemApp[] = [
     iconName: 'film',
     accent: 'from-violet-50 to-purple-50 text-violet-600 border-violet-200',
   },
+  {
+    id: 'gitworkshop',
+    name: 'GitWorkshop.dev',
+    descKey: 'appGitWorkshopDesc',
+    kinds: 'NIP-34 (Git Repos, Patches, Issues)',
+    categoryKey: 'catCodeGit',
+    url: 'https://gitworkshop.dev',
+    iconName: 'code',
+    accent: 'from-emerald-50 to-teal-50 text-emerald-600 border-emerald-200',
+  },
 ];
 
 export function renderEcosystem(container: HTMLElement): void {

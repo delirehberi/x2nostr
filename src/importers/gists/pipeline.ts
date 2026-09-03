@@ -1,4 +1,4 @@
-import { GistFilterCategory, GistMigrationOptions, GistSnippetRecord, ImportSession, MigrationLog, MigrationProgress, SignedNostrEvent } from '../../types';
+import { GistFilterCategory, GistMigrationOptions, GistSnippetRecord, ImportSession, MigrationLog, MigrationProgress, SignedNostrEvent, UnsignedNostrEvent } from '../../types';
 import { gitHubService } from './github-service';
 import { parseCodeFiles, parseGistJsonString, parseGitHubGistItems } from './parser';
 import { buildEncryptedGistEvent, buildGistSnippetEvent } from './event-builder';
@@ -51,6 +51,79 @@ class GistPipeline {
 
   public getSessionKey(): string | null {
     return this.activeSessionKey;
+  }
+
+  /**
+   * Dry run helper: generates all unsigned Nostr events for selected snippets without signing/publishing.
+   */
+  public async generateUnsignedEvents(options?: Partial<GistMigrationOptions>, customPubkey?: string): Promise<UnsignedNostrEvent[]> {
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+    const selected = this.snippets.filter((s) => s.selected);
+    const events: UnsignedNostrEvent[] = [];
+
+    const encryptPrivate = options?.encryptPrivateGists ?? true;
+
+    for (const snippet of selected) {
+      if (!snippet.isPublic && encryptPrivate) {
+        // If extension is connected and can encrypt, encrypt; otherwise format preview string
+        let ciphertext = `[NIP-44 Encrypted Payload Preview for ${snippet.name}]`;
+        if (nostrService.getPubkey()) {
+          try {
+            const payloadObject = {
+              name: snippet.name,
+              extension: snippet.extension,
+              language: snippet.language,
+              description: snippet.description,
+              content: snippet.content,
+              repoUrl: snippet.repoUrl,
+              createdAtTimestamp: snippet.createdAtTimestamp,
+              tags: snippet.tags,
+            };
+            ciphertext = await nostrService.encryptPayload(pubkey, JSON.stringify(payloadObject));
+          } catch {
+            ciphertext = `[NIP-44 Encrypted: ${snippet.name} (${snippet.content.length} chars)]`;
+          }
+        }
+        events.push(buildEncryptedGistEvent(snippet, pubkey, ciphertext));
+      } else {
+        events.push(buildGistSnippetEvent(snippet, pubkey, options as GistMigrationOptions | undefined));
+      }
+    }
+
+    return events;
+  }
+
+  /**
+   * Generates a single unsigned Nostr event for a specific snippet.
+   */
+  public async generateSingleSnippetEvent(snippetId: string, options?: Partial<GistMigrationOptions>, customPubkey?: string): Promise<UnsignedNostrEvent | null> {
+    const snippet = this.snippets.find((s) => s.id === snippetId);
+    if (!snippet) return null;
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+
+    if (!snippet.isPublic && options?.encryptPrivateGists) {
+      let ciphertext = `[NIP-44 Encrypted Payload Preview for ${snippet.name}]`;
+      if (nostrService.getPubkey()) {
+        try {
+          const payloadObject = {
+            name: snippet.name,
+            extension: snippet.extension,
+            language: snippet.language,
+            description: snippet.description,
+            content: snippet.content,
+            repoUrl: snippet.repoUrl,
+            createdAtTimestamp: snippet.createdAtTimestamp,
+            tags: snippet.tags,
+          };
+          ciphertext = await nostrService.encryptPayload(pubkey, JSON.stringify(payloadObject));
+        } catch {
+          ciphertext = `[NIP-44 Encrypted: ${snippet.name}]`;
+        }
+      }
+      return buildEncryptedGistEvent(snippet, pubkey, ciphertext);
+    }
+
+    return buildGistSnippetEvent(snippet, pubkey, options as GistMigrationOptions | undefined);
   }
 
   /**

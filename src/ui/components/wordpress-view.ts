@@ -1,9 +1,10 @@
 import { wordPressPipeline } from '../../importers/wordpress/pipeline';
 import { DEFAULT_BLOSSOM_SERVERS } from '../../services/blossom';
-import { i18n } from '../../services/i18n';
+import { i18n, t } from '../../services/i18n';
 import { importSessionService } from '../../services/import-session';
 import { nostrService } from '../../services/nostr';
 import { ImportSession, WordPressMigrationOptions } from '../../types';
+import { showDryRunModal } from './modal';
 
 declare global {
   interface Window {
@@ -210,6 +211,7 @@ export function renderWordPressView(container: HTMLElement): void {
                     <th class="py-3 px-4">${t('colType')}</th>
                     <th class="py-3 px-4">${t('wpColMedia')}</th>
                     <th class="py-3 px-4 text-right">${t('colDateRead')}</th>
+                    <th class="py-3 px-3 text-center w-12">${t('inspectRowEvent')}</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
@@ -217,7 +219,7 @@ export function renderWordPressView(container: HTMLElement): void {
                     filteredPosts.length === 0
                       ? `
                     <tr>
-                      <td colspan="6" class="py-8 text-center text-slate-400">
+                      <td colspan="7" class="py-8 text-center text-slate-400">
                         ${t('noBooksFound')}
                       </td>
                     </tr>
@@ -252,6 +254,11 @@ export function renderWordPressView(container: HTMLElement): void {
                       </td>
                       <td class="py-3.5 px-4 text-right font-mono text-slate-500 dark:text-slate-400">
                         ${p.publishedDate}
+                      </td>
+                      <td class="py-3.5 px-3 text-center">
+                        <button class="wp-btn-preview-row p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-blue-900 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer" data-id="${p.id}" title="${t('inspectRowEvent')}">
+                          <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                        </button>
                       </td>
                     </tr>
                   `
@@ -316,9 +323,13 @@ export function renderWordPressView(container: HTMLElement): void {
               ${
                 progress.phase === 'idle' || progress.phase === 'completed' || progress.phase === 'error'
                   ? `
-                <button id="btn-wp-start" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-2xl transition-all shadow-lg shadow-blue-600/20 flex items-center gap-2">
+                <button id="btn-wp-start" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-2xl transition-all shadow-lg shadow-blue-600/20 flex items-center gap-2 cursor-pointer">
                   <i data-lucide="rocket" class="w-4 h-4"></i>
                   ${t('startMigration')}
+                </button>
+                <button id="btn-wp-dryrun" class="px-5 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-2xl border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-2 cursor-pointer shadow-xs">
+                  <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+                  ${t('dryRunButton')}
                 </button>
               `
                   : ''
@@ -530,7 +541,53 @@ export function renderWordPressView(container: HTMLElement): void {
       });
     }
 
+    // Row-level event preview
+    container.querySelectorAll('.wp-btn-preview-row').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
+        if (id) {
+          const event = wordPressPipeline.generateSinglePostEvent(id);
+          const post = wordPressPipeline.getPosts().find((p) => p.id === id);
+          if (event) {
+            showDryRunModal({
+              title: post ? post.title : 'Preview Event',
+              events: [event],
+            });
+          }
+        }
+      });
+    });
+
     // Action buttons
+    container.querySelector('#btn-wp-dryrun')?.addEventListener('click', () => {
+      const servers = blossomServersStr
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+
+      const options: WordPressMigrationOptions = {
+        generateKind30023: true,
+        uploadImagesToBlossom,
+        blossomServers: servers.length > 0 ? servers : DEFAULT_BLOSSOM_SERVERS,
+        includeDrafts: activeFilter === 'draft',
+        deletePreviousPostsBeforeImport: deletePreviousPosts,
+        publishToCustomRelaysOnly: false,
+      };
+
+      const events = wordPressPipeline.generateUnsignedEvents(options);
+      showDryRunModal({
+        title: t('wpImporterTitle'),
+        events,
+        onProceed: () => {
+          wordPressPipeline.startMigration({
+            ...options,
+            resumeSession: useResumeSession && existingSession ? existingSession : undefined,
+          });
+        },
+      });
+    });
+
     container.querySelector('#btn-wp-start')?.addEventListener('click', () => {
       const servers = blossomServersStr
         .split(',')

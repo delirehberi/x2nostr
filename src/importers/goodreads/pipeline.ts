@@ -1,4 +1,4 @@
-import { BookRecord, ImportSession, MigrationLog, MigrationOptions, MigrationProgress, ShelfCategory, SignedNostrEvent } from '../../types';
+import { BookRecord, ImportSession, MigrationLog, MigrationOptions, MigrationProgress, ShelfCategory, SignedNostrEvent, UnsignedNostrEvent } from '../../types';
 import { parseGoodreadsCsv } from './parser';
 import { buildBookReviewEvent, buildBookstrShelfListEvent, buildShelfListEvent } from './event-builder';
 import { openLibraryService } from '../../services/openlibrary';
@@ -60,6 +60,47 @@ class GoodreadsPipeline {
 
   public getSessionKey(): string | null {
     return this.activeSessionKey;
+  }
+
+  /**
+   * Dry run helper: generates all unsigned Nostr events (lists and reviews) for selected books.
+   */
+  public generateUnsignedEvents(options?: Partial<MigrationOptions>, customPubkey?: string): UnsignedNostrEvent[] {
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+    const selectedBooks = this.books.filter((b) => b.selected);
+    const events: UnsignedNostrEvent[] = [];
+
+    const generateShelfLists = options?.generateShelfLists ?? true;
+    const generateReviewEvents = options?.generateReviewEvents ?? true;
+
+    if (generateShelfLists) {
+      const shelves: ShelfCategory[] = ['read', 'currently-reading', 'to-read', 'custom'];
+      shelves.forEach((shelf) => {
+        const shelfBooks = selectedBooks.filter((b) => b.exclusiveShelf === shelf);
+        if (shelfBooks.length > 0) {
+          events.push(buildShelfListEvent(shelf, shelfBooks, pubkey));
+          events.push(buildBookstrShelfListEvent(shelf, shelfBooks, pubkey));
+        }
+      });
+    }
+
+    if (generateReviewEvents) {
+      selectedBooks.forEach((book) => {
+        events.push(buildBookReviewEvent(book, pubkey));
+      });
+    }
+
+    return events;
+  }
+
+  /**
+   * Generates a single unsigned Nostr review event for a specific book.
+   */
+  public generateSingleBookEvent(bookId: string, customPubkey?: string): UnsignedNostrEvent | null {
+    const book = this.books.find((b) => b.id === bookId);
+    if (!book) return null;
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+    return buildBookReviewEvent(book, pubkey);
   }
 
   public async loadCsv(file: File): Promise<BookRecord[]> {

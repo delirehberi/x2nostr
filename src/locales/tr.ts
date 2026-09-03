@@ -59,6 +59,8 @@ export const tr: Record<TranslationKey, string> = {
   appWavelakeDesc: 'Müzisyenlerin Lightning aracılığıyla değer karşılığı değer kazandığı merkeziyetsiz müzik ve podcast yayın platformu.',
   appZapStreamTitle: 'ZapStream',
   appZapStreamDesc: 'Gerçek zamanlı sohbet, zap\'ler ve merkeziyetsiz yayın dağıtımı ile Nostr üzerinde canlı yayın platformu.',
+  appGitWorkshopTitle: 'GitWorkshop',
+  appGitWorkshopDesc: 'Nostr üzerinde merkeziyetsiz kod iş birliği. Depoları inceleyin, yamaları (PR) gözden geçirin ve NIP-34 ile sorunları takip edin.',
   openApp: 'Uygulamayı Aç',
 
   // Navigation Links
@@ -80,6 +82,7 @@ export const tr: Record<TranslationKey, string> = {
   catWebMobile: 'Web ve Mobil',
   catMusic: 'Müzik ve Podcast',
   catVideo: 'Canlı Yayın ve Video',
+  catCodeGit: 'Kod ve Git (NIP-34)',
 
   // Documentation Hub
   docsTitle: 'Nostr Bilgi Bankası ve Rehberler',
@@ -332,9 +335,12 @@ export const tr: Record<TranslationKey, string> = {
   // Footer
   footerTagline: 'Açık internet için merkeziyetsiz, egemen veri taşıma platformu.',
   footerClientSideOnly: '🔒 Sıfır sunucu kaydı. Tüm veri işleme ve kriptografik imzalama işlemleri yalnızca tarayıcınızda gerçekleşir.',
+  footerCommunity: 'Bir {link} topluluk girişimidir',
   footerBuiltWith: 'TypeScript, Tailwind CSS, Hono ve nostr-tools ile inşa edildi.',
   footerAuthor: '{author} tarafından 💜 ile geliştirildi',
   githubRepo: 'GitHub Deposu',
+  gitWorkshopRepo: 'Nostr Deposu (GitWorkshop)',
+  viewExampleRepo: 'x2nostr\'ı GitWorkshop\'ta Görün',
   roadmapLink: 'Yol Haritası',
 
   // Resume Banner
@@ -453,5 +459,34 @@ export const tr: Record<TranslationKey, string> = {
   gistsResumeBannerDescription: '{total} parçacıktan {completed} tanesi zaten içe aktarıldı',
   secretGistsNoticeTitle: 'GitHub Gizli (Secret) Gist\'lerini İçe Aktarma',
   secretGistsNoticeDesc: 'GitHub API\'si, gizli (unlisted) Gist\'leri toplu kullanıcı listelerinde döndürmez. Gizli Gist\'leri içe aktarmak için doğrudan Gist URL\'lerini veya kimliklerini (virgülle veya alt alta) belirtecinizle birlikte giriş alanına yapıştırabilir ya da aşağıdaki tablodan herhangi bir parçacığın gizlilik rozetine tıklayarak Gizli olarak işaretleyebilirsiniz.',
+
+  // Git Repositories Migration Callout (GitWorkshop & ngit)
+  gistsRepoMigrationTitle: 'Tam GitHub, GitLab veya Bitbucket Depolarını mı Aktarmak İstiyorsunuz?',
+  gistsRepoMigrationSubtitle: 'NIP-34 standardı ile Git depolarınızı, commit geçmişlerinizi, dallarınızı ve PR\'larınızı Nostr üzerinde merkeziyetsizleştirin.',
+  gistsRepoMigrationDesc: 'x2nostr bağımsız kod parçacıklarını ve Gist\'leri doğrudan tarayıcınızda aktarır (NIP-C0 Kind 1337 & NIP-44 Kind 30078). Tam commit geçmişi, dallar, yamalar (PR) ve sorun takibi içeren eksiksiz Git depolarını aktarmak ve yönetmek için NIP-34 tabanlı egemen Nostr Git ekosistemini kullanabilirsiniz:',
+  gistsRepoMigrationNgitTitle: '1. Depoları ngit Komut Satırı ile Gönderin',
+  gistsRepoMigrationNgitDesc: 'Mevcut herhangi bir Git deposunu (GitHub, GitLab, Bitbucket veya yerel) doğrudan Nostr rölelerine başlatmak, senkronize etmek ve göndermek için resmi ngit CLI aracını kullanın:',
+  gistsRepoMigrationWebTitle: '2. GitWorkshop.dev Üzerinde İnceleyin ve İş Birliği Yapın',
+  gistsRepoMigrationWebDesc: 'GitWorkshop.dev; Nostr Git depolarını taramak, yamaları gözden geçirmek, PR açmak ve sorunları takip etmek için geliştirilmiş merkeziyetsiz bir web arayüzüdür.',
+  btnOpenGitWorkshop: 'GitWorkshop.dev\'i Aç',
+  btnViewNgit: 'ngit CLI\'yı GitHub\'da Görüntüle',
+
+  // Dry Run & Event Inspector
+  dryRunBadge: 'Deneme Modu (Dry Run)',
+  dryRunButton: 'Deneme Modu (Olayları İncele)',
+  dryRunTitle: 'Deneme Modu: Üretilen Nostr Olaylarını İncele',
+  dryRunSubtitle: 'İmzalamadan ve rölelere göndermeden önce tüm imzasız olayları önizleyin ({count} olay oluşturuldu).',
+  tabRenderedPreview: 'Görsel Önizleme',
+  tabRawContent: 'Ham İçerik',
+  tabNostrJson: 'Nostr JSON',
+  copyJson: 'JSON Kopyala',
+  copiedJson: 'JSON panoya kopyalandı!',
+  copyContent: 'İçeriği Kopyala',
+  copiedContent: 'İçerik panoya kopyalandı!',
+  copyAllEventsJson: 'Tüm Olayları Kopyala (JSON)',
+  downloadJson: 'JSON Olarak İndir',
+  proceedMigration: 'Aktarımı Başlat',
+  dryRunNoSelection: 'Lütfen deneme çalıştırması yapmak için en az bir öğe seçin.',
+  inspectRowEvent: 'Olayı İncele',
 };
 

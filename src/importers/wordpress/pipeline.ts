@@ -1,4 +1,4 @@
-import { ImportSession, MigrationLog, MigrationProgress, SignedNostrEvent, WordPressMigrationOptions, WordPressPostRecord } from '../../types';
+import { ImportSession, MigrationLog, MigrationProgress, SignedNostrEvent, UnsignedNostrEvent, WordPressMigrationOptions, WordPressPostRecord } from '../../types';
 import { parseWordPressXml } from './parser';
 import { buildWordPressPostEvent } from './event-builder';
 import { blossomService } from '../../services/blossom';
@@ -51,6 +51,26 @@ class WordPressPipeline {
 
   public getSessionKey(): string | null {
     return this.activeSessionKey;
+  }
+
+  /**
+   * Dry run helper: generates all unsigned Nostr Kind 30023 events for selected posts without signing/publishing.
+   */
+  public generateUnsignedEvents(options?: Partial<WordPressMigrationOptions>, customPubkey?: string): UnsignedNostrEvent[] {
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+    const includeDrafts = options?.includeDrafts ?? true;
+    const selected = this.posts.filter((p) => p.selected && (includeDrafts || p.status === 'publish'));
+    return selected.map((post) => buildWordPressPostEvent(post, pubkey));
+  }
+
+  /**
+   * Generates a single unsigned Nostr event for a specific post.
+   */
+  public generateSinglePostEvent(postId: string, customPubkey?: string): UnsignedNostrEvent | null {
+    const post = this.posts.find((p) => p.id === postId);
+    if (!post) return null;
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+    return buildWordPressPostEvent(post, pubkey);
   }
 
   public async loadXml(file: File): Promise<WordPressPostRecord[]> {

@@ -57,6 +57,8 @@ export const en = {
   appWavelakeDesc: 'Decentralized music and podcast streaming platform where musicians earn value for value via Lightning.',
   appZapStreamTitle: 'ZapStream',
   appZapStreamDesc: 'Live streaming on Nostr with real-time chat, zaps, and decentralized stream distribution.',
+  appGitWorkshopTitle: 'GitWorkshop',
+  appGitWorkshopDesc: 'Decentralized code collaboration on Nostr. Browse repositories, review patches, and track issues over NIP-34.',
   openApp: 'Open App',
 
   // Navigation Links
@@ -78,6 +80,7 @@ export const en = {
   catWebMobile: 'Web & Mobile',
   catMusic: 'Music & Podcasts',
   catVideo: 'Live Streaming',
+  catCodeGit: 'Code & Git (NIP-34)',
 
   // Documentation Hub
   docsTitle: 'Nostr Knowledge Base & HowTos',
@@ -333,9 +336,12 @@ export const en = {
   // Footer
   footerTagline: 'Decentralized, sovereign data migration for the open web.',
   footerClientSideOnly: '🔒 Zero server retention. All data processing and cryptographic signing happens exclusively within your browser.',
+  footerCommunity: 'A {link} community initiative',
   footerBuiltWith: 'Built with TypeScript, Tailwind CSS, Hono, and nostr-tools.',
   footerAuthor: 'Created with 💜 by {author}',
   githubRepo: 'GitHub Repository',
+  gitWorkshopRepo: 'Nostr Repo (GitWorkshop)',
+  viewExampleRepo: 'View x2nostr on GitWorkshop',
   roadmapLink: 'Roadmap',
 
   // Resume Banner
@@ -454,6 +460,35 @@ export const en = {
   gistsResumeBannerDescription: '{completed} of {total} snippets already imported',
   secretGistsNoticeTitle: 'Importing Secret Gists from GitHub',
   secretGistsNoticeDesc: "GitHub's API does not expose secret (unlisted) gists in bulk user listings. To import secret gists, paste their direct Gist URLs or IDs (separated by commas or newlines) into the input field with your token, or click the privacy badge on any snippet in the table to mark it as Secret.",
+
+  // Git Repositories Migration Callout (GitWorkshop & ngit)
+  gistsRepoMigrationTitle: 'Migrating Full GitHub, GitLab, or Bitbucket Repositories?',
+  gistsRepoMigrationSubtitle: 'Decentralize your Git repositories, commit histories, branches, and PRs on Nostr using NIP-34.',
+  gistsRepoMigrationDesc: 'x2nostr migrates standalone code snippets and Gists directly inside your browser (NIP-C0 Kind 1337 & NIP-44 Kind 30078). To migrate and collaborate on entire Git repositories with full commit histories, branches, patches (PRs), and issues, use the sovereign Nostr Git ecosystem:',
+  gistsRepoMigrationNgitTitle: '1. Push Repositories with ngit CLI',
+  gistsRepoMigrationNgitDesc: 'Use the official ngit CLI tool to initialize, push, and sync any existing Git repository (GitHub, GitLab, Bitbucket, or local) directly to Nostr relays:',
+  gistsRepoMigrationWebTitle: '2. Browse & Collaborate on GitWorkshop.dev',
+  gistsRepoMigrationWebDesc: 'GitWorkshop.dev is a decentralized, sovereign web UI for browsing Nostr Git repositories, reviewing patches, opening PRs, and tracking issues over NIP-34.',
+  btnOpenGitWorkshop: 'Open GitWorkshop.dev',
+  btnViewNgit: 'View ngit on GitHub',
+
+  // Dry Run & Event Inspector
+  dryRunBadge: 'Dry Run Mode',
+  dryRunButton: 'Dry Run (Inspect Events)',
+  dryRunTitle: 'Dry Run: Inspect Generated Nostr Events',
+  dryRunSubtitle: 'Preview all unsigned events before signing or broadcasting ({count} events generated).',
+  tabRenderedPreview: 'Rendered Preview',
+  tabRawContent: 'Raw Content',
+  tabNostrJson: 'Nostr JSON',
+  copyJson: 'Copy JSON',
+  copiedJson: 'Copied JSON to clipboard!',
+  copyContent: 'Copy Content',
+  copiedContent: 'Copied content to clipboard!',
+  copyAllEventsJson: 'Copy All Events (JSON)',
+  downloadJson: 'Download JSON',
+  proceedMigration: 'Proceed with Migration',
+  dryRunNoSelection: 'Please select at least one item to perform a dry run.',
+  inspectRowEvent: 'Inspect Event',
 };
 
 export type TranslationKey = keyof typeof en;

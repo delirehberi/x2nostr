@@ -2,6 +2,7 @@ import { nostrService } from '../../services/nostr';
 import { t } from '../../services/i18n';
 import { icons } from '../icons';
 import { showToast } from '../toast';
+export { showDryRunModal } from './dry-run-modal';
 
 export function showModal(title: string, contentHtml: string): void {
   const modalRoot = document.getElementById('modal-root');
@@ -85,8 +86,12 @@ export function showComingSoonModal(info: {
         </div>
       </div>
 
-      <div class="pt-3 flex justify-end gap-3">
-        <a href="https://github.com/delirehberi/move-to-nostr.emre.xyz" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-white transition-colors flex items-center gap-2 cursor-pointer">
+      <div class="pt-3 flex flex-wrap justify-end gap-2.5">
+        <a href="https://gitworkshop.dev/delirehberi@emre.xyz/relay.ngit.dev/x2Nostr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer">
+          ${icons.code}
+          <span>${t('gitWorkshopRepo')}</span>
+        </a>
+        <a href="https://github.com/delirehberi/x2nostr" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-white transition-colors flex items-center gap-2 cursor-pointer">
           ${icons.externalLink}
           <span>${t('githubRepo')}</span>
         </a>

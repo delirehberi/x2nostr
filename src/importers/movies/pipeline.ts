@@ -1,4 +1,4 @@
-import { ImportSession, MigrationLog, MigrationProgress, MovieFilterCategory, MovieMigrationOptions, MovieRecord, SignedNostrEvent } from '../../types';
+import { ImportSession, MigrationLog, MigrationProgress, MovieFilterCategory, MovieMigrationOptions, MovieRecord, SignedNostrEvent, UnsignedNostrEvent } from '../../types';
 import { parseMoviesCsv } from './parser';
 import { buildMovieListEvent, buildMovieReviewEvent } from './event-builder';
 import { nostrService } from '../../services/nostr';
@@ -58,6 +58,40 @@ class MoviesPipeline {
 
   public getSessionKey(): string | null {
     return this.activeSessionKey;
+  }
+
+  /**
+   * Dry run helper: generates all unsigned Nostr events (curated lists and reviews) for selected movies.
+   */
+  public generateUnsignedEvents(options?: Partial<MovieMigrationOptions>, customPubkey?: string): UnsignedNostrEvent[] {
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+    const selectedMovies = this.movies.filter((m) => m.selected);
+    const events: UnsignedNostrEvent[] = [];
+
+    const generateCuratedLists = options?.generateCuratedLists ?? true;
+    const generateReviewEvents = options?.generateReviewEvents ?? true;
+
+    if (generateCuratedLists && selectedMovies.length > 0) {
+      events.push(buildMovieListEvent('movies:rated', selectedMovies, pubkey));
+    }
+
+    if (generateReviewEvents) {
+      selectedMovies.forEach((movie) => {
+        events.push(buildMovieReviewEvent(movie, pubkey));
+      });
+    }
+
+    return events;
+  }
+
+  /**
+   * Generates a single unsigned Nostr review event for a specific movie.
+   */
+  public generateSingleMovieEvent(movieId: string, customPubkey?: string): UnsignedNostrEvent | null {
+    const movie = this.movies.find((m) => m.id === movieId);
+    if (!movie) return null;
+    const pubkey = customPubkey || nostrService.getPubkey() || '0000000000000000000000000000000000000000000000000000000000000000';
+    return buildMovieReviewEvent(movie, pubkey);
   }
 
   public async loadCsv(file: File): Promise<MovieRecord[]> {

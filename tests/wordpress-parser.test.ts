@@ -62,20 +62,38 @@ describe('WordPress WXR Parser', () => {
   });
 });
 
-describe('HTML to Markdown Converter', () => {
-  it('should convert HTML tags to Markdown correctly', () => {
-    const html = '<h2>Title</h2><p>Hello <strong>World</strong> and <em>Nostr</em></p><ul><li>Item 1</li><li>Item 2</li></ul>';
-    const md = convertHtmlToMarkdown(html);
-    expect(md).toContain('## Title');
-    expect(md).toContain('**World**');
-    expect(md).toContain('*Nostr*');
-    expect(md).toContain('- Item 1');
+describe('HTML to Markdown Converter (Gutenberg, Elementor, Shortcodes)', () => {
+  it('should convert Gutenberg blocks cleanly', () => {
+    const gutenbergHtml = `
+      <!-- wp:heading {"level":2} -->
+      <h2>Sovereign Publishing</h2>
+      <!-- /wp:heading -->
+      <!-- wp:paragraph -->
+      <p>Decentralize your writing with <strong>NIP-23</strong>.</p>
+      <!-- /wp:paragraph -->
+      <!-- wp:quote -->
+      <blockquote class="wp-block-quote"><p>Words cannot be stopped.</p></blockquote>
+      <!-- /wp:quote -->
+    `;
+    const md = convertHtmlToMarkdown(gutenbergHtml);
+    expect(md).toContain('## Sovereign Publishing');
+    expect(md).toContain('Decentralize your writing with **NIP-23**.');
+    expect(md).toContain('> Words cannot be stopped.');
+    expect(md).not.toContain('<!-- wp:');
   });
 
-  it('should extract image URLs accurately', () => {
-    const html = '<p>Pic 1: <img src="https://example.com/1.png" /></p><p>Pic 2: <img src="https://example.com/2.jpg" /></p>';
-    const urls = extractImageUrlsFromHtml(html);
-    expect(urls).toEqual(['https://example.com/1.png', 'https://example.com/2.jpg']);
+  it('should clean WordPress captions and shortcodes', () => {
+    const htmlWithShortcodes = `
+      [caption id="attachment_123" align="aligncenter" width="600"]<img src="https://example.com/cover.jpg" alt="Cover" /> Sovereign Network[/caption]
+      [embed]https://www.youtube.com/watch?v=123456789[/embed]
+      [vc_row][vc_column][vc_custom_heading text="WPBakery Heading" /][/vc_column][/vc_row]
+    `;
+    const md = convertHtmlToMarkdown(htmlWithShortcodes);
+    expect(md).toContain('![Cover](https://example.com/cover.jpg)');
+    expect(md).toContain('Sovereign Network');
+    expect(md).toContain('https://www.youtube.com/watch?v=123456789');
+    expect(md).toContain('WPBakery Heading');
+    expect(md).not.toContain('[vc_row]');
   });
 });
 
@@ -111,3 +129,5 @@ describe('WordPress NIP-23 Event Builder', () => {
     expect(event.content).not.toContain('https://myblog.example.com/uploads/2026/05/photo.jpg');
   });
 });
+
+

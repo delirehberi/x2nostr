@@ -5,7 +5,7 @@ import { nostrService } from '../../services/nostr';
 import { importSessionService } from '../../services/import-session';
 import { icons } from '../icons';
 import { showToast } from '../toast';
-import { showConfirmModal } from './modal';
+import { showConfirmModal, showDryRunModal } from './modal';
 
 export function renderGoodreadsView(container: HTMLElement): void {
   let activeFilter: ShelfCategory | 'all' | 'unrated' = 'all';
@@ -224,6 +224,7 @@ export function renderGoodreadsView(container: HTMLElement): void {
                         }
                       </div>
                     </th>
+                    <th class="p-3 w-12 text-center">${t('inspectRowEvent')}</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -231,7 +232,7 @@ export function renderGoodreadsView(container: HTMLElement): void {
                     filteredBooks.length === 0
                       ? `
                     <tr>
-                      <td colspan="7" class="p-8 text-center text-slate-500">
+                      <td colspan="8" class="p-8 text-center text-slate-500">
                         ${t('noBooksFound')}
                       </td>
                     </tr>
@@ -341,6 +342,10 @@ export function renderGoodreadsView(container: HTMLElement): void {
                     <button id="btn-start-migration" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-md shadow-purple-600/25 hover:shadow-lg transition-all cursor-pointer disabled:opacity-50">
                       ${icons.zap}
                       <span>${t('startMigration')}</span>
+                    </button>
+                    <button id="btn-dryrun-goodreads" class="flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-700 font-bold text-xs shadow-xs transition-all cursor-pointer">
+                      ${icons.eye}
+                      <span>${t('dryRunButton')}</span>
                     </button>
                   `
                       : `
@@ -480,6 +485,11 @@ export function renderGoodreadsView(container: HTMLElement): void {
               ? `<span class="text-slate-600">ISBN: ${b.isbn13 || b.isbn}</span>`
               : `<span class="text-slate-400 italic">No ISBN</span>`
           }
+        </td>
+        <td class="p-3 text-center">
+          <button class="btn-preview-book-row p-1.5 rounded-lg bg-slate-100 hover:bg-purple-100 text-slate-600 hover:text-purple-700 transition-colors cursor-pointer" data-book-id="${b.id}" title="${t('inspectRowEvent')}">
+            ${icons.eye}
+          </button>
         </td>
       </tr>
     `;
@@ -643,6 +653,44 @@ export function renderGoodreadsView(container: HTMLElement): void {
     if (optDeleteReviews) {
       optDeleteReviews.addEventListener('change', (e) => {
         deletePreviousReviews = (e.target as HTMLInputElement).checked;
+      });
+    }
+
+    // Row-level book event preview
+    container.querySelectorAll('.btn-preview-book-row').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const bookId = (e.currentTarget as HTMLElement).getAttribute('data-book-id');
+        if (bookId) {
+          const event = goodreadsPipeline.generateSingleBookEvent(bookId);
+          const book = goodreadsPipeline.getBooks().find((b) => b.id === bookId);
+          if (event) {
+            showDryRunModal({
+              title: book ? book.title : 'Preview Book Event',
+              events: [event],
+            });
+          }
+        }
+      });
+    });
+
+    // Dry Run Button
+    const btnDryRun = container.querySelector('#btn-dryrun-goodreads') as HTMLButtonElement | null;
+    if (btnDryRun) {
+      btnDryRun.addEventListener('click', () => {
+        const events = goodreadsPipeline.generateUnsignedEvents({
+          generateShelfLists: generateLists,
+          generateReviewEvents: generateReviews,
+          selectedShelves: ['read', 'currently-reading', 'to-read', 'custom'],
+        });
+
+        showDryRunModal({
+          title: t('goodreadsName'),
+          events,
+          onProceed: () => {
+            btnStart?.click();
+          },
+        });
       });
     }
 
