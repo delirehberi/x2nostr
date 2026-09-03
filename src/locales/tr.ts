@@ -338,6 +338,7 @@ export const tr: Record<TranslationKey, string> = {
   footerCommunity: 'Bir {link} topluluk girişimidir',
   footerBuiltWith: 'TypeScript, Tailwind CSS, Hono ve nostr-tools ile inşa edildi.',
   footerAuthor: '{author} tarafından 💜 ile geliştirildi',
+  sourceCode: 'Kaynak Kod',
   githubRepo: 'GitHub Deposu',
   gitWorkshopRepo: 'Nostr Deposu (GitWorkshop)',
   viewExampleRepo: 'x2nostr\'ı GitWorkshop\'ta Görün',

@@ -20,29 +20,16 @@ export function renderFooter(container: HTMLElement): void {
           </p>
         </div>
 
-        <!-- Links & Author -->
-        <div class="flex flex-col sm:flex-row items-center gap-6">
-          <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
-            <a href="https://nostr.org.tr" target="_blank" rel="noopener noreferrer" class="hover:text-purple-600 transition-colors flex items-center gap-1.5 text-purple-700 font-medium">
-              ${icons.globe}
-              <span>nostr.org.tr</span>
-            </a>
-            <a href="https://github.com/delirehberi/x2nostr" target="_blank" rel="noopener noreferrer" class="hover:text-purple-600 transition-colors flex items-center gap-1.5 text-slate-600">
-              ${icons.externalLink}
-              <span>${t('githubRepo')}</span>
-            </a>
-            <a href="https://gitworkshop.dev/delirehberi@emre.xyz/relay.ngit.dev/x2Nostr" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-600 transition-colors flex items-center gap-1.5 text-emerald-700 font-semibold">
-              ${icons.code}
-              <span>${t('gitWorkshopRepo')}</span>
-            </a>
-            <a href="https://github.com/delirehberi/x2nostr/blob/main/ROADMAP.md" target="_blank" rel="noopener noreferrer" class="hover:text-purple-600 transition-colors flex items-center gap-1.5 text-slate-600">
-              ${icons.externalLink}
-              <span>${t('roadmapLink')}</span>
-            </a>
-          </div>
-          <div class="text-[11px] text-slate-500">
-            ${t('footerAuthor', { author: '<a href="https://emre.xyz" target="_blank" rel="noopener" class="text-slate-700 hover:text-purple-600 font-medium">Emre Yılmaz (@delirehberi)</a>' })}
-          </div>
+        <!-- Links -->
+        <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+          <a href="https://nostr.org.tr" target="_blank" rel="noopener noreferrer" class="hover:text-purple-600 transition-colors flex items-center gap-1.5 text-purple-700 font-medium">
+            ${icons.globe}
+            <span>nostr.org.tr</span>
+          </a>
+          <a href="https://gitworkshop.dev/delirehberi@emre.xyz/relay.ngit.dev/x2Nostr" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-600 transition-colors flex items-center gap-1.5 text-emerald-700 font-semibold">
+            ${icons.code}
+            <span>${t('sourceCode')}</span>
+          </a>
         </div>
       </div>
     </footer>

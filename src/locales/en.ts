@@ -339,6 +339,7 @@ export const en = {
   footerCommunity: 'A {link} community initiative',
   footerBuiltWith: 'Built with TypeScript, Tailwind CSS, Hono, and nostr-tools.',
   footerAuthor: 'Created with 💜 by {author}',
+  sourceCode: 'Source Code',
   githubRepo: 'GitHub Repository',
   gitWorkshopRepo: 'Nostr Repo (GitWorkshop)',
   viewExampleRepo: 'View x2nostr on GitWorkshop',

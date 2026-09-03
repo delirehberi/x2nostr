@@ -338,6 +338,7 @@ export const es: Record<TranslationKey, string> = {
   footerCommunity: 'Una iniciativa comunitaria de {link}',
   footerBuiltWith: 'Construido con TypeScript, Tailwind CSS, Hono y nostr-tools.',
   footerAuthor: 'Creado con 💜 por {author}',
+  sourceCode: 'Código Fuente',
   githubRepo: 'Repositorio GitHub',
   gitWorkshopRepo: 'Repositorio Nostr (GitWorkshop)',
   viewExampleRepo: 'Ver x2nostr en GitWorkshop',
