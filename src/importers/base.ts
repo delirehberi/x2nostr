@@ -80,7 +80,7 @@ export const IMPORTERS: ImporterPlugin[] = [
     icon: 'camera',
     targetPlatform: 'Blossom / Nostr Picture Posts',
     targetKindDescription: 'NIP-68 Picture Posts (Kind 20)',
-    status: 'coming-soon',
+    status: 'active',
     acceptedFileTypes: ['.zip', '.json'],
     parseFile: async () => [],
     buildEvent: () => ({ kind: 20, tags: [], content: '', created_at: 0, pubkey: '' }),

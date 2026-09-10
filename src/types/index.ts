@@ -136,7 +136,82 @@ export interface GistMigrationOptions {
   resumeSession?: ImportSession;
 }
 
+export type IGMediaType = 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+export type IGMediaProductType = 'FEED' | 'STORY' | 'REELS' | 'AD';
+export type IGAccountType = 'BUSINESS' | 'MEDIA_CREATOR' | 'PERSONAL';
 
+export interface IGUser {
+  id: string;
+  username: string;
+  name?: string;
+  biography?: string;
+  account_type?: IGAccountType;
+  media_count?: number;
+  profile_picture_url?: string;
+  followers_count?: number;
+  follows_count?: number;
+}
+
+export interface IGMediaChild {
+  id: string;
+  media_type: 'IMAGE' | 'VIDEO';
+  media_url?: string;
+  thumbnail_url?: string;
+  timestamp?: string;
+  // Local enrichment
+  fileBlob?: Blob;
+  dimensions?: { width: number; height: number };
+  blossomUrl?: string;
+  sha256?: string;
+}
+
+export interface IGPagingCursors {
+  before?: string;
+  after?: string;
+}
+
+export interface IGPaging {
+  cursors?: IGPagingCursors;
+  next?: string;
+  previous?: string;
+}
+
+export interface IGMediaRecord {
+  id: string;
+  caption?: string;
+  media_type: IGMediaType;
+  media_url?: string;
+  permalink: string;
+  thumbnail_url?: string;
+  timestamp: string; // ISO 8601
+  timestampUnix: number; // Unix seconds
+  media_product_type?: IGMediaProductType;
+  shortcode?: string;
+  like_count?: number;
+  comments_count?: number;
+  is_comment_enabled?: boolean;
+  children?: IGMediaChild[];
+  tags: string[]; // Extracted hashtags
+  selected?: boolean;
+  
+  // Media enrichment & Blossom state
+  fileBlob?: Blob;
+  dimensions?: { width: number; height: number };
+  blossomUrls?: string[];
+  sha256Hashes?: string[];
+}
+
+export type InstagramFilterCategory = 'all' | 'image' | 'carousel' | 'video';
+
+export interface InstagramMigrationOptions {
+  uploadToBlossom: boolean;
+  blossomServers: string[];
+  includeCaptions: boolean;
+  includeOriginalTimestamp: boolean;
+  deletePreviousPostsBeforeImport?: boolean; // NIP-09 Kind 5 deletion of Kind 20 events
+  publishToCustomRelaysOnly: boolean;
+  resumeSession?: ImportSession;
+}
 
 export interface UnsignedNostrEvent {
   kind: number;

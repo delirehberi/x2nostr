@@ -3,6 +3,7 @@ import { renderGoodreadsView } from '../components/goodreads-view';
 import { renderMoviesView } from '../components/movies-view';
 import { renderWordPressView } from '../components/wordpress-view';
 import { renderGistsView } from '../components/gists-view';
+import { renderInstagramView } from '../components/instagram-view';
 import { router } from '../../services/router';
 
 export function renderImportersPage(container: HTMLElement): void {
@@ -11,6 +12,7 @@ export function renderImportersPage(container: HTMLElement): void {
   if (activeImporter === 'imdb') activeImporter = 'movies';
   if (activeImporter === 'wordpress') activeImporter = 'blogs';
   if (activeImporter === 'gist' || activeImporter === 'snippets') activeImporter = 'gists';
+  if (activeImporter === 'insta' || activeImporter === 'photos') activeImporter = 'instagram';
 
   const render = () => {
     container.innerHTML = `
@@ -44,6 +46,8 @@ export function renderImportersPage(container: HTMLElement): void {
       renderWordPressView(viewRoot);
     } else if (importerId === 'gists') {
       renderGistsView(viewRoot);
+    } else if (importerId === 'instagram') {
+      renderInstagramView(viewRoot);
     }
   };
 

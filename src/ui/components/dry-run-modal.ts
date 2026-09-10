@@ -57,6 +57,8 @@ export function showDryRunModal(opts: {
         return { name: 'Kind 1337 (NIP-C0 Code Snippet)', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' };
       case 30078:
         return { name: 'Kind 30078 (NIP-44 Encrypted Snippet)', color: 'bg-rose-500/20 text-rose-400 border-rose-500/30' };
+      case 20:
+        return { name: 'Kind 20 (NIP-68 Picture Post)', color: 'bg-pink-500/20 text-pink-400 border-pink-500/30' };
       case 5:
         return { name: 'Kind 5 (NIP-09 Deletion)', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
       default:

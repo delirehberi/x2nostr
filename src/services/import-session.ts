@@ -168,11 +168,25 @@ class ImportSessionService {
   }
 
   /**
+   * Directly persists an updated ImportSession instance.
+   */
+  public saveSession(session: ImportSession): void {
+    this.persist(session);
+  }
+
+  /**
    * Removes a session from localStorage entirely.
    * Used when the user explicitly chooses "Start Fresh".
    */
   public clearSession(sessionKey: string): void {
     localStorage.removeItem(sessionKey);
+  }
+
+  /**
+   * Alias for clearSession to remove session from localStorage.
+   */
+  public deleteSession(sessionKey: string): void {
+    this.clearSession(sessionKey);
   }
 
   /**

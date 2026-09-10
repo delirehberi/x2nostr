@@ -114,6 +114,71 @@ class BlossomService {
     return imageUrl;
   }
 
+  /**
+   * Uploads a raw Blob/File to Blossom servers using NIP-98 authentication.
+   * Returns the canonical Blossom CDN URL and the computed SHA-256 hash.
+   */
+  public async uploadBlob(
+    blob: Blob,
+    pubkey: string,
+    servers: string[] = DEFAULT_BLOSSOM_SERVERS
+  ): Promise<{ url: string; sha256: string }> {
+    const arrayBuffer = await blob.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const sha256Hex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+
+    const targetServers = servers.length > 0 ? servers : DEFAULT_BLOSSOM_SERVERS;
+
+    for (const serverUrl of targetServers) {
+      try {
+        const cleanServer = serverUrl.replace(/\/$/, '');
+        const uploadUrl = `${cleanServer}/upload`;
+
+        const expiration = Math.floor(Date.now() / 1000) + 300;
+        const unsignedAuthEvent = {
+          kind: 24242,
+          created_at: Math.floor(Date.now() / 1000),
+          tags: [
+            ['t', 'upload'],
+            ['x', sha256Hex],
+            ['expiration', String(expiration)],
+            ['size', String(blob.size)],
+          ],
+          content: 'Upload media to Blossom via x2nostr',
+          pubkey,
+        };
+
+        const signedAuthEvent = await nostrService.signEvent(unsignedAuthEvent);
+        const authHeaderValue = `Nostr ${btoa(JSON.stringify(signedAuthEvent))}`;
+
+        const uploadRes = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: {
+            Authorization: authHeaderValue,
+            'Content-Type': blob.type || 'application/octet-stream',
+          },
+          body: blob,
+        });
+
+        if (uploadRes.ok) {
+          const data: BlossomUploadResponse = await uploadRes.json();
+          if (data.url) {
+            return { url: data.url, sha256: sha256Hex };
+          }
+          if (data.sha256) {
+            const ext = this.getExtensionFromMime(blob.type) || 'jpg';
+            return { url: `${cleanServer}/${data.sha256}.${ext}`, sha256: sha256Hex };
+          }
+        }
+      } catch (serverErr) {
+        console.warn(`Blossom blob upload failed for server ${serverUrl}:`, serverErr);
+      }
+    }
+
+    throw new Error('Failed to upload media asset to configured Blossom servers.');
+  }
+
   private getExtensionFromMime(mime: string): string | null {
     if (mime.includes('png')) return 'png';
     if (mime.includes('jpeg') || mime.includes('jpg')) return 'jpg';

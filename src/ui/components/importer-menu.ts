@@ -50,13 +50,22 @@ const MENU_ITEMS: ImporterMenuItem[] = [
     phase: 4,
   },
   {
+    id: 'instagram',
+    nameKey: 'instagramName',
+    descKey: 'instagramDesc',
+    targetKey: 'instagramTarget',
+    iconName: 'camera',
+    status: 'active',
+    phase: 5,
+  },
+  {
     id: 'spotify',
     nameKey: 'spotifyName',
     descKey: 'spotifyDesc',
     targetKey: 'spotifyTarget',
     iconName: 'music',
     status: 'coming-soon',
-    phase: 5,
+    phase: 6,
   },
 ];
 
