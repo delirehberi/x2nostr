@@ -95,21 +95,42 @@ function preProcessWordPressHtml(html: string): string {
     return `<p><a href="${cleanUrl}">${cleanUrl}</a></p>`;
   });
 
-  // 5. WPBakery shortcodes
+  // 5. WordPress [audio src="..."] and [video src="..."]
+  result = result.replace(/\[audio[^\]]+src=["']([^"']+)["'][^\]]*\](?:\[\/audio\])?/gi, '<p><a href="$1">Audio File</a></p>');
+  result = result.replace(/\[video[^\]]+src=["']([^"']+)["'][^\]]*\](?:\[\/video\])?/gi, '<p><a href="$1">Video File</a></p>');
+
+  // 6. WPBakery / Visual Composer shortcodes
   result = result.replace(/\[vc_custom_heading[^\]]*text=["']([^"']+)["'][^\]]*\]/gi, '<h3>$1</h3>');
+  result = result.replace(/\[vc_single_image[^\]]*(?:image|img_link)=["']([^"']+)["'][^\]]*\/\]/gi, '<img src="$1" />');
+  result = result.replace(/\[vc_btn[^\]]*title=["']([^"']+)["'][^\]]*link=["'](?:url:)?([^"']+)["'][^\]]*\/\]/gi, '<p><a href="$2">$1</a></p>');
+  result = result.replace(/\[vc_message[^\]]*\]([\s\S]*?)\[\/vc_message\]/gi, '<blockquote>$1</blockquote>');
   result = result.replace(/\[\/?vc_[a-zA-Z0-9_-]+[^\]]*\]/gi, '');
 
-  // 6. Divi shortcodes
+  // 7. Divi Builder shortcodes
   result = result.replace(/\[et_pb_image[^\]]*src=["']([^"']+)["'][^\]]*\/\]/gi, '<img src="$1" />');
+  result = result.replace(/\[et_pb_button[^\]]*button_text=["']([^"']+)["'][^\]]*button_url=["']([^"']+)["'][^\]]*\/\]/gi, '<p><a href="$2">$1</a></p>');
+  result = result.replace(/\[et_pb_testimonial[^\]]*\]([\s\S]*?)\[\/et_pb_testimonial\]/gi, '<blockquote>$1</blockquote>');
+  result = result.replace(/\[et_pb_text[^\]]*\]([\s\S]*?)\[\/et_pb_text\]/gi, '$1');
   result = result.replace(/\[\/?et_pb_[a-zA-Z0-9_-]+[^\]]*\]/gi, '');
 
-  // 7. Generic leftover shortcodes like [gallery ids="..."] or [audio ...]
-  result = result.replace(/\[[a-zA-Z0-9_-]+(?:\s+[^\]]*)?\]/gi, (match) => {
-    // If it looks like markdown link syntax accidentally matched, preserve it
-    if (match.startsWith('[') && match.includes('](')) return match;
+  // 8. Avada / Fusion Builder & Enfold / Avia
+  result = result.replace(/\[fusion_title[^\]]*\]([\s\S]*?)\[\/fusion_title\]/gi, '<h3>$1</h3>');
+  result = result.replace(/\[fusion_text[^\]]*\]([\s\S]*?)\[\/fusion_text\]/gi, '$1');
+  result = result.replace(/\[\/?fusion_[a-zA-Z0-9_-]+[^\]]*\]/gi, '');
+  result = result.replace(/\[av_heading[^\]]*heading=["']([^"']+)["'][^\]]*\]/gi, '<h3>$1</h3>');
+  result = result.replace(/\[av_textblock[^\]]*\]([\s\S]*?)\[\/av_textblock\]/gi, '$1');
+  result = result.replace(/\[\/?av_[a-zA-Z0-9_-]+[^\]]*\]/gi, '');
+
+  // 9. Generic container shortcodes [myshortcode ...]Content[/myshortcode] -> unwrap content
+  result = result.replace(/\[([a-zA-Z0-9_-]+)(?:\s+[^\]]*)?\]([\s\S]*?)\[\/\1\]/gi, (_match, _tag, inner) => {
+    return inner;
+  });
+
+  // 10. Generic standalone self-closing or empty shortcodes [plugin_tag /]
+  result = result.replace(/\[[a-zA-Z0-9_-]+(?:\s+[^\]]*)?\/?\]/gi, (match) => {
+    if (match.startsWith('[') && match.includes('](')) return match; // preserve markdown links
     return '';
   });
-  result = result.replace(/\[\/[a-zA-Z0-9_-]+\]/gi, '');
 
   return result;
 }

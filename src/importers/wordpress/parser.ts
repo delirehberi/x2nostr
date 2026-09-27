@@ -65,8 +65,8 @@ function parseWithDomParser(items: NodeListOf<Element>): WordPressPostRecord[] {
       slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `post-${wpPostId}`;
     }
 
-    const contentHtml = getElementTextByLocalName(item, 'encoded') || getElementTextByLocalName(item, 'content') || '';
-    const summary = getElementTextByLocalName(item, 'excerpt') || extractSummaryFallback(contentHtml);
+    const contentHtml = getSpecificXmlTag(item, 'content', 'encoded') || getElementTextByLocalName(item, 'content') || '';
+    const summary = getSpecificXmlTag(item, 'excerpt', 'encoded') || getElementTextByLocalName(item, 'excerpt') || extractSummaryFallback(contentHtml);
     const author = getElementTextByLocalName(item, 'creator') || getElementTextByLocalName(item, 'author') || 'Anonymous';
     
     const postDateGmt = getElementTextByLocalName(item, 'post_date_gmt');
@@ -181,9 +181,9 @@ function parseWithRegexFallback(xmlText: string): WordPressPostRecord[] {
       slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `post-${wpPostId}`;
     }
 
-    const contentHtml = getRegexXmlTagValue(itemXml, 'encoded') || getRegexXmlTagValue(itemXml, 'content') || '';
-    const summary = getRegexXmlTagValue(itemXml, 'excerpt') || extractSummaryFallback(contentHtml);
-    const author = getRegexXmlTagValue(itemXml, 'creator') || getRegexXmlTagValue(itemXml, 'author') || 'Anonymous';
+    const contentHtml = getSpecificRegexXmlTag(itemXml, 'content', 'encoded') || getRegexXmlTagValue(itemXml, 'content') || '';
+    const summary = getSpecificRegexXmlTag(itemXml, 'excerpt', 'encoded') || getRegexXmlTagValue(itemXml, 'excerpt') || extractSummaryFallback(contentHtml);
+    const author = getElementTextByPrefixOrLocal(itemXml, 'creator', 'author') || 'Anonymous';
 
     const postDateGmt = getRegexXmlTagValue(itemXml, 'post_date_gmt');
     const postDate = getRegexXmlTagValue(itemXml, 'post_date');
@@ -205,7 +205,9 @@ function parseWithRegexFallback(xmlText: string): WordPressPostRecord[] {
     let catMatch: RegExpExecArray | null;
     while ((catMatch = categoryRegex.exec(itemXml)) !== null) {
       const domain = catMatch[1];
-      const catText = (catMatch[2] || catMatch[3] || '').trim();
+      const isCdata = catMatch[2] !== undefined;
+      const rawText = (isCdata ? catMatch[2] : catMatch[3] || '').trim();
+      const catText = isCdata ? rawText : decodeXmlEntities(rawText);
       if (!catText) continue;
 
       if (domain === 'category') {
@@ -262,13 +264,58 @@ function parseWithRegexFallback(xmlText: string): WordPressPostRecord[] {
   return posts;
 }
 
+function decodeXmlEntities(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;|&#39;|&apos;/g, "'")
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(parseInt(dec, 10)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+}
+
 function getElementTextByLocalName(parent: Element, localName: string): string {
   const children = Array.from(parent.children);
   for (const child of children) {
     const nodeLocalName = child.localName || child.tagName.split(':').pop() || '';
     if (nodeLocalName.toLowerCase() === localName.toLowerCase()) {
-      return child.textContent?.trim() || '';
+      return decodeXmlEntities(child.textContent?.trim() || '');
     }
+  }
+  return '';
+}
+
+function getSpecificXmlTag(parent: Element, prefix: string, localName: string): string {
+  const children = Array.from(parent.children);
+  for (const child of children) {
+    const fullTag = child.tagName.toLowerCase();
+    const tagLocalName = (child.localName || child.tagName.split(':').pop() || '').toLowerCase();
+    const tagPrefix = (child.prefix || child.tagName.split(':')[0] || '').toLowerCase();
+
+    if ((tagPrefix === prefix.toLowerCase() && tagLocalName === localName.toLowerCase()) || fullTag === `${prefix.toLowerCase()}:${localName.toLowerCase()}`) {
+      return decodeXmlEntities(child.textContent?.trim() || '');
+    }
+  }
+  return '';
+}
+
+function getSpecificRegexXmlTag(xmlBlock: string, prefix: string, localName: string): string {
+  const regex = new RegExp(`<(?:${prefix}:)${localName}[^>]*>(?:<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>|([\\s\\S]*?))<\\/(?:${prefix}:)${localName}>`, 'i');
+  const match = xmlBlock.match(regex);
+  if (match) {
+    const isCdata = match[1] !== undefined;
+    const rawVal = (isCdata ? match[1] : match[2] || '').trim();
+    return isCdata ? rawVal : decodeXmlEntities(rawVal);
+  }
+  return '';
+}
+
+function getElementTextByPrefixOrLocal(xmlBlock: string, ...tags: string[]): string {
+  for (const tag of tags) {
+    const val = getRegexXmlTagValue(xmlBlock, tag);
+    if (val) return val;
   }
   return '';
 }
@@ -277,7 +324,9 @@ function getRegexXmlTagValue(xmlBlock: string, tagLocalName: string): string {
   const regex = new RegExp(`<(?:[a-zA-Z0-9_-]+:)?${tagLocalName}[^>]*>(?:<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>|([\\s\\S]*?))<\\/(?:[a-zA-Z0-9_-]+:)?${tagLocalName}>`, 'i');
   const match = xmlBlock.match(regex);
   if (match) {
-    return (match[1] !== undefined ? match[1] : match[2] || '').trim();
+    const isCdata = match[1] !== undefined;
+    const rawVal = (isCdata ? match[1] : match[2] || '').trim();
+    return isCdata ? rawVal : decodeXmlEntities(rawVal);
   }
   return '';
 }
