@@ -1,69 +1,12 @@
 import { IGMediaChild, IGMediaRecord, IGMediaType } from '../../types';
-import { RawIGMediaItem } from './instagram-service';
+import { extractHashtags as extractTagsHelper } from '../../services/tags';
 
 /**
  * Extracts hashtags from post caption text.
  * Strips leading '#' and normalizes to clean lowercase tag strings.
  */
 export function extractHashtags(caption?: string): string[] {
-  if (!caption) return [];
-  const matches = caption.match(/#[a-zA-Z0-9_\u0080-\uFFFF]+/g);
-  if (!matches) return [];
-
-  const uniqueTags = new Set<string>();
-  for (const match of matches) {
-    const clean = match.replace(/^#/, '').toLowerCase().trim();
-    if (clean) {
-      uniqueTags.add(clean);
-    }
-  }
-
-  return Array.from(uniqueTags);
-}
-
-/**
- * Normalizes raw Meta Instagram Graph API items into strongly-typed IGMediaRecord entries.
- */
-export function parseIGMediaItems(items: RawIGMediaItem[]): IGMediaRecord[] {
-  if (!Array.isArray(items)) return [];
-
-  return items.map((item) => {
-    const rawTimestamp = item.timestamp ? new Date(item.timestamp).getTime() : Date.now();
-    const timestampUnix = Math.floor(rawTimestamp / 1000);
-    const caption = item.caption || '';
-    const tags = extractHashtags(caption);
-
-    const children: IGMediaChild[] = [];
-    if (item.children?.data && Array.isArray(item.children.data)) {
-      item.children.data.forEach((child) => {
-        children.push({
-          id: child.id,
-          media_type: child.media_type,
-          media_url: child.media_url,
-          thumbnail_url: child.thumbnail_url,
-          timestamp: child.timestamp,
-        });
-      });
-    }
-
-    return {
-      id: item.id,
-      caption,
-      media_type: item.media_type,
-      media_url: item.media_url,
-      permalink: item.permalink || `https://www.instagram.com/p/${item.shortcode || item.id}/`,
-      thumbnail_url: item.thumbnail_url,
-      timestamp: item.timestamp || new Date(rawTimestamp).toISOString(),
-      timestampUnix,
-      media_product_type: item.media_product_type,
-      shortcode: item.shortcode,
-      like_count: item.like_count,
-      comments_count: item.comments_count,
-      children: children.length > 0 ? children : undefined,
-      tags,
-      selected: true,
-    };
-  });
+  return extractTagsHelper(caption);
 }
 
 /**

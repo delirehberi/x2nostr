@@ -9,59 +9,59 @@ export function renderGettingStartedPage(container: HTMLElement): void {
   let generatedNpub = '';
 
   container.innerHTML = `
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 text-left">
       <!-- Header / Title -->
-      <div class="text-center space-y-3">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs font-semibold uppercase tracking-wider">
-          ${icons.key}
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-paper-subtle)] border border-[var(--color-border)] text-[var(--color-ink-muted)] text-xs font-mono font-medium">
+          <span class="text-[var(--color-accent)]">${icons.key}</span>
           <span>${t('navGettingStarted')}</span>
         </div>
-        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+        <h1 class="font-display text-2xl sm:text-4xl font-bold text-[var(--color-ink)] tracking-tight">
           ${t('newbieGuideTitle')}
         </h1>
-        <p class="text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        <p class="text-xs sm:text-sm text-[var(--color-ink-muted)] max-w-2xl leading-relaxed">
           ${t('newbieGuideSubtitle')}
         </p>
       </div>
 
       <!-- Step 1: Key Generation / Connection -->
-      <div class="glass-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xs">
+      <div class="card-workbench p-6 sm:p-7 space-y-4">
         <div class="flex items-center gap-3">
-          <span class="w-8 h-8 rounded-full bg-purple-600 text-white text-sm font-bold flex items-center justify-center">1</span>
-          <h2 class="text-xl font-bold text-slate-900">${t('newbieStep1Title')}</h2>
+          <span class="w-7 h-7 rounded-lg bg-[var(--color-ink)] text-[var(--color-ink-inverse)] text-xs font-mono font-bold flex items-center justify-center">01</span>
+          <h2 class="font-display text-lg font-bold text-[var(--color-ink)]">${t('newbieStep1Title')}</h2>
         </div>
-        <p class="text-sm text-slate-600 leading-relaxed">
+        <p class="text-xs sm:text-sm text-[var(--color-ink-muted)] leading-relaxed">
           ${t('newbieStep1Desc')}
         </p>
 
-        <div class="pt-2 flex flex-wrap gap-3">
-          <button id="btn-page-generate-key" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer flex items-center gap-2">
+        <div class="pt-1 flex flex-wrap gap-3">
+          <button id="btn-page-generate-key" class="btn-primary text-xs py-2 px-4">
             ${icons.key}
             <span>${t('generateKeyBtn')}</span>
           </button>
         </div>
 
         <div id="page-keygen-output-area" class="hidden space-y-3 pt-3">
-          <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2.5">
-            <span class="text-emerald-600">${icons.checkCircle}</span>
+          <div class="p-3 rounded-lg bg-[var(--color-success-subtle)] border border-[var(--color-success-border)] text-emerald-950 text-xs flex items-center gap-2.5">
+            <span class="text-emerald-700">${icons.checkCircle}</span>
             <span>${t('keyGeneratedNotice')}</span>
           </div>
 
-          <div class="space-y-1.5">
-            <label class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Private Key (nsec — KEEP SECRET)</label>
+          <div class="space-y-1">
+            <label class="text-[10px] font-mono font-semibold text-[var(--color-ink-muted)] uppercase tracking-wider">Private Key (nsec — Keep Secret)</label>
             <div class="flex items-center gap-2">
-              <input readonly type="password" value="" id="page-input-nsec" class="grow px-3.5 py-2 text-xs font-mono rounded-xl bg-slate-50 border border-slate-200 text-slate-900" />
-              <button id="page-btn-copy-nsec" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-xs font-semibold text-slate-700 transition-colors cursor-pointer shrink-0">
+              <input readonly type="password" value="" id="page-input-nsec" class="grow px-3 py-2 text-xs font-mono rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] text-[var(--color-ink)]" />
+              <button id="page-btn-copy-nsec" class="btn-secondary text-xs py-2 px-3 shrink-0">
                 ${t('copyNsec')}
               </button>
             </div>
           </div>
 
-          <div class="space-y-1.5">
-            <label class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Public Key (npub — Share Freely)</label>
+          <div class="space-y-1">
+            <label class="text-[10px] font-mono font-semibold text-[var(--color-ink-muted)] uppercase tracking-wider">Public Key (npub — Share Freely)</label>
             <div class="flex items-center gap-2">
-              <input readonly type="text" value="" id="page-input-npub" class="grow px-3.5 py-2 text-xs font-mono rounded-xl bg-slate-50 border border-slate-200 text-slate-900" />
-              <button id="page-btn-copy-npub" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-xs font-semibold text-slate-700 transition-colors cursor-pointer shrink-0">
+              <input readonly type="text" value="" id="page-input-npub" class="grow px-3 py-2 text-xs font-mono rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] text-[var(--color-ink)]" />
+              <button id="page-btn-copy-npub" class="btn-secondary text-xs py-2 px-3 shrink-0">
                 ${t('copyNpub')}
               </button>
             </div>
@@ -70,59 +70,71 @@ export function renderGettingStartedPage(container: HTMLElement): void {
       </div>
 
       <!-- Step 2: Signers & Bunker (Amber, Extensions) -->
-      <div class="glass-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xs">
+      <div class="card-workbench p-6 sm:p-7 space-y-4">
         <div class="flex items-center gap-3">
-          <span class="w-8 h-8 rounded-full bg-purple-600 text-white text-sm font-bold flex items-center justify-center">2</span>
-          <h2 class="text-xl font-bold text-slate-900">${t('newbieStep2Title')}</h2>
+          <span class="w-7 h-7 rounded-lg bg-[var(--color-ink)] text-[var(--color-ink-inverse)] text-xs font-mono font-bold flex items-center justify-center">02</span>
+          <h2 class="font-display text-lg font-bold text-[var(--color-ink)]">${t('newbieStep2Title')}</h2>
         </div>
-        <p class="text-sm text-slate-600 leading-relaxed">
+        <p class="text-xs sm:text-sm text-[var(--color-ink-muted)] leading-relaxed">
           ${t('newbieStep2Desc')}
         </p>
 
         <!-- Product Links Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-          <a href="https://getalby.com" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <a href="https://getalby.com" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
             <div>
-              <div class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">🐝 Alby Extension</div>
-              <div class="text-[11px] text-slate-500">NIP-07 Browser Extension & Lightning Wallet</div>
+              <div class="font-bold text-[var(--color-ink)] text-xs font-display flex items-center gap-1.5">
+                <span class="text-[var(--color-accent)]">${icons.zap}</span>
+                <span>Alby Extension</span>
+              </div>
+              <div class="text-[11px] text-[var(--color-ink-muted)] mt-0.5">NIP-07 Browser Extension & Lightning Wallet</div>
             </div>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://github.com/fiatjaf/nos2x" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
+          <a href="https://github.com/fiatjaf/nos2x" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
             <div>
-              <div class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">🔑 nos2x Extension</div>
-              <div class="text-[11px] text-slate-500">Lightweight NIP-07 Signer</div>
+              <div class="font-bold text-[var(--color-ink)] text-xs font-display flex items-center gap-1.5">
+                <span class="text-[var(--color-accent)]">${icons.key}</span>
+                <span>nos2x Extension</span>
+              </div>
+              <div class="text-[11px] text-[var(--color-ink-muted)] mt-0.5">Lightweight NIP-07 Signer</div>
             </div>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://github.com/greenart7c3/Amber" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
+          <a href="https://github.com/greenart7c3/Amber" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
             <div>
-              <div class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">🛡️ Amber (Android)</div>
-              <div class="text-[11px] text-slate-500">NIP-46 / NIP-55 Remote Signer Bunker</div>
+              <div class="font-bold text-[var(--color-ink)] text-xs font-display flex items-center gap-1.5">
+                <span class="text-[var(--color-accent)]">${icons.shield}</span>
+                <span>Amber (Android)</span>
+              </div>
+              <div class="text-[11px] text-[var(--color-ink-muted)] mt-0.5">NIP-46 / NIP-55 Remote Signer Bunker</div>
             </div>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://primal.net" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
+          <a href="https://primal.net" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
             <div>
-              <div class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">⚡ Primal Signer</div>
-              <div class="text-[11px] text-slate-500">Integrated Web & Mobile Key Manager</div>
+              <div class="font-bold text-[var(--color-ink)] text-xs font-display flex items-center gap-1.5">
+                <span class="text-[var(--color-accent)]">${icons.globe}</span>
+                <span>Primal Signer</span>
+              </div>
+              <div class="text-[11px] text-[var(--color-ink-muted)] mt-0.5">Integrated Web & Mobile Key Manager</div>
             </div>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
         </div>
       </div>
 
       <!-- Step 3: Migrate Data CTA -->
-      <div class="glass-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xs">
+      <div class="card-workbench p-6 sm:p-7 space-y-4">
         <div class="flex items-center gap-3">
-          <span class="w-8 h-8 rounded-full bg-purple-600 text-white text-sm font-bold flex items-center justify-center">3</span>
-          <h2 class="text-xl font-bold text-slate-900">${t('newbieStep3Title')}</h2>
+          <span class="w-7 h-7 rounded-lg bg-[var(--color-ink)] text-[var(--color-ink-inverse)] text-xs font-mono font-bold flex items-center justify-center">03</span>
+          <h2 class="font-display text-lg font-bold text-[var(--color-ink)]">${t('newbieStep3Title')}</h2>
         </div>
-        <p class="text-sm text-slate-600 leading-relaxed">
+        <p class="text-xs sm:text-sm text-[var(--color-ink-muted)] leading-relaxed">
           ${t('newbieStep3Desc')}
         </p>
-        <div class="pt-2">
-          <button id="btn-goto-importers" class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-semibold shadow-md shadow-purple-600/20 transition-all cursor-pointer flex items-center gap-2">
+        <div class="pt-1">
+          <button id="btn-goto-importers" class="btn-primary text-xs py-2.5 px-4">
             <span>${t('navImporters')}</span>
             ${icons.arrowRight}
           </button>
@@ -130,43 +142,43 @@ export function renderGettingStartedPage(container: HTMLElement): void {
       </div>
 
       <!-- Step 4: Product Recommendations -->
-      <div class="glass-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xs">
+      <div class="card-workbench p-6 sm:p-7 space-y-4">
         <div class="flex items-center gap-3">
-          <span class="w-8 h-8 rounded-full bg-purple-600 text-white text-sm font-bold flex items-center justify-center">4</span>
-          <h2 class="text-xl font-bold text-slate-900">${t('newbieStep4Title')}</h2>
+          <span class="w-7 h-7 rounded-lg bg-[var(--color-ink)] text-[var(--color-ink-inverse)] text-xs font-mono font-bold flex items-center justify-center">04</span>
+          <h2 class="font-display text-lg font-bold text-[var(--color-ink)]">${t('newbieStep4Title')}</h2>
         </div>
-        <p class="text-sm text-slate-600 leading-relaxed">
+        <p class="text-xs sm:text-sm text-[var(--color-ink-muted)] leading-relaxed">
           ${t('newbieStep4Desc')}
         </p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
-          <a href="https://damus.io" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
-            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">Damus (iOS)</span>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-1">
+          <a href="https://damus.io" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
+            <span class="font-bold text-[var(--color-ink)] text-xs">Damus (iOS)</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://github.com/vitorpamplona/amethyst" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
-            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">Amethyst (Android)</span>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+          <a href="https://github.com/vitorpamplona/amethyst" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
+            <span class="font-bold text-[var(--color-ink)] text-xs">Amethyst (Android)</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://primal.net" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
-            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">Primal (Web / Mobile)</span>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+          <a href="https://primal.net" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
+            <span class="font-bold text-[var(--color-ink)] text-xs">Primal (Web / Mobile)</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://bookstr.xyz" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
-            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">Bookstr.xyz (Books)</span>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+          <a href="https://bookstr.xyz" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
+            <span class="font-bold text-[var(--color-ink)] text-xs">Bookstr.xyz (Books)</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://ditto.pub" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
-            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">Ditto.pub (Blogs)</span>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+          <a href="https://ditto.pub" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
+            <span class="font-bold text-[var(--color-ink)] text-xs">Ditto.pub (Blogs)</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://yakihonne.com" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
-            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">Yakihonne (Long-Form)</span>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+          <a href="https://yakihonne.com" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
+            <span class="font-bold text-[var(--color-ink)] text-xs">Yakihonne (Long-Form)</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
-          <a href="https://gitworkshop.dev" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-purple-300 transition-colors flex items-center justify-between group">
-            <span class="font-bold text-slate-900 group-hover:text-purple-700 text-xs">GitWorkshop (Code & Git)</span>
-            <span class="text-slate-400 group-hover:text-purple-600 text-xs">${icons.externalLink}</span>
+          <a href="https://gitworkshop.dev" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-[var(--color-paper-subtle)] border border-[var(--color-border)] hover:border-[var(--color-border-focus)] transition-colors flex items-center justify-between">
+            <span class="font-bold text-[var(--color-ink)] text-xs">GitWorkshop (Git / NIP-34)</span>
+            <span class="text-[var(--color-ink-muted)] text-xs">${icons.externalLink}</span>
           </a>
         </div>
       </div>

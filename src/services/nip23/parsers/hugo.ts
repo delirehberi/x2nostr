@@ -1,5 +1,6 @@
 import { ConvertedPostRecord } from '../types';
 import { unzipBuffer } from '../zip';
+import { slugify } from '../../tags';
 
 interface FrontmatterData {
   title?: string;
@@ -81,7 +82,7 @@ export function parseHugoMarkdownFile(rawContent: string, fileName = 'post.md'):
   const title = frontmatter.title || extractH1Title(body) || cleanTitleFromFilename(cleanFileName);
   let slug = frontmatter.slug || frontmatter.url || frontmatter.link;
   if (!slug) {
-    slug = cleanFileName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || generateSlug(title);
+    slug = slugify(cleanFileName) || slugify(title);
   } else {
     slug = slug.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9_-]+/g, '-');
   }
@@ -292,14 +293,6 @@ function cleanTitleFromFilename(filename: string): string {
     .replace(/[-_]+/g, ' ')
     .trim()
     .replace(/\b\w/g, (l) => l.toUpperCase());
-}
-
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '') || `post-${Date.now()}`;
 }
 
 function extractSummaryFromMarkdown(md: string): string {

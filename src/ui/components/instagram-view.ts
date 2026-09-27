@@ -1,5 +1,4 @@
 import { instagramPipeline } from '../../importers/instagram/pipeline';
-import { instagramService } from '../../importers/instagram/instagram-service';
 import { i18n, t } from '../../services/i18n';
 import { importSessionService } from '../../services/import-session';
 import { nostrService } from '../../services/nostr';
@@ -14,16 +13,8 @@ export function renderInstagramView(container: HTMLElement): void {
   let progress = instagramPipeline.getProgress();
   let logs = instagramPipeline.getLogs();
 
-  let activeTab: 'oauth' | 'upload' = 'oauth';
   let activeFilter: InstagramFilterCategory = 'all';
   let searchQuery = '';
-
-  // OAuth & Token state
-  let customTokenInput = '';
-  let customClientIdInput = '';
-  let customClientSecretInput = '';
-  let isAdvancedOpen = false;
-  let isWalking = false;
 
   // Migration Options state
   let uploadToBlossom = true;
@@ -46,37 +37,6 @@ export function renderInstagramView(container: HTMLElement): void {
       existingSession = importSessionService.findSession('instagram', pubkey, fingerprint);
     } else {
       existingSession = null;
-    }
-  };
-
-  // Check if redirected with an OAuth authorization code
-  const handleUrlOAuthCode = async () => {
-    if (typeof window === 'undefined') return;
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-
-    if (code && !instagramService.getAccessToken()) {
-      try {
-        showToast(t('instagramConnecting'), 'info');
-        const tokenResult = await instagramService.exchangeCodeForToken(code);
-        showToast(t('instagramAuthSuccess'), 'success');
-
-        // Clean up code from browser URL without triggering reload
-        urlParams.delete('code');
-        const cleanUrl = `${window.location.pathname}?${urlParams.toString()}`;
-        window.history.replaceState({}, '', cleanUrl);
-
-        // Auto-walk user's posts
-        isWalking = true;
-        render();
-        await instagramPipeline.walkInstagramAccount(tokenResult.accessToken);
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
-        showToast(msg, 'error');
-      } finally {
-        isWalking = false;
-        render();
-      }
     }
   };
 
@@ -104,30 +64,28 @@ export function renderInstagramView(container: HTMLElement): void {
     container.innerHTML = `
       <div class="space-y-8">
         <!-- Header Banner -->
-        <div class="bg-gradient-to-r from-pink-900 via-purple-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
-          <div class="max-w-3xl space-y-3">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 text-pink-300 text-xs font-semibold border border-pink-400/30">
-              ${icons.camera}
-              NIP-68 Picture Posts (Kind 20) & Blossom Media
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">${loc('instagramImporterTitle')}</h2>
-            <p class="text-slate-300 text-sm leading-relaxed">${loc('instagramImporterSubtitle')}</p>
+        <div class="card-workbench p-6 sm:p-8 space-y-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-accent-subtle-border)] text-xs font-mono font-medium">
+            <span>${icons.camera}</span>
+            <span>NIP-68 Picture Posts (Kind 20) & Blossom Media</span>
           </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-ink)]">${loc('instagramImporterTitle')}</h2>
+          <p class="text-[var(--color-ink-muted)] text-xs sm:text-sm leading-relaxed max-w-3xl">${loc('instagramImporterSubtitle')}</p>
         </div>
 
         <!-- 3-Step Wizard Roadmap -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs space-y-1">
-            <div class="text-xs font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wider">${loc('instagramStep1Title')}</div>
-            <p class="text-xs text-slate-600 dark:text-slate-300">${loc('instagramStep1Desc')}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+          <div class="card-workbench p-4 space-y-1">
+            <div class="text-xs font-mono font-bold text-[var(--color-accent)] uppercase tracking-wider">${loc('instagramStep1Title')}</div>
+            <p class="text-xs text-[var(--color-ink-muted)] leading-relaxed">${loc('instagramStep1Desc')}</p>
           </div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs space-y-1">
-            <div class="text-xs font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wider">${loc('instagramStep2Title')}</div>
-            <p class="text-xs text-slate-600 dark:text-slate-300">${loc('instagramStep2Desc')}</p>
+          <div class="card-workbench p-4 space-y-1">
+            <div class="text-xs font-mono font-bold text-[var(--color-accent)] uppercase tracking-wider">${loc('instagramStep2Title')}</div>
+            <p class="text-xs text-[var(--color-ink-muted)] leading-relaxed">${loc('instagramStep2Desc')}</p>
           </div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs space-y-1">
-            <div class="text-xs font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wider">${loc('instagramStep3Title')}</div>
-            <p class="text-xs text-slate-600 dark:text-slate-300">${loc('instagramStep3Desc')}</p>
+          <div class="card-workbench p-4 space-y-1">
+            <div class="text-xs font-mono font-bold text-[var(--color-accent)] uppercase tracking-wider">${loc('instagramStep3Title')}</div>
+            <p class="text-xs text-[var(--color-ink-muted)] leading-relaxed">${loc('instagramStep3Desc')}</p>
           </div>
         </div>
 
@@ -161,119 +119,26 @@ export function renderInstagramView(container: HTMLElement): void {
             : ''
         }
 
-        <!-- Ingestion Tabs -->
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 shadow-xs space-y-6">
-          <div class="flex items-center gap-3 border-b border-slate-200 dark:border-slate-700 pb-4">
-            <button id="tab-oauth" class="px-4 py-2 rounded-xl text-sm font-bold transition cursor-pointer flex items-center gap-2 ${
-              activeTab === 'oauth'
-                ? 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
-            }">
-              ${icons.camera}
-              ${loc('instagramLoginTab')}
-            </button>
-            <button id="tab-upload" class="px-4 py-2 rounded-xl text-sm font-bold transition cursor-pointer flex items-center gap-2 ${
-              activeTab === 'upload'
-                ? 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
-            }">
+        <!-- Archive Upload Section -->
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 shadow-xs space-y-4">
+          <div class="flex items-center gap-3 pb-2">
+            <div class="p-2 rounded-xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400">
               ${icons.upload}
-              ${loc('instagramUploadTab')}
-            </button>
+            </div>
+            <div>
+              <div class="text-base font-bold text-slate-900 dark:text-white">${loc('instagramUploadTab')}</div>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${loc('instagramDropArchiveDesc')}</p>
+            </div>
           </div>
 
-          <!-- Tab Content: 1-Click Login / Graph API -->
-          ${
-            activeTab === 'oauth'
-              ? `
-            <div class="space-y-6">
-              <div class="p-6 rounded-2xl bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950/20 dark:to-purple-950/20 border border-pink-100 dark:border-pink-900/40 flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div class="space-y-2 text-center sm:text-left">
-                  <div class="text-base font-bold text-slate-900 dark:text-white flex items-center justify-center sm:justify-start gap-2">
-                    ${icons.camera}
-                    ${loc('instagramLoginPrimaryTitle')}
-                  </div>
-                  <p class="text-xs text-slate-600 dark:text-slate-300 max-w-xl">
-                    ${loc('instagramLoginPrimaryDesc')}
-                  </p>
-                </div>
-                <div class="flex flex-col sm:flex-row items-center gap-3">
-                  <button id="ig-oauth-login-btn" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold text-sm shadow-md hover:shadow-lg transition flex items-center gap-2 cursor-pointer">
-                    ${icons.camera}
-                    ${loc('instagramLoginBtn')}
-                  </button>
-                  ${
-                    instagramService.getAccessToken()
-                      ? `
-                    <button id="ig-walk-btn" class="px-5 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm shadow-md transition flex items-center gap-2 cursor-pointer ${
-                      isWalking ? 'opacity-60 cursor-not-allowed' : ''
-                    }">
-                      ${isWalking ? icons.refresh : icons.play}
-                      ${isWalking ? loc('instagramWalking') : loc('instagramWalkPostsBtn')}
-                    </button>
-                  `
-                      : ''
-                  }
-                </div>
-              </div>
-
-              <!-- Advanced Settings Accordion -->
-              <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-4 bg-slate-50/50 dark:bg-slate-900/30">
-                <button id="toggle-advanced-btn" class="w-full flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer">
-                  <span class="flex items-center gap-2">
-                    ${icons.lock}
-                    ${loc('instagramAdvancedTitle')}
-                  </span>
-                  <span>${isAdvancedOpen ? '▲' : '▼'}</span>
-                </button>
-
-                ${
-                  isAdvancedOpen
-                    ? `
-                  <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 space-y-4 text-xs">
-                    <p class="text-slate-500 dark:text-slate-400">
-                      ${loc('instagramAdvancedDesc')}
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">${loc('instagramCustomClientId')}</label>
-                        <input id="custom-client-id" type="text" value="${customClientIdInput}" placeholder="e.g. 1241198440536780" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100" />
-                      </div>
-                      <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">${loc('instagramCustomClientSecret')}</label>
-                        <input id="custom-client-secret" type="password" value="${customClientSecretInput}" placeholder="Meta App Secret" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100" />
-                      </div>
-                    </div>
-                    <div>
-                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">${loc('instagramDirectToken')}</label>
-                      <div class="flex gap-2">
-                        <input id="custom-access-token" type="password" value="${customTokenInput}" placeholder="IGQVJY..." class="grow px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100" />
-                        <button id="save-custom-token-btn" class="px-4 py-2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 rounded-xl font-bold cursor-pointer">
-                          ${loc('save')}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                `
-                    : ''
-                }
-              </div>
+          <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-pink-500 rounded-3xl p-8 text-center bg-slate-50/50 dark:bg-slate-900/30 transition cursor-pointer">
+            <input id="archive-file-input" type="file" accept=".json,.zip" class="hidden" />
+            <div class="flex flex-col items-center gap-3">
+              <div class="p-4 rounded-2xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400">${icons.upload}</div>
+              <div class="font-bold text-slate-800 dark:text-slate-100 text-sm">${loc('instagramDropArchiveTitle')}</div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm">${loc('instagramDropArchiveDesc')}</p>
             </div>
-          `
-              : `
-            <!-- Tab Content: Archive Upload -->
-            <div class="space-y-4">
-              <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-pink-500 rounded-3xl p-8 text-center bg-slate-50/50 dark:bg-slate-900/30 transition cursor-pointer">
-                <input id="archive-file-input" type="file" accept=".json,.zip" class="hidden" />
-                <div class="flex flex-col items-center gap-3">
-                  <div class="p-4 rounded-2xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400">${icons.upload}</div>
-                  <div class="font-bold text-slate-800 dark:text-slate-100 text-sm">${loc('instagramDropArchiveTitle')}</div>
-                  <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm">${loc('instagramDropArchiveDesc')}</p>
-                </div>
-              </div>
-            </div>
-          `
-          }
+          </div>
         </div>
 
         <!-- Post Gallery Section -->
@@ -514,64 +379,6 @@ export function renderInstagramView(container: HTMLElement): void {
   };
 
   const attachEventListeners = () => {
-    // Tab Switching
-    container.querySelector('#tab-oauth')?.addEventListener('click', () => {
-      activeTab = 'oauth';
-      render();
-    });
-    container.querySelector('#tab-upload')?.addEventListener('click', () => {
-      activeTab = 'upload';
-      render();
-    });
-
-    // 1-Click Login With Instagram
-    container.querySelector('#ig-oauth-login-btn')?.addEventListener('click', () => {
-      const authUrl = instagramService.getAuthUrl(customClientIdInput || undefined);
-      window.location.href = authUrl;
-    });
-
-    // Walk Posts Button
-    container.querySelector('#ig-walk-btn')?.addEventListener('click', async () => {
-      const token = instagramService.getAccessToken();
-      if (!token) return;
-      try {
-        isWalking = true;
-        render();
-        await instagramPipeline.walkInstagramAccount(token);
-        showToast(t('instagramPostsLoaded', { count: instagramPipeline.getPosts().length }), 'success');
-      } catch (err: unknown) {
-        showToast(err instanceof Error ? err.message : String(err), 'error');
-      } finally {
-        isWalking = false;
-        render();
-      }
-    });
-
-    // Advanced settings accordion
-    container.querySelector('#toggle-advanced-btn')?.addEventListener('click', () => {
-      isAdvancedOpen = !isAdvancedOpen;
-      render();
-    });
-
-    // Save custom direct token
-    container.querySelector('#save-custom-token-btn')?.addEventListener('click', async () => {
-      const input = container.querySelector('#custom-access-token') as HTMLInputElement | null;
-      if (input && input.value.trim()) {
-        instagramService.setAccessToken(input.value.trim());
-        showToast(t('instagramTokenSaved'), 'success');
-        try {
-          isWalking = true;
-          render();
-          await instagramPipeline.walkInstagramAccount(input.value.trim());
-        } catch (err: unknown) {
-          showToast(err instanceof Error ? err.message : String(err), 'error');
-        } finally {
-          isWalking = false;
-          render();
-        }
-      }
-    });
-
     // Dropzone for Data Archive JSON
     const dropZone = container.querySelector('#drop-zone');
     const fileInput = container.querySelector('#archive-file-input') as HTMLInputElement | null;
@@ -757,9 +564,6 @@ export function renderInstagramView(container: HTMLElement): void {
     logs = instagramPipeline.getLogs();
     render();
   });
-
-  // Handle URL code if redirected from Meta
-  handleUrlOAuthCode();
 
   render();
 }

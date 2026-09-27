@@ -58,21 +58,21 @@ export function renderMoviesView(container: HTMLElement): void {
       <div class="space-y-8">
         <!-- Steps Wizard Header -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="glass-card bg-white p-4 rounded-xl flex items-start gap-3 border border-slate-200 shadow-xs">
+          <div class="card-workbench bg-white p-4 rounded-xl flex items-start gap-3 border border-slate-200 shadow-xs">
             <span class="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs shrink-0">1</span>
             <div>
               <h4 class="text-xs font-bold text-slate-900 mb-0.5">${t('moviesStep1Title')}</h4>
               <p class="text-[11px] text-slate-500 leading-tight">${t('moviesStep1Desc')}</p>
             </div>
           </div>
-          <div class="glass-card bg-white p-4 rounded-xl flex items-start gap-3 border border-purple-300 shadow-xs ring-1 ring-purple-300/50">
+          <div class="card-workbench bg-white p-4 rounded-xl flex items-start gap-3 border border-purple-300 shadow-xs ring-1 ring-purple-300/50">
             <span class="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold text-xs shrink-0">2</span>
             <div>
               <h4 class="text-xs font-bold text-slate-900 mb-0.5">${t('moviesStep2Title')}</h4>
               <p class="text-[11px] text-slate-500 leading-tight">${t('moviesStep2Desc')}</p>
             </div>
           </div>
-          <div class="glass-card bg-white p-4 rounded-xl flex items-start gap-3 border border-slate-200 shadow-xs">
+          <div class="card-workbench bg-white p-4 rounded-xl flex items-start gap-3 border border-slate-200 shadow-xs">
             <span class="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs shrink-0">3</span>
             <div>
               <h4 class="text-xs font-bold text-slate-900 mb-0.5">${t('moviesStep3Title')}</h4>
@@ -85,7 +85,7 @@ export function renderMoviesView(container: HTMLElement): void {
         ${
           movies.length === 0
             ? `
-            <div id="dropzone" class="border-2 border-dashed border-purple-200 hover:border-purple-400 bg-white rounded-3xl p-10 sm:p-16 text-center glass-card shadow-xs hover:shadow-md transition-all cursor-pointer group">
+            <div id="dropzone" class="border-2 border-dashed border-purple-200 hover:border-purple-400 bg-white rounded-3xl p-10 sm:p-16 text-center card-workbench shadow-xs hover:shadow-md transition-all cursor-pointer group">
               <input type="file" id="csv-file-input" accept=".csv" class="hidden" />
               <div class="w-16 h-16 rounded-2xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600 mx-auto mb-4 group-hover:scale-110 transition-transform">
                 ${icons.film || icons.upload}
@@ -146,7 +146,7 @@ export function renderMoviesView(container: HTMLElement): void {
             ` : ''}
 
             <!-- Filter Tabs & Search Bar -->
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-2xl glass-card bg-white border border-slate-200 shadow-xs">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-2xl card-workbench bg-white border border-slate-200 shadow-xs">
               <!-- Tabs -->
               <div class="flex flex-wrap items-center gap-2">
                 <button data-filter="all" class="filter-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
@@ -199,7 +199,7 @@ export function renderMoviesView(container: HTMLElement): void {
             </div>
 
             <!-- Table Container -->
-            <div class="overflow-x-auto rounded-2xl glass-card bg-white border border-slate-200 max-h-[520px] overflow-y-auto shadow-xs">
+            <div class="overflow-x-auto rounded-2xl card-workbench bg-white border border-slate-200 max-h-[520px] overflow-y-auto shadow-xs">
               <table class="w-full text-left text-xs text-slate-700">
                 <thead class="sticky top-0 bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold z-10">
                   <tr>
@@ -235,7 +235,7 @@ export function renderMoviesView(container: HTMLElement): void {
             </div>
 
             <!-- Migration Options & Controls -->
-            <div class="p-6 rounded-2xl glass-card bg-white border border-purple-200/80 shadow-xs space-y-6">
+            <div class="p-6 rounded-2xl card-workbench bg-white border border-purple-200/80 shadow-xs space-y-6">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
                 <div>
                   <h3 class="text-base font-bold text-slate-900 mb-1">${t('migrationOptionsTitle')}</h3>
@@ -364,7 +364,7 @@ export function renderMoviesView(container: HTMLElement): void {
             </div>
 
             <!-- Activity Log Console -->
-            <div class="rounded-2xl glass-card bg-white border border-slate-200 shadow-xs overflow-hidden">
+            <div class="rounded-2xl card-workbench bg-white border border-slate-200 shadow-xs overflow-hidden">
               <div class="flex items-center justify-between p-4 bg-slate-100/90 border-b border-slate-200">
                 <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
                   ${icons.terminal}

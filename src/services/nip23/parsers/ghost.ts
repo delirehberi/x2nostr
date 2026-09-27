@@ -1,6 +1,7 @@
 import { ConvertedPostRecord } from '../types';
 import { convertHtmlToMarkdown, extractImageUrlsFromHtml } from '../../html-to-markdown';
 import { unzipBuffer } from '../zip';
+import { slugify } from '../../tags';
 
 interface GhostTag {
   id?: string;
@@ -152,7 +153,7 @@ export function parseGhostJsonString(jsonText: string): ConvertedPostRecord[] {
     const title = post.title || 'Untitled Post';
     let slug = post.slug;
     if (!slug) {
-      slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `ghost-${Date.now()}`;
+      slug = slugify(title) || `ghost-${Date.now()}`;
     }
 
     // Resolve published date

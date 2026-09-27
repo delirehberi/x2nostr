@@ -168,19 +168,6 @@ export interface GistMigrationOptions {
 
 export type IGMediaType = 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
 export type IGMediaProductType = 'FEED' | 'STORY' | 'REELS' | 'AD';
-export type IGAccountType = 'BUSINESS' | 'MEDIA_CREATOR' | 'PERSONAL';
-
-export interface IGUser {
-  id: string;
-  username: string;
-  name?: string;
-  biography?: string;
-  account_type?: IGAccountType;
-  media_count?: number;
-  profile_picture_url?: string;
-  followers_count?: number;
-  follows_count?: number;
-}
 
 export interface IGMediaChild {
   id: string;
@@ -193,17 +180,6 @@ export interface IGMediaChild {
   dimensions?: { width: number; height: number };
   blossomUrl?: string;
   sha256?: string;
-}
-
-export interface IGPagingCursors {
-  before?: string;
-  after?: string;
-}
-
-export interface IGPaging {
-  cursors?: IGPagingCursors;
-  next?: string;
-  previous?: string;
 }
 
 export interface IGMediaRecord {

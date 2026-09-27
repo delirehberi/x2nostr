@@ -5,6 +5,7 @@ import { importSessionService } from '../../services/import-session';
 import { nostrService } from '../../services/nostr';
 import { ImportSession, WordPressMigrationOptions } from '../../types';
 import { showDryRunModal } from './modal';
+import { icons } from '../icons';
 
 declare global {
   interface Window {
@@ -66,15 +67,13 @@ export function renderWordPressView(container: HTMLElement): void {
     container.innerHTML = `
       <div class="space-y-8">
         <!-- Header Banner -->
-        <div class="bg-gradient-to-r from-blue-900 via-slate-900 to-indigo-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
-          <div class="max-w-3xl space-y-3">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-400/30">
-              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-              NIP-23 Long-Form Articles (Kind 30023)
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">${t('wpImporterTitle')}</h2>
-            <p class="text-slate-300 text-sm leading-relaxed">${t('wpImporterSubtitle')}</p>
+        <div class="card-workbench p-6 sm:p-8 space-y-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-accent-subtle-border)] text-xs font-mono font-medium">
+            <span>${icons.fileText}</span>
+            <span>NIP-23 Long-Form Articles (Kind 30023)</span>
           </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-ink)]">${t('wpImporterTitle')}</h2>
+          <p class="text-[var(--color-ink-muted)] text-xs sm:text-sm leading-relaxed max-w-3xl">${t('wpImporterSubtitle')}</p>
         </div>
 
         <!-- Real-Time Auto-Sync Recommendation Banner -->

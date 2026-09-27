@@ -12,9 +12,9 @@ export function showModal(title: string, contentHtml: string): void {
   backdrop.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs transition-opacity';
   
   backdrop.innerHTML = `
-    <div class="relative w-full max-w-lg glass-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200" role="dialog" aria-modal="true">
-      <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200">
-        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+    <div class="relative w-full max-w-lg card-workbench border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden modal-enter" role="dialog" aria-modal="true">
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-[var(--color-border-subtle)]">
+        <h3 class="font-display text-xl font-bold text-[var(--color-ink)] flex items-center gap-2.5">
           ${title}
         </h3>
         <button id="modal-close-btn" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer">
@@ -211,9 +211,9 @@ export function showConfirmModal(opts: {
   backdrop.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs transition-opacity';
 
   backdrop.innerHTML = `
-    <div class="relative w-full max-w-md glass-card bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200" role="dialog" aria-modal="true">
-      <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
-        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+    <div class="relative w-full max-w-md card-workbench border border-[var(--color-border)] rounded-2xl p-6 shadow-2xl overflow-hidden modal-enter" role="dialog" aria-modal="true">
+      <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--color-border-subtle)]">
+        <h3 class="font-display text-base font-bold text-[var(--color-ink)] flex items-center gap-2">
           <span class="text-amber-500">${icons.alertCircle}</span>
           <span>${opts.title}</span>
         </h3>

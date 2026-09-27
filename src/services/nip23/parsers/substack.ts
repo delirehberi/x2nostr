@@ -2,6 +2,7 @@ import Papa from 'papaparse';
 import { ConvertedPostRecord } from '../types';
 import { convertHtmlToMarkdown, extractImageUrlsFromHtml } from '../../html-to-markdown';
 import { unzipBuffer } from '../zip';
+import { slugify } from '../../tags';
 
 interface SubstackCsvRow {
   post_id?: string;
@@ -116,7 +117,7 @@ export function parseSubstackCsvString(
       }
     }
     if (!slug) {
-      slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `post-${postId}`;
+      slug = slugify(title) || `post-${postId}`;
     }
 
     // Resolve date
@@ -177,7 +178,7 @@ function parseSubstackHtmlFallback(htmlText: string, fileName: string): Converte
     htmlText.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
 
   const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : cleanTitleFromFilename(cleanFileName);
-  const slug = cleanFileName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `post-${Date.now()}`;
+  const slug = slugify(cleanFileName) || slugify(title) || `post-${Date.now()}`;
 
   const contentMarkdown = convertHtmlToMarkdown(htmlText);
   const imageUrls = extractImageUrlsFromHtml(htmlText);

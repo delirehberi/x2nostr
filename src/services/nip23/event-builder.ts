@@ -1,4 +1,5 @@
 import { ConvertedPostRecord, UnsignedNip23Event } from './types';
+import { normalizeTopic, slugify } from '../tags';
 
 /**
  * Builds an unsigned NIP-23 (Kind 30023) event template from a ConvertedPostRecord.
@@ -14,7 +15,7 @@ import { ConvertedPostRecord, UnsignedNip23Event } from './types';
  * - ["client", "x2nostr"]
  */
 export function buildUnsignedNip23Event(post: ConvertedPostRecord): UnsignedNip23Event {
-  const dTag = post.slug || generateSlug(post.title) || `post-${post.publishedAtTimestamp}`;
+  const dTag = post.slug || slugify(post.title) || `post-${post.publishedAtTimestamp}`;
 
   const tags: string[][] = [
     ['d', dTag],
@@ -84,29 +85,4 @@ export function buildUnsignedNip23Event(post: ConvertedPostRecord): UnsignedNip2
     tags,
     content: post.contentMarkdown || '',
   };
-}
-
-/**
- * Normalizes a topic / tag string into a clean lowercase slug.
- */
-function normalizeTopic(topic: string): string {
-  if (!topic) return '';
-  return topic
-    .toLowerCase()
-    .trim()
-    .replace(/[#@]/g, '')
-    .replace(/[^a-z0-9_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
-/**
- * Generates a clean URL slug from a title string.
- */
-function generateSlug(title: string): string {
-  if (!title) return '';
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 }

@@ -1,4 +1,5 @@
 import { GistMigrationOptions, GistSnippetRecord, UnsignedNostrEvent } from '../../types';
+import { normalizeTopic } from '../../services/tags';
 
 /**
  * Builds an unsigned NIP-C0 Code Snippet event (Kind 1337).
@@ -47,7 +48,7 @@ export function buildGistSnippetEvent(
 
   if (snippet.tags && snippet.tags.length > 0) {
     snippet.tags.forEach((tag) => {
-      const clean = tag.toLowerCase().replace(/[^a-z0-9_-]+/g, '');
+      const clean = normalizeTopic(tag);
       if (clean) {
         tags.push(['t', clean]);
       }

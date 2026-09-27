@@ -1,6 +1,7 @@
 import { ConvertedPostRecord } from '../types';
 import { convertHtmlToMarkdown, extractImageUrlsFromHtml } from '../../html-to-markdown';
 import { unzipBuffer } from '../zip';
+import { slugify } from '../../tags';
 
 /**
  * Parses Medium export (single HTML string, binary buffer, or ZIP archive containing posts/*.html).
@@ -71,9 +72,9 @@ export function parseMediumHtmlString(htmlText: string, fileName = 'post.html'):
   const title = rawTitle || cleanTitleFromFilename(cleanFileName);
 
   // 2. Extract Slug
-  let slug = cleanFileName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  let slug = slugify(cleanFileName);
   if (!slug || slug === 'post' || slug === 'index') {
-    slug = generateSlug(title);
+    slug = slugify(title) || `medium-${Date.now()}`;
   }
 
   // 3. Extract Published Date
@@ -143,14 +144,6 @@ function cleanTitleFromFilename(filename: string): string {
     .replace(/[-_]+/g, ' ')
     .trim()
     .replace(/\b\w/g, (l) => l.toUpperCase());
-}
-
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '') || `medium-${Date.now()}`;
 }
 
 function extractSummaryFromMarkdown(md: string): string {

@@ -1,5 +1,6 @@
 import { WordPressPostRecord } from '../../types';
 import { convertHtmlToMarkdown, extractImageUrlsFromHtml } from '../../services/html-to-markdown';
+import { slugify } from '../../services/tags';
 
 export async function parseWordPressXml(file: File): Promise<WordPressPostRecord[]> {
   const xmlText = await file.text();
@@ -62,7 +63,7 @@ function parseWithDomParser(items: NodeListOf<Element>): WordPressPostRecord[] {
     const title = getElementTextByLocalName(item, 'title') || 'Untitled Post';
     let slug = getElementTextByLocalName(item, 'post_name');
     if (!slug) {
-      slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `post-${wpPostId}`;
+      slug = slugify(title) || `post-${wpPostId}`;
     }
 
     const contentHtml = getSpecificXmlTag(item, 'content', 'encoded') || getElementTextByLocalName(item, 'content') || '';
@@ -178,7 +179,7 @@ function parseWithRegexFallback(xmlText: string): WordPressPostRecord[] {
     const title = getRegexXmlTagValue(itemXml, 'title') || 'Untitled Post';
     let slug = getRegexXmlTagValue(itemXml, 'post_name');
     if (!slug) {
-      slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `post-${wpPostId}`;
+      slug = slugify(title) || `post-${wpPostId}`;
     }
 
     const contentHtml = getSpecificRegexXmlTag(itemXml, 'content', 'encoded') || getRegexXmlTagValue(itemXml, 'content') || '';

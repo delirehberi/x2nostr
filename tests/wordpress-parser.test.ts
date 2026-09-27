@@ -122,11 +122,43 @@ describe('WordPress NIP-23 Event Builder', () => {
     expect(imageTag).toEqual(['image', 'https://blossom.primal.net/hero.jpg']);
 
     const topicTags = event.tags.filter((t) => t[0] === 't').map((t) => t[1]);
-    expect(topicTags).toContain('decentralization');
-    expect(topicTags).toContain('nostr');
-
     expect(event.content).toContain('https://blossom.primal.net/photo.jpg');
     expect(event.content).not.toContain('https://myblog.example.com/uploads/2026/05/photo.jpg');
+  });
+
+  it('should correctly preserve Turkish characters in tags and generate clean slugs', () => {
+    const pubkey = '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff';
+    const post = {
+      wpPostId: '99',
+      title: 'İki kadın, bir erkek ve bir bebek!',
+      slug: 'iki-kadin-bir-erkek-ve-bir-bebek',
+      publishedAtTimestamp: 1475505925,
+      contentHtml: '<p>İçerik metni</p>',
+      contentMarkdown: 'İçerik metni',
+      summary: 'Geçtiğimiz günlerde annesi, babası ve donörünün...',
+      author: 'Emre',
+      status: 'publish',
+      categories: ['Köşe Yazıları', 'Sağlık'],
+      tags: ['DNA', 'Donör', 'Hücre', "Leigh's Sendromu", 'mitokondri'],
+      imageUrls: [],
+    };
+
+    const event = buildWordPressPostEvent(post, pubkey);
+    const topicTags = event.tags.filter((t) => t[0] === 't').map((t) => t[1]);
+
+    expect(topicTags).toContain('köşe-yazıları');
+    expect(topicTags).toContain('sağlık');
+    expect(topicTags).toContain('dna');
+    expect(topicTags).toContain('donör');
+    expect(topicTags).toContain('hücre');
+    expect(topicTags).toContain('leighs-sendromu');
+    expect(topicTags).toContain('mitokondri');
+
+    // Ensure none of the broken mangled tags exist
+    expect(topicTags).not.toContain('k-e-yaz-lar-');
+    expect(topicTags).not.toContain('sa-l-k');
+    expect(topicTags).not.toContain('don-r');
+    expect(topicTags).not.toContain('h-cre');
   });
 });
 

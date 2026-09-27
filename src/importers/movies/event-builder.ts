@@ -1,4 +1,5 @@
 import { MovieRecord, UnsignedNostrEvent } from '../../types';
+import { normalizeTopic } from '../../services/tags';
 
 /**
  * Builds NIP-51 Kind 30003 Parameterized Replaceable Curated Set Event for Movies & Shows
@@ -93,7 +94,10 @@ export function buildMovieReviewEvent(
   if (movie.genres && movie.genres.length > 0) {
     tags.push(['genres', ...movie.genres]);
     movie.genres.forEach((genre) => {
-      tags.push(['t', genre.toLowerCase().replace(/[^a-z0-9]/g, '-')]);
+      const topic = normalizeTopic(genre);
+      if (topic) {
+        tags.push(['t', topic]);
+      }
     });
   }
 

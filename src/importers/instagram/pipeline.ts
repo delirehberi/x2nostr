@@ -7,8 +7,8 @@ import {
   SignedNostrEvent,
   UnsignedNostrEvent,
 } from '../../types';
-import { instagramService } from './instagram-service';
-import { calculateImageDimensions, parseIGMediaItems, parseInstagramArchiveJson } from './parser';
+import { downloadMediaBinary } from './instagram-service';
+import { calculateImageDimensions, parseInstagramArchiveJson } from './parser';
 import { buildKind20PictureEvent, UploadedMediaItem } from './event-builder';
 import { blossomService, DEFAULT_BLOSSOM_SERVERS } from '../../services/blossom';
 import { nostrService } from '../../services/nostr';
@@ -158,51 +158,6 @@ class InstagramPipeline {
       hash |= 0;
     }
     this.sourceFingerprint = `ig_${Math.abs(hash).toString(16)}_${this.posts.length}`;
-  }
-
-  /**
-   * Walks the Instagram Graph API to retrieve all posts and carousel children.
-   */
-  public async walkInstagramAccount(accessToken: string): Promise<IGMediaRecord[]> {
-    this.addLog('info', 'Connecting to Instagram Graph API...');
-    this.progress = {
-      total: 0,
-      processed: 0,
-      succeeded: 0,
-      failed: 0,
-      skipped: 0,
-      phase: 'resolving',
-      percentage: 10,
-    };
-    this.notifyProgress();
-
-    try {
-      const profile = await instagramService.fetchUserProfile(accessToken);
-      this.addLog('info', `Authenticated as @${profile.username} (${profile.media_count ?? 0} media items)`);
-
-      const rawItems = await instagramService.walkMediaGraph(accessToken, (status, count) => {
-        this.addLog('info', status);
-        this.progress.processed = count;
-        this.notifyProgress();
-      });
-
-      const parsed = parseIGMediaItems(rawItems);
-      this.setPosts(parsed);
-
-      this.progress.total = parsed.length;
-      this.progress.phase = 'idle';
-      this.progress.percentage = 100;
-      this.notifyProgress();
-
-      this.addLog('success', `Successfully retrieved ${parsed.length} posts from @${profile.username}`);
-      return parsed;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      this.addLog('error', `Instagram Graph API traversal failed: ${msg}`);
-      this.progress.phase = 'error';
-      this.notifyProgress();
-      throw err;
-    }
   }
 
   /**
@@ -384,7 +339,7 @@ class InstagramPipeline {
               let blob = child.fileBlob;
               if (!blob && child.media_url) {
                 try {
-                  blob = await instagramService.downloadMediaBinary(child.media_url);
+                  blob = await downloadMediaBinary(child.media_url);
                   child.fileBlob = blob;
                 } catch (downloadErr) {
                   this.addLog('warning', `Could not download carousel slide ${c + 1} for post ${post.id}: ${downloadErr}`);
@@ -418,7 +373,7 @@ class InstagramPipeline {
             let blob = post.fileBlob;
             if (!blob && post.media_url) {
               try {
-                blob = await instagramService.downloadMediaBinary(post.media_url);
+                blob = await downloadMediaBinary(post.media_url);
                 post.fileBlob = blob;
               } catch (downloadErr) {
                 this.addLog('warning', `Could not download media for post ${post.id}: ${downloadErr}`);

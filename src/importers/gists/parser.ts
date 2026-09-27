@@ -1,22 +1,13 @@
 import { GistSnippetRecord } from '../../types';
 import { detectLanguage, extractExtension } from './language-detector';
 import { gitHubService, GitHubGistItem } from './github-service';
+import { extractHashtags } from '../../services/tags';
 
 /**
  * Extracts hashtag topics from text (e.g. "#nostr #python #crypto" -> ["nostr", "python", "crypto"]).
  */
 export function extractTopics(text: string): string[] {
-  if (!text) return [];
-  const matches = text.match(/#([a-zA-Z0-9_-]+)/g);
-  if (!matches) return [];
-  const topics = new Set<string>();
-  for (const m of matches) {
-    const clean = m.slice(1).toLowerCase().trim();
-    if (clean.length > 1) {
-      topics.add(clean);
-    }
-  }
-  return [...topics];
+  return extractHashtags(text);
 }
 
 /**

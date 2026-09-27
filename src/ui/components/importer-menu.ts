@@ -86,31 +86,41 @@ export function renderImporterMenu(container: HTMLElement, activeImporterId = 'g
     return `
       <div 
         data-importer-id="${item.id}"
-        class="importer-tab-card cursor-pointer p-4 rounded-2xl border border-slate-200 transition-all flex flex-col justify-between ${
+        class="importer-tab-card card-workbench card-workbench-interactive cursor-pointer p-4 flex flex-col justify-between transition-all ${
           isActive
-            ? 'bg-purple-50/80 shadow-xs'
+            ? 'border-[var(--color-accent)] ring-1 ring-[var(--color-accent)] bg-[var(--color-paper-card)]'
             : isReady
-            ? 'glass-card bg-white hover:bg-slate-50/80 shadow-xs hover:shadow-md'
-            : 'glass-card bg-slate-50/60 opacity-80 hover:opacity-100 hover:bg-slate-100/80 shadow-xs'
+            ? 'hover:border-[var(--color-border-focus)]'
+            : 'opacity-70 bg-[var(--color-paper-subtle)]'
         }"
       >
         <div>
           <div class="flex items-center justify-between mb-3">
-            <div class="w-9 h-9 rounded-xl ${
-              isReady ? 'bg-purple-50 border border-purple-200 text-purple-600' : 'bg-amber-50 border border-amber-200 text-amber-600'
+            <div class="w-8 h-8 rounded-lg ${
+              isActive 
+                ? 'bg-[var(--color-accent)] text-white'
+                : isReady 
+                ? 'bg-[var(--color-paper-subtle)] text-[var(--color-ink)]' 
+                : 'bg-[var(--color-paper-inset)] text-[var(--color-ink-faint)]'
             } flex items-center justify-center">
               ${icons[item.iconName] || icons.zap}
             </div>
-            <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full ${
-              isReady ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
+            <span class="text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded ${
+              isActive
+                ? 'bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-accent-subtle-border)]'
+                : isReady 
+                ? 'bg-[var(--color-paper-subtle)] text-[var(--color-ink-muted)] border border-[var(--color-border-subtle)]' 
+                : 'bg-[var(--color-paper-inset)] text-[var(--color-ink-faint)]'
             }">
               ${isReady ? t('statusActive') : `Phase ${item.phase}`}
             </span>
           </div>
-          <h4 class="text-sm font-bold text-slate-900 mb-1">${t(item.nameKey as any)}</h4>
-          <p class="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">${t(item.descKey as any)}</p>
+          <h4 class="font-display text-sm font-bold text-[var(--color-ink)] mb-1">${t(item.nameKey as any)}</h4>
+          <p class="text-xs text-[var(--color-ink-muted)] line-clamp-2 mb-3 leading-relaxed">${t(item.descKey as any)}</p>
         </div>
-        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-purple-600 font-medium">
+        <div class="pt-2.5 border-t border-[var(--color-border-subtle)] flex items-center justify-between text-[11px] font-mono font-medium ${
+          isActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-ink-muted)]'
+        }">
           <span class="truncate">${t(item.targetKey as any)}</span>
           ${isReady ? icons.checkCircle : icons.arrowRight}
         </div>
@@ -119,15 +129,15 @@ export function renderImporterMenu(container: HTMLElement, activeImporterId = 'g
   }).join('');
 
   container.innerHTML = `
-    <div id="migration-hub" class="mb-10">
+    <div id="migration-hub" class="mb-10 text-left">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-4">
         <div>
-          <div class="text-xs font-semibold uppercase tracking-wider text-purple-600 mb-1">x2nostr Engine</div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">${t('importersTitle')}</h2>
-          <p class="text-sm text-slate-500 mt-1">${t('importersSubtitle')}</p>
+          <div class="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--color-accent)] mb-1">x2nostr Engine</div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-[var(--color-ink)]">${t('importersTitle')}</h2>
+          <p class="text-xs sm:text-sm text-[var(--color-ink-muted)] mt-1">${t('importersSubtitle')}</p>
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-4">
         ${cardsHtml}
       </div>
     </div>

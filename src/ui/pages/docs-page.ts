@@ -65,33 +65,33 @@ export function renderDocsPage(container: HTMLElement): void {
     const listHtml = DOCS.map((doc) => {
       const isSelected = doc.id === selectedDoc.id;
       return `
-        <div data-doc-id="${doc.id}" class="doc-nav-item p-4 rounded-xl border border-slate-200 transition-all cursor-pointer ${
+        <div data-doc-id="${doc.id}" class="doc-nav-item card-workbench card-workbench-interactive p-4 transition-all cursor-pointer ${
           isSelected
-            ? 'bg-purple-50/90 border-purple-300 shadow-xs'
-            : 'bg-white hover:bg-slate-50 text-slate-700'
+            ? 'border-[var(--color-accent)] ring-1 ring-[var(--color-accent)] bg-[var(--color-paper-card)]'
+            : 'hover:border-[var(--color-border-focus)]'
         }">
           <div class="flex items-center justify-between mb-1">
-            <span class="text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded bg-slate-100 text-purple-700 border border-slate-200">${doc.tag}</span>
-            ${isSelected ? `<span class="text-purple-600">${icons.checkCircle}</span>` : ''}
+            <span class="text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded bg-[var(--color-paper-subtle)] text-[var(--color-accent)] border border-[var(--color-border-subtle)]">${doc.tag}</span>
+            ${isSelected ? `<span class="text-[var(--color-accent)]">${icons.checkCircle}</span>` : ''}
           </div>
-          <h4 class="text-sm font-bold text-slate-900 mb-1">${t(doc.titleKey)}</h4>
-          <p class="text-xs text-slate-500 line-clamp-2">${t(doc.summaryKey)}</p>
+          <h4 class="font-display text-sm font-bold text-[var(--color-ink)] mb-1">${t(doc.titleKey)}</h4>
+          <p class="text-xs text-[var(--color-ink-muted)] line-clamp-2">${t(doc.summaryKey)}</p>
         </div>
       `;
     }).join('');
 
     container.innerHTML = `
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-left">
         <!-- Page Header -->
-        <div class="mb-10 text-center sm:text-left">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs font-semibold uppercase tracking-wider mb-3">
-            ${icons.fileText}
+        <div class="mb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-paper-subtle)] border border-[var(--color-border)] text-[var(--color-ink-muted)] text-xs font-mono font-medium mb-3">
+            <span class="text-[var(--color-accent)]">${icons.fileText}</span>
             <span>${t('navDocs')}</span>
           </div>
-          <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+          <h1 class="font-display text-2xl sm:text-4xl font-bold text-[var(--color-ink)] tracking-tight mb-2">
             ${t('docsTitle')}
           </h1>
-          <p class="text-sm text-slate-600 max-w-3xl">
+          <p class="text-xs sm:text-sm text-[var(--color-ink-muted)] max-w-3xl">
             ${t('docsSubtitle')}
           </p>
         </div>
@@ -104,12 +104,12 @@ export function renderDocsPage(container: HTMLElement): void {
           </div>
 
           <!-- Document Viewer -->
-          <div class="lg:col-span-8 glass-card bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
-            <div class="pb-4 mb-6 border-b border-slate-200 flex items-center justify-between">
-              <span class="text-xs font-mono font-bold text-purple-700 uppercase tracking-wider">${selectedDoc.tag}</span>
-              <span class="text-xs text-slate-400">x2nostr HowTo Series</span>
+          <div class="lg:col-span-8 card-workbench p-6 sm:p-8">
+            <div class="pb-4 mb-6 border-b border-[var(--color-border-subtle)] flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-[var(--color-accent)] uppercase tracking-wider">${selectedDoc.tag}</span>
+              <span class="text-xs font-mono text-[var(--color-ink-muted)]">x2nostr Spec & Guide</span>
             </div>
-            <div class="prose prose-slate max-w-none text-slate-700">
+            <div class="prose prose-slate max-w-none text-xs sm:text-sm leading-relaxed text-[var(--color-ink)] space-y-4">
               ${t(selectedDoc.contentKey)}
             </div>
           </div>

@@ -5,6 +5,7 @@ import { importSessionService } from '../../services/import-session';
 import { nostrService } from '../../services/nostr';
 import { ImportSession, LinkedInMigrationOptions } from '../../types';
 import { showDryRunModal } from './modal';
+import { icons } from '../icons';
 
 declare global {
   interface Window {
@@ -61,15 +62,13 @@ export function renderLinkedInView(container: HTMLElement): void {
     container.innerHTML = `
       <div class="space-y-8">
         <!-- Header Banner -->
-        <div class="bg-gradient-to-r from-sky-900 via-blue-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
-          <div class="max-w-3xl space-y-3">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 text-xs font-semibold border border-sky-400/30">
-              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-              NIP-23 Long-Form Articles (Kind 30023)
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">${t('linkedinImporterTitle')}</h2>
-            <p class="text-sky-200 text-sm leading-relaxed">${t('linkedinImporterSubtitle')}</p>
+        <div class="card-workbench p-6 sm:p-8 space-y-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-accent-subtle-border)] text-xs font-mono font-medium">
+            <span>${icons.fileText}</span>
+            <span>NIP-23 Long-Form Articles (Kind 30023)</span>
           </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-ink)]">${t('linkedinImporterTitle')}</h2>
+          <p class="text-[var(--color-ink-muted)] text-xs sm:text-sm leading-relaxed max-w-3xl">${t('linkedinImporterSubtitle')}</p>
         </div>
 
         <!-- LinkedIn Export Guide Box -->

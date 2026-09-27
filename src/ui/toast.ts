@@ -5,14 +5,14 @@ export function showToast(message: string, type: 'info' | 'success' | 'warning' 
   if (!container) return;
 
   const toast = document.createElement('div');
-  toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl glass-card shadow-xl border text-sm font-medium transition-all transform translate-y-2 opacity-0 max-w-md ${
+  toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl card-workbench shadow-lg border text-xs sm:text-sm font-medium transition-all transform translate-y-2 opacity-0 max-w-md ${
     type === 'success'
-      ? 'border-emerald-200 text-emerald-900 bg-emerald-50/95'
+      ? 'border-[var(--color-success-border)] text-emerald-950 bg-[var(--color-success-subtle)]'
       : type === 'error'
-      ? 'border-red-200 text-red-900 bg-red-50/95'
+      ? 'border-[var(--color-danger)] text-red-950 bg-[var(--color-danger-subtle)]'
       : type === 'warning'
-      ? 'border-amber-200 text-amber-900 bg-amber-50/95'
-      : 'border-purple-200 text-purple-900 bg-purple-50/95'
+      ? 'border-[var(--color-warning-border)] text-amber-950 bg-[var(--color-warning-subtle)]'
+      : 'border-[var(--color-accent-subtle-border)] text-[var(--color-ink)] bg-[var(--color-paper-card)]'
   }`;
 
   const iconSvg =

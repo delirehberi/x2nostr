@@ -1,25 +1,14 @@
 import { LinkedInArticleRecord } from '../../types';
 import { convertHtmlToMarkdown, extractImageUrlsFromHtml } from '../../services/html-to-markdown';
 import { unzipBuffer } from '../../services/nip23/zip';
+import { extractHashtags, slugify } from '../../services/tags';
 import Papa from 'papaparse';
 
 /**
  * Extracts hashtags (#tag) from text.
  */
 export function extractHashtagsFromText(text: string): string[] {
-  if (!text) return [];
-  const matches = text.match(/#[a-zA-Z0-9_\u0080-\uFFFF]+/g);
-  if (!matches) return [];
-
-  const uniqueTags = new Set<string>();
-  for (const match of matches) {
-    const clean = match.replace(/^#/, '').toLowerCase().trim();
-    if (clean) {
-      uniqueTags.add(clean);
-    }
-  }
-
-  return Array.from(uniqueTags);
+  return extractHashtags(text);
 }
 
 /**
@@ -236,11 +225,11 @@ export function parseLinkedInHtmlString(htmlText: string, fileName = 'article.ht
   }
 
   if (!slug) {
-    slug = cleanFileName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    slug = slugify(cleanFileName);
   }
 
   if (!slug || slug === 'article' || slug === 'index') {
-    slug = title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `linkedin-${Date.now()}`;
+    slug = slugify(title) || `linkedin-${Date.now()}`;
   }
 
   // Convert Body HTML to clean NIP-23 Markdown

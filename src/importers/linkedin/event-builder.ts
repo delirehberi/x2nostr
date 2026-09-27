@@ -1,4 +1,5 @@
 import { LinkedInArticleRecord, UnsignedNostrEvent } from '../../types';
+import { normalizeTopic } from '../../services/tags';
 
 /**
  * Builds an unsigned NIP-23 Long-Form Content event (Kind 30023) for a LinkedIn article.
@@ -22,11 +23,11 @@ export function buildLinkedInArticleEvent(article: LinkedInArticleRecord, pubkey
     tags.push(['image', coverUrl]);
   }
 
-  // Add topics/tags
+  // Add topics/tags with Unicode support
   const uniqueTags = new Set<string>();
   article.tags.forEach((tag) => {
-    const slug = tag.toLowerCase().replace(/[^a-z0-9_-]+/g, '-');
-    if (slug) uniqueTags.add(slug);
+    const topic = normalizeTopic(tag);
+    if (topic) uniqueTags.add(topic);
   });
 
   uniqueTags.forEach((tag) => {

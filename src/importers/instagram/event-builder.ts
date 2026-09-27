@@ -1,4 +1,5 @@
 import { IGMediaRecord, UnsignedNostrEvent } from '../../types';
+import { normalizeTopic } from '../../services/tags';
 
 export interface UploadedMediaItem {
   url: string;
@@ -54,7 +55,10 @@ export function buildKind20PictureEvent(
   // 4. NIP-12 hashtag tags
   if (record.tags && record.tags.length > 0) {
     for (const tag of record.tags) {
-      tags.push(['t', tag.toLowerCase()]);
+      const topic = normalizeTopic(tag);
+      if (topic) {
+        tags.push(['t', topic]);
+      }
     }
   }
 

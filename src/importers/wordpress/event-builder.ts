@@ -1,4 +1,5 @@
 import { UnsignedNostrEvent, WordPressPostRecord } from '../../types';
+import { normalizeTopic } from '../../services/tags';
 
 /**
  * Builds an unsigned NIP-23 Long-Form Content event (Kind 30023).
@@ -22,15 +23,15 @@ export function buildWordPressPostEvent(post: WordPressPostRecord, pubkey: strin
     tags.push(['image', coverUrl]);
   }
 
-  // Combine categories & tags into NIP-23 "t" tags
+  // Combine categories & tags into NIP-23 "t" tags with Unicode support
   const combinedTopics = new Set<string>();
   post.categories.forEach((cat) => {
-    const slug = cat.toLowerCase().replace(/[^a-z0-9_-]+/g, '-');
-    if (slug) combinedTopics.add(slug);
+    const topic = normalizeTopic(cat);
+    if (topic) combinedTopics.add(topic);
   });
   post.tags.forEach((tag) => {
-    const slug = tag.toLowerCase().replace(/[^a-z0-9_-]+/g, '-');
-    if (slug) combinedTopics.add(slug);
+    const topic = normalizeTopic(tag);
+    if (topic) combinedTopics.add(topic);
   });
 
   combinedTopics.forEach((topic) => {
