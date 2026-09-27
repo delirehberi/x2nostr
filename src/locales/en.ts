@@ -217,6 +217,10 @@ export const en = {
   blogsDesc: 'Migrate your WordPress blog posts into sovereign NIP-23 long-form articles with automatic Markdown conversion and Blossom media uploads.',
   blogsTarget: 'NIP-23 Long-Form (Kind 30023)',
   
+  linkedinName: 'LinkedIn Articles',
+  linkedinDesc: 'Migrate your long-form LinkedIn Pulse articles into sovereign NIP-23 content events with rich Markdown formatting and Blossom media hosting.',
+  linkedinTarget: 'NIP-23 Long-Form Articles (Kind 30023)',
+  
   gistsName: 'GitHub Gists',
   gistsDesc: 'Migrate your GitHub Gists and code snippets into decentralized NIP-C0 (Kind 1337) code events and NIP-44 encrypted private snippets.',
   gistsTarget: 'NIP-C0 Snippets (Kind 1337) & NIP-44 Encrypted (Kind 30078)',
@@ -543,6 +547,29 @@ export const en = {
   instagramBackupDownloaded: 'Downloaded Nostr Kind 20 backup bundle.',
   instagramArchiveLoaded: 'Successfully loaded posts from Instagram archive.',
   instagramUnsupportedFormat: 'Please upload an Instagram export file (posts_1.json).',
+
+  // LinkedIn Articles Migration Wizard
+  linkedinImporterTitle: 'LinkedIn Articles to Nostr Long-Form Content',
+  linkedinImporterSubtitle: 'Migrate your long-form LinkedIn Pulse articles into sovereign NIP-23 (Kind 30023) articles. Convert rich HTML to Markdown, preserve cover banners, and upload media to decentralized Blossom servers.',
+  linkedinGuideTitle: 'How to Export Your Articles from LinkedIn',
+  linkedinGuideShort: 'Export your long-form articles archive directly from your LinkedIn account privacy settings.',
+  linkedinStep1Title: 'Go to Data Privacy Settings',
+  linkedinStep1Desc: 'Click your profile picture > Settings & Privacy > Data privacy > Get a copy of your data.',
+  linkedinStep2Title: 'Select Articles & Request Archive',
+  linkedinStep2Desc: 'Choose "Want something in particular? > Articles" (or download the full archive) and click "Request archive".',
+  linkedinStep3Title: 'Upload the ZIP Archive or HTML Files',
+  linkedinStep3Desc: 'LinkedIn will email you a download link. Drop the downloaded .zip archive or individual article .html files below.',
+  linkedinDropzoneTitle: 'Drag & drop LinkedIn export ZIP archive or HTML article files here',
+  linkedinDropzoneSubtitle: 'or click to browse files from your computer',
+  linkedinDropzoneSupport: 'Supports LinkedIn data archive ZIP files (.zip), Article HTML files (.html), and CSV exports (.csv)',
+  linkedinArticlesLoaded: 'Articles Loaded',
+  noArticlesFound: 'No articles match your search or filter criteria.',
+  showInstructions: 'Show Export Instructions',
+  hideInstructions: 'Hide Instructions',
+  changeFile: 'Change File',
+  summary: 'Summary / Excerpt',
+  tags: 'Topics & Hashtags',
+  publishedDate: 'Published Date',
 };
 
 export type TranslationKey = keyof typeof en;

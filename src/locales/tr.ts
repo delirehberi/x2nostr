@@ -216,6 +216,10 @@ export const tr: Record<TranslationKey, string> = {
   blogsDesc: 'WordPress blog yazılarınızı otomatik Markdown dönüştürme ve Blossom medya yüklemeleri ile egemen NIP-23 uzun yazılara aktarın.',
   blogsTarget: 'NIP-23 Uzun Yazılar (Kind 30023)',
   
+  linkedinName: 'LinkedIn Makaleleri',
+  linkedinDesc: 'Uzun formatlı LinkedIn Pulse makalelerinizi zengin Markdown biçimlendirmesi ve Blossom medya barındırma ile egemen NIP-23 içerik etkinliklerine aktarın.',
+  linkedinTarget: 'NIP-23 Uzun Yazılar (Kind 30023)',
+  
   gistsName: 'GitHub Gists',
   gistsDesc: 'GitHub Gist\'lerinizi ve kod parçacıklarınızı merkeziyetsiz NIP-C0 (Kind 1337) kod etkinliklerine ve NIP-44 ile şifrelenmiş özel parçacıklara aktarın.',
   gistsTarget: 'NIP-C0 Kod Parçacıkları (Kind 1337) & NIP-44 Şifreli (Kind 30078)',
@@ -542,5 +546,28 @@ export const tr: Record<TranslationKey, string> = {
   instagramBackupDownloaded: 'Nostr Kind 20 yedek paketi indirildi.',
   instagramArchiveLoaded: 'Instagram arşivinden gönderiler başarıyla yüklendi.',
   instagramUnsupportedFormat: 'Lütfen geçerli bir Instagram dışa aktarım dosyası (posts_1.json) yükleyin.',
+
+  // LinkedIn Articles Migration Wizard
+  linkedinImporterTitle: 'LinkedIn Makalelerini Nostr Uzun Yazılarına Aktar',
+  linkedinImporterSubtitle: 'Uzun formatlı LinkedIn Pulse makalelerinizi egemen NIP-23 (Kind 30023) yazılarına dönüştürün. Zengin HTML\'i Markdown\'a çevirin, kapak görsellerini koruyun ve medyayı merkeziyetsiz Blossom sunucularına yükleyin.',
+  linkedinGuideTitle: 'LinkedIn Makalelerinizi Nasıl Dışa Aktarırsınız?',
+  linkedinGuideShort: 'Uzun makale arşivinizi doğrudan LinkedIn hesap gizlilik ayarlarınızdan dışa aktarın.',
+  linkedinStep1Title: 'Veri Gizliliği Ayarlarına Gidin',
+  linkedinStep1Desc: 'Profil resminize tıklayın > Ayarlar ve Gizlilik > Veri gizliliği > Verilerinizin bir kopyasını alın.',
+  linkedinStep2Title: 'Makaleleri Seçin ve Arşiv İsteyin',
+  linkedinStep2Desc: '"Belirli bir şey mi istiyorsunuz? > Makaleler" seçeneğini seçin (veya tam arşivi indirin) ve "Arşiv iste" düğmesine tıklayın.',
+  linkedinStep3Title: 'ZIP Arşivini veya HTML Dosyalarını Yükleyin',
+  linkedinStep3Desc: 'LinkedIn size indirme bağlantısı içeren bir e-posta gönderecektir. İndirilen .zip arşivini veya tekil .html dosyalarını aşağıya bırakın.',
+  linkedinDropzoneTitle: 'LinkedIn dışa aktarım ZIP arşivini veya HTML makale dosyalarını buraya sürükleyip bırakın',
+  linkedinDropzoneSubtitle: 'veya bilgisayarınızdan dosya seçmek için tıklayın',
+  linkedinDropzoneSupport: 'LinkedIn veri arşivi ZIP dosyalarını (.zip), Makale HTML dosyalarını (.html) ve CSV dışa aktarımlarını (.csv) destekler',
+  linkedinArticlesLoaded: 'Makale Yüklendi',
+  noArticlesFound: 'Arama veya filtreleme kriterlerinize uygun makale bulunamadı.',
+  showInstructions: 'Dışa Aktarma Yönergesini Göster',
+  hideInstructions: 'Yönergeyi Gizle',
+  changeFile: 'Dosyayı Değiştir',
+  summary: 'Özet / Alıntı',
+  tags: 'Konular ve Etiketler',
+  publishedDate: 'Yayın Tarihi',
 };
 

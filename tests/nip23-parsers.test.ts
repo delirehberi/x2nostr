@@ -4,6 +4,7 @@ import { parseGhostExport, parseGhostJsonString } from '../src/services/nip23/pa
 import { parseHugoExport, parseHugoMarkdownFile } from '../src/services/nip23/parsers/hugo';
 import { parseMediumExport, parseMediumHtmlString } from '../src/services/nip23/parsers/medium';
 import { parseSubstackExport, parseSubstackCsvString } from '../src/services/nip23/parsers/substack';
+import { parseLinkedInExport } from '../src/services/nip23/parsers/linkedin';
 import { parseGenericMarkdownExport } from '../src/services/nip23/parsers/markdown';
 
 describe('WordPress Parser (with Elementor & Shortcodes)', () => {
@@ -379,4 +380,31 @@ describe('ZIP Archive Extraction for all platforms', () => {
     expect(posts).toHaveLength(1);
     expect(posts[0].title).toBe('Ghost Post in ZIP');
   });
+
+  it('should parse LinkedIn ZIP archive containing Articles HTML', async () => {
+    const sampleHtml = `<html>
+<head><title>LinkedIn Article in ZIP</title></head>
+<body>
+  <img src="https://media.licdn.com/cover.jpg" />
+  <h1><a href="https://www.linkedin.com/pulse/sample-pulse-123">LinkedIn Article in ZIP</a></h1>
+  <p class="published">Published on 2026-02-24 00:09</p>
+  <div><p>Sovereign articles on Nostr protocol. #nostr</p></div>
+</body>
+</html>`;
+
+    const zipBytes = createTestZip([
+      {
+        name: 'Articles/sample-pulse-123.html',
+        content: sampleHtml,
+      },
+    ]);
+
+    const posts = await parseLinkedInExport(zipBytes);
+    expect(posts).toHaveLength(1);
+    expect(posts[0].title).toBe('LinkedIn Article in ZIP');
+    expect(posts[0].slug).toBe('sample-pulse-123');
+    expect(posts[0].featuredImageUrl).toBe('https://media.licdn.com/cover.jpg');
+    expect(posts[0].contentMarkdown).toContain('Sovereign articles on Nostr protocol.');
+  });
 });
+

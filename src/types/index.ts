@@ -104,6 +104,36 @@ export interface WordPressMigrationOptions {
   resumeSession?: ImportSession;
 }
 
+export interface LinkedInArticleRecord {
+  id: string;
+  articleId: string;
+  title: string;
+  slug: string;
+  canonicalUrl?: string;
+  contentHtml: string;
+  contentMarkdown: string;
+  summary: string;
+  author: string;
+  createdDate?: string;
+  publishedDate: string;
+  publishedAtTimestamp: number;
+  coverImageUrl?: string;
+  imageUrls: string[];
+  tags: string[];
+  selected?: boolean;
+  blossomCoverUrl?: string;
+  blossomImageMap?: Record<string, string>;
+}
+
+export interface LinkedInMigrationOptions {
+  generateKind30023: boolean; // Kind 30023 Long-Form Articles
+  uploadImagesToBlossom: boolean;
+  blossomServers: string[];
+  deletePreviousArticlesBeforeImport?: boolean; // NIP-09 Kind 5 deletion of Kind 30023 events
+  publishToCustomRelaysOnly: boolean;
+  resumeSession?: ImportSession;
+}
+
 export interface GistSnippetRecord {
   id: string; // Internal unique ID
   gistId: string; // GitHub Gist ID or source identifier

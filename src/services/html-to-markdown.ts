@@ -314,8 +314,13 @@ function walkDomNode(node: Node): string {
       return `\n\n##### ${childrenText.trim()}\n\n`;
     case 'h6':
       return `\n\n###### ${childrenText.trim()}\n\n`;
-    case 'p':
+    case 'p': {
+      const parentTag = element.parentElement?.tagName.toLowerCase();
+      if (parentTag === 'li') {
+        return childrenText.trim();
+      }
       return childrenText.trim() ? `\n\n${childrenText.trim()}\n\n` : '';
+    }
     case 'br':
       return '\n';
     case 'strong':
@@ -475,6 +480,11 @@ function fallbackRegexHtmlToMarkdown(html: string): string {
     return `\n\n> ${stripped.replace(/\n+/g, '\n> ')}\n\n`;
   });
 
+  // Lists and Dividers (handle <li><p>...</p></li> before general <p> handling)
+  md = md.replace(/<li[^>]*>\s*<p[^>]*>([\s\S]*?)<\/p>\s*<\/li>/gi, '- $1\n');
+  md = md.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '- $1\n');
+  md = md.replace(/<hr\s*\/?>/gi, '\n\n---\n\n');
+
   // Paragraphs and breaks
   md = md.replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '\n\n$1\n\n');
   md = md.replace(/<br\s*\/?>/gi, '\n');
@@ -487,23 +497,35 @@ function fallbackRegexHtmlToMarkdown(html: string): string {
   md = md.replace(/<del[^>]*>([\s\S]*?)<\/del>/gi, '~~$1~~');
   md = md.replace(/<s[^>]*>([\s\S]*?)<\/s>/gi, '~~$1~~');
 
-  // Code & Pre
-  md = md.replace(/<pre[^>]*><code[^>]*class=["'](?:language-|lang-)?([a-zA-Z0-9_-]*)["'][^>]*>([\s\S]*?)<\/code><\/pre>/gi, '\n\n```$1\n$2\n```\n\n');
-  md = md.replace(/<pre[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/gi, '\n\n```\n$1\n```\n\n');
-  md = md.replace(/<pre[^>]*>([\s\S]*?)<\/pre>/gi, '\n\n```\n$1\n```\n\n');
-  md = md.replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, '`$1`');
+  // Code & Pre (unescape basic HTML entities inside code)
+  const unescapeEntities = (str: string) =>
+    str
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, ' ');
+
+  md = md.replace(/<pre[^>]*><code[^>]*class=["'](?:language-|lang-)?([a-zA-Z0-9_-]*)["'][^>]*>([\s\S]*?)<\/code><\/pre>/gi, (_m, lang, code) =>
+    `\n\n\`\`\`${lang}\n${unescapeEntities(code).trim()}\n\`\`\`\n\n`
+  );
+  md = md.replace(/<pre[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/gi, (_m, code) =>
+    `\n\n\`\`\`\n${unescapeEntities(code).trim()}\n\`\`\`\n\n`
+  );
+  md = md.replace(/<pre[^>]*>([\s\S]*?)<\/pre>/gi, (_m, code) =>
+    `\n\n\`\`\`\n${unescapeEntities(code).trim()}\n\`\`\`\n\n`
+  );
+  md = md.replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, (_m, code) => `\`${unescapeEntities(code).trim()}\``);
 
   // Links and Images
   md = md.replace(/<a[^>]+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, '[$2]($1)');
   md = md.replace(/<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*alt=["']([^"']*)["'][^>]*\/?>/gi, '![$2]($1)');
   md = md.replace(/<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*\/?>/gi, '![]($1)');
 
-  // Lists and Dividers
-  md = md.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '- $1\n');
-  md = md.replace(/<hr\s*\/?>/gi, '\n\n---\n\n');
-
-  // Clean remaining tags
+  // Clean remaining tags and decode common entities
   md = md.replace(/<[^>]+>/g, '');
+  md = unescapeEntities(md);
 
   return md;
 }

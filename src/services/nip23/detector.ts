@@ -44,10 +44,22 @@ export async function detectPlatform(
         }
       }
 
+      // Check LinkedIn HTML structure (Articles/*.html, linkedin.com/pulse markers, or created/published classes)
+      const linkedInEntries = entries.filter((e) => {
+        const lower = e.name.toLowerCase();
+        return lower.includes('articles/') && (lower.endsWith('.html') || lower.endsWith('.htm'));
+      });
+      if (linkedInEntries.length > 0) {
+        return 'linkedin';
+      }
+
       // Check Medium HTML structure (posts/*.html or HTML with Medium markers)
       const htmlEntries = entries.filter((e) => e.name.toLowerCase().endsWith('.html'));
       if (htmlEntries.length > 0) {
         const sample = htmlEntries[0].text().slice(0, 2000);
+        if (sample.includes('linkedin.com/pulse') || sample.includes('media.licdn.com') || (sample.includes('class="created"') && sample.includes('class="published"'))) {
+          return 'linkedin';
+        }
         if (sample.includes('graf--') || sample.includes('p-name') || sample.includes('e-content') || sample.includes('medium.com')) {
           return 'medium';
         }
@@ -81,6 +93,10 @@ export async function detectPlatform(
 
   if (lowerName.endsWith('.csv') || textSample.includes('post_id,') || textSample.includes('body_html')) {
     return 'substack';
+  }
+
+  if (textSample.includes('linkedin.com/pulse') || textSample.includes('media.licdn.com') || (textSample.includes('class="created"') && textSample.includes('class="published"'))) {
+    return 'linkedin';
   }
 
   if (lowerName.endsWith('.html') || lowerName.endsWith('.htm') || textSample.includes('<html') || textSample.includes('<!DOCTYPE html')) {

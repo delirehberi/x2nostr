@@ -59,13 +59,22 @@ const MENU_ITEMS: ImporterMenuItem[] = [
     phase: 5,
   },
   {
+    id: 'linkedin',
+    nameKey: 'linkedinName',
+    descKey: 'linkedinDesc',
+    targetKey: 'linkedinTarget',
+    iconName: 'fileText',
+    status: 'active',
+    phase: 6,
+  },
+  {
     id: 'spotify',
     nameKey: 'spotifyName',
     descKey: 'spotifyDesc',
     targetKey: 'spotifyTarget',
     iconName: 'music',
     status: 'coming-soon',
-    phase: 6,
+    phase: 7,
   },
 ];
 
@@ -118,7 +127,7 @@ export function renderImporterMenu(container: HTMLElement, activeImporterId = 'g
           <p class="text-sm text-slate-500 mt-1">${t('importersSubtitle')}</p>
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         ${cardsHtml}
       </div>
     </div>

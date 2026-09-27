@@ -60,6 +60,45 @@ describe('POST /api/v1/convert Cloudflare Pages Function', () => {
     expect(event.tags.find((t: string[]) => t[0] === 'client')?.[1]).toBe('x2nostr');
   });
 
+  it('should successfully convert LinkedIn article HTML via convert API', async () => {
+    const SAMPLE_LI_HTML = `<html>
+<head><title>LinkedIn Article via API</title></head>
+<body>
+  <img src="https://media.licdn.com/api-cover.jpg" />
+  <h1><a href="https://www.linkedin.com/pulse/api-pulse-article-test">LinkedIn Article via API</a></h1>
+  <p class="published">Published on 2026-02-24 00:09</p>
+  <div><p>Testing convert API with LinkedIn article content. #nostr #freedom</p></div>
+</body>
+</html>`;
+
+    const formData = new FormData();
+    const file = new File([SAMPLE_LI_HTML], 'article.html', { type: 'text/html' });
+    formData.append('file', file);
+    formData.append('platform', 'linkedin');
+
+    const request = new Request('https://x2nostr.emre.xyz/api/v1/convert', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const context = createMockContext(request);
+    const response = await onRequestPost(context as any);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.success).toBe(true);
+    expect(data.platform).toBe('linkedin');
+    expect(data.totalPosts).toBe(1);
+    expect(data.events).toHaveLength(1);
+
+    const event = data.events[0];
+    expect(event.kind).toBe(30023);
+    expect(event.tags.find((t: string[]) => t[0] === 'title')?.[1]).toBe('LinkedIn Article via API');
+    expect(event.tags.find((t: string[]) => t[0] === 'd')?.[1]).toBe('api-pulse-article-test');
+    expect(event.tags.find((t: string[]) => t[0] === 'image')?.[1]).toBe('https://media.licdn.com/api-cover.jpg');
+    expect(event.content).toContain('Testing convert API with LinkedIn article content.');
+  });
+
   it('should handle OPTIONS preflight with 204 No Content and CORS headers', async () => {
     const request = new Request('https://x2nostr.emre.xyz/api/v1/convert', {
       method: 'OPTIONS',

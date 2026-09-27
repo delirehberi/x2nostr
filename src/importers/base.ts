@@ -26,6 +26,18 @@ export const IMPORTERS: ImporterPlugin[] = [
     buildEvent: () => ({ kind: 30023, tags: [], content: '', created_at: 0, pubkey: '' }),
   },
   {
+    id: 'linkedin',
+    name: 'LinkedIn Articles',
+    descriptionKey: 'linkedinDesc',
+    icon: 'file-text',
+    targetPlatform: 'Habla & Yakihonne',
+    targetKindDescription: 'NIP-23 Long-Form Articles (Kind 30023)',
+    status: 'active',
+    acceptedFileTypes: ['.zip', '.html', '.htm', '.csv'],
+    parseFile: async () => [],
+    buildEvent: () => ({ kind: 30023, tags: [], content: '', created_at: 0, pubkey: '' }),
+  },
+  {
     id: 'gists',
     name: 'GitHub Gists',
     descriptionKey: 'gistsDesc',

@@ -8,6 +8,7 @@ export type SupportedPlatform =
   | 'hugo'
   | 'medium'
   | 'substack'
+  | 'linkedin'
   | 'markdown';
 
 export interface UnsignedNip23Event {

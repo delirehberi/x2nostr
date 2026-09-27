@@ -216,6 +216,10 @@ export const es: Record<TranslationKey, string> = {
   blogsDesc: 'Migra tus publicaciones de WordPress a artículos soberanos NIP-23 de formato largo con conversión automática a Markdown y carga de medios en Blossom.',
   blogsTarget: 'Artículos Formato Largo NIP-23 (Kind 30023)',
   
+  linkedinName: 'Artículos de LinkedIn',
+  linkedinDesc: 'Migra tus artículos de formato largo de LinkedIn Pulse a eventos de contenido soberanos NIP-23 con formato Markdown enriquecido y alojamiento en Blossom.',
+  linkedinTarget: 'Artículos Formato Largo NIP-23 (Kind 30023)',
+  
   gistsName: 'GitHub Gists',
   gistsDesc: 'Migra tus Gists de GitHub y fragmentos de código a eventos descentralizados de código NIP-C0 (Kind 1337) y fragmentos privados cifrados con NIP-44.',
   gistsTarget: 'Fragmentos NIP-C0 (Kind 1337) y Cifrados con NIP-44 (Kind 30078)',
@@ -542,5 +546,28 @@ export const es: Record<TranslationKey, string> = {
   instagramBackupDownloaded: 'Paquete de copia de seguridad Nostr Kind 20 descargado.',
   instagramArchiveLoaded: 'Publicaciones cargadas exitosamente desde el archivo de Instagram.',
   instagramUnsupportedFormat: 'Por favor, sube un archivo de exportación de Instagram (posts_1.json).',
+
+  // LinkedIn Articles Migration Wizard
+  linkedinImporterTitle: 'Artículos de LinkedIn a Contenido de Formato Largo de Nostr',
+  linkedinImporterSubtitle: 'Migra tus artículos de formato largo de LinkedIn Pulse a artículos soberanos NIP-23 (Kind 30023). Convierte HTML enriquecido a Markdown, preserva las portadas y sube los medios a servidores descentralizados Blossom.',
+  linkedinGuideTitle: 'Cómo exportar tus artículos desde LinkedIn',
+  linkedinGuideShort: 'Exporta tu archivo de artículos de formato largo directamente desde los ajustes de privacidad de tu cuenta de LinkedIn.',
+  linkedinStep1Title: 'Ir a los Ajustes de Privacidad de Datos',
+  linkedinStep1Desc: 'Haz clic en tu foto de perfil > Configuración y Privacidad > Privacidad de datos > Obtén una copia de tus datos.',
+  linkedinStep2Title: 'Seleccionar Artículos y Solicitar Archivo',
+  linkedinStep2Desc: 'Elige "¿Quieres algo en particular? > Artículos" (o descarga el archivo completo) y haz clic en "Solicitar archivo".',
+  linkedinStep3Title: 'Subir el Archivo ZIP o los Archivos HTML',
+  linkedinStep3Desc: 'LinkedIn te enviará un enlace de descarga por correo electrónico. Arrastra el archivo .zip descargado o los archivos .html individuales a continuación.',
+  linkedinDropzoneTitle: 'Arrastra y suelta el archivo ZIP de exportación de LinkedIn o los archivos HTML de artículos aquí',
+  linkedinDropzoneSubtitle: 'o haz clic para buscar archivos en tu ordenador',
+  linkedinDropzoneSupport: 'Admite archivos ZIP de datos de LinkedIn (.zip), archivos HTML de artículos (.html) y exportaciones CSV (.csv)',
+  linkedinArticlesLoaded: 'Artículos cargados',
+  noArticlesFound: 'No hay artículos que coincidan con los criterios de búsqueda o filtrado.',
+  showInstructions: 'Mostrar Instrucciones de Exportación',
+  hideInstructions: 'Ocultar Instrucciones',
+  changeFile: 'Cambiar Archivo',
+  summary: 'Resumen / Extracto',
+  tags: 'Temas y Etiquetas',
+  publishedDate: 'Fecha de Publicación',
 };
 

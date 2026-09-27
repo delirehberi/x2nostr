@@ -6,6 +6,7 @@ import { parseGhostExport } from './parsers/ghost';
 import { parseHugoExport } from './parsers/hugo';
 import { parseMediumExport } from './parsers/medium';
 import { parseSubstackExport } from './parsers/substack';
+import { parseLinkedInExport } from './parsers/linkedin';
 import { parseGenericMarkdownExport } from './parsers/markdown';
 
 export interface ConvertOptions {
@@ -20,6 +21,7 @@ const SUPPORTED_PLATFORMS: SupportedPlatform[] = [
   'hugo',
   'medium',
   'substack',
+  'linkedin',
   'markdown',
 ];
 
@@ -60,6 +62,9 @@ export async function convertBlogArchiveToNip23(
       break;
     case 'substack':
       postRecords = await parseSubstackExport(bytes);
+      break;
+    case 'linkedin':
+      postRecords = await parseLinkedInExport(bytes);
       break;
     case 'markdown':
       postRecords = await parseGenericMarkdownExport(bytes);
