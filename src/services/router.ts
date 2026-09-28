@@ -1,4 +1,37 @@
-export type Route = '/' | '/getting-started' | '/importers' | '/docs';
+export type Route =
+  | '/'
+  | '/getting-started'
+  | '/importers'
+  | '/importers/goodreads'
+  | '/importers/movies'
+  | '/importers/wordpress'
+  | '/importers/gists'
+  | '/importers/instagram'
+  | '/importers/linkedin'
+  | '/importers/spotify'
+  | '/docs'
+  | string;
+
+export const IMPORTER_SLUG_ALIASES: Record<string, string> = {
+  imdb: 'movies',
+  blogs: 'wordpress',
+  blog: 'wordpress',
+  gist: 'gists',
+  snippets: 'gists',
+  github: 'gists',
+  insta: 'instagram',
+  photos: 'instagram',
+  pulse: 'linkedin',
+  article: 'linkedin',
+  articles: 'linkedin',
+  book: 'goodreads',
+  books: 'goodreads',
+};
+
+export function normalizeImporterSlug(slug: string): string {
+  const clean = slug.toLowerCase().trim();
+  return IMPORTER_SLUG_ALIASES[clean] || clean;
+}
 
 type RouteListener = (route: Route, params?: Record<string, string>) => void;
 
@@ -19,8 +52,11 @@ class RouterService {
 
   private syncFromLocation(): void {
     if (typeof window === 'undefined') return;
-    const path = window.location.pathname as Route;
-    if (path === '/getting-started' || path === '/importers' || path === '/docs') {
+    const path = window.location.pathname;
+
+    if (path === '/getting-started' || path === '/docs') {
+      this.currentRoute = path;
+    } else if (path === '/importers' || path.startsWith('/importers/')) {
       this.currentRoute = path;
     } else {
       this.currentRoute = '/';
@@ -40,6 +76,25 @@ class RouterService {
 
   public getQueryParams(): Record<string, string> {
     return { ...this.queryParams };
+  }
+
+  /**
+   * Returns the active importer slug if currently on an importer route or query param, or null.
+   */
+  public getImporterSlug(): string | null {
+    const route = this.currentRoute;
+    if (route.startsWith('/importers/')) {
+      const slug = route.replace('/importers/', '').split('/')[0];
+      if (slug) return normalizeImporterSlug(slug);
+    }
+    if (route === '/importers' && this.queryParams.type) {
+      return normalizeImporterSlug(this.queryParams.type);
+    }
+    return null;
+  }
+
+  public isImporterRoute(): boolean {
+    return this.currentRoute === '/importers' || this.currentRoute.startsWith('/importers/');
   }
 
   public navigate(route: Route, queryParams?: Record<string, string>): void {

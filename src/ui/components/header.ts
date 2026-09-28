@@ -15,7 +15,12 @@ export function renderHeader(container: HTMLElement): void {
   const activeRelayCount = activeRelays.length;
   const currentRoute = router.getRoute();
 
-  const isRouteActive = (route: Route) => currentRoute === route;
+  const isRouteActive = (route: string) => {
+    if (route === '/importers') {
+      return currentRoute === '/importers' || currentRoute.startsWith('/importers/');
+    }
+    return currentRoute === route;
+  };
   const truncatedNpub = npub ? `${npub.slice(0, 10)}…${npub.slice(-4)}` : '';
   const userInitials = username ? username.slice(0, 2).toUpperCase() : 'NP';
 
@@ -42,6 +47,13 @@ export function renderHeader(container: HTMLElement): void {
                 : 'text-[var(--color-ink-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-subtle)]'
             }">
               ${t('navHome')}
+            </a>
+            <a href="/importers" data-route="/importers" class="nav-link px-3 py-1.5 rounded-full transition-colors ${
+              isRouteActive('/importers') 
+                ? 'bg-[var(--color-ink)] text-[var(--color-ink-inverse)]' 
+                : 'text-[var(--color-ink-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-subtle)]'
+            }">
+              ${t('navImporters')}
             </a>
             <a href="/getting-started" data-route="/getting-started" class="nav-link px-3 py-1.5 rounded-full transition-colors ${
               isRouteActive('/getting-started') 
@@ -167,6 +179,11 @@ export function renderHeader(container: HTMLElement): void {
             isRouteActive('/') ? 'bg-[var(--color-ink)] text-[var(--color-ink-inverse)]' : 'text-[var(--color-ink)] hover:bg-[var(--color-paper-subtle)]'
           }">
             ${t('navHome')}
+          </a>
+          <a href="/importers" data-route="/importers" class="nav-link px-3 py-2 rounded-xl transition-colors ${
+            isRouteActive('/importers') ? 'bg-[var(--color-ink)] text-[var(--color-ink-inverse)]' : 'text-[var(--color-ink)] hover:bg-[var(--color-paper-subtle)]'
+          }">
+            ${t('navImporters')}
           </a>
           <a href="/getting-started" data-route="/getting-started" class="nav-link px-3 py-2 rounded-xl transition-colors ${
             isRouteActive('/getting-started') ? 'bg-[var(--color-ink)] text-[var(--color-ink-inverse)]' : 'text-[var(--color-ink)] hover:bg-[var(--color-paper-subtle)]'

@@ -175,6 +175,8 @@ export interface IGMediaChild {
   media_url?: string;
   thumbnail_url?: string;
   timestamp?: string;
+  originalPath?: string;
+  filename?: string;
   // Local enrichment
   fileBlob?: Blob;
   dimensions?: { width: number; height: number };
@@ -199,6 +201,8 @@ export interface IGMediaRecord {
   children?: IGMediaChild[];
   tags: string[]; // Extracted hashtags
   selected?: boolean;
+  originalPath?: string;
+  filename?: string;
   
   // Media enrichment & Blossom state
   fileBlob?: Blob;
@@ -207,13 +211,18 @@ export interface IGMediaRecord {
   sha256Hashes?: string[];
 }
 
-export type InstagramFilterCategory = 'all' | 'image' | 'carousel' | 'video';
+export type InstagramFilterCategory = 'all' | 'image' | 'carousel' | 'video' | 'story';
 
 export interface InstagramMigrationOptions {
   uploadToBlossom: boolean;
   blossomServers: string[];
   includeCaptions: boolean;
   includeOriginalTimestamp: boolean;
+  convertHeicToJpeg?: boolean; // Converts HEIC to high-compatibility JPEG
+  includePosts?: boolean; // Single photos
+  includeCarousels?: boolean; // Multi-image albums
+  includeReels?: boolean; // Videos & Reels
+  includeStories?: boolean; // Story snaps
   deletePreviousPostsBeforeImport?: boolean; // NIP-09 Kind 5 deletion of Kind 20 events
   publishToCustomRelaysOnly: boolean;
   resumeSession?: ImportSession;

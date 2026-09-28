@@ -53,7 +53,7 @@ class App {
     if (pageRoot) {
       if (currentRoute === '/getting-started') {
         renderGettingStartedPage(pageRoot);
-      } else if (currentRoute === '/importers') {
+      } else if (router.isImporterRoute()) {
         renderImportersPage(pageRoot);
       } else if (currentRoute === '/docs') {
         renderDocsPage(pageRoot);
@@ -72,8 +72,8 @@ class App {
 
         if (heroRoot) renderHero(heroRoot);
         if (homeImportersRoot) {
-          renderImporterMenu(homeImportersRoot, '', (id) => {
-            router.navigate('/importers', { type: id });
+          renderImporterMenu(homeImportersRoot, '', (slug) => {
+            router.navigate(`/importers/${slug}`);
           });
         }
         if (ecosystemRoot) renderEcosystem(ecosystemRoot);

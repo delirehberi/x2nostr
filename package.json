@@ -36,6 +36,7 @@
   "author": "Emre Yılmaz <emre@emre.xyz> (https://emre.xyz)",
   "license": "MIT",
   "dependencies": {
+    "heic2any": "^0.0.4",
     "hono": "^4.6.14",
     "lucide": "^0.468.0",
     "nostr-tools": "^2.10.4",
