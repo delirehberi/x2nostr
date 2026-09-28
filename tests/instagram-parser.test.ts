@@ -306,13 +306,25 @@ describe('Image Converter Service (HEIC detection & memory cache)', () => {
     expect(imageConverter.isHeic('clip.mp4')).toBe(false);
     expect(imageConverter.isHeic(undefined, new Blob([], { type: 'image/heic' }))).toBe(true);
     expect(imageConverter.isHeic(undefined, new Blob([], { type: 'image/jpeg' }))).toBe(false);
+    // When a blob is converted to image/jpeg, even with .heic in filename, it should not be treated as unconverted HEIC
+    expect(imageConverter.isHeic('photo.heic', new Blob(['test'], { type: 'image/jpeg' }))).toBe(false);
   });
 
-  it('should manage cache and eviction correctly', async () => {
+  it('should manage cache, storage and eviction correctly', async () => {
     const { imageConverter } = await import('../src/services/image-converter');
     imageConverter.clearCache();
     expect(imageConverter.hasCached('nonexistent')).toBe(false);
     expect(imageConverter.getCached('nonexistent')).toBeUndefined();
+
+    // Test conversion and caching of standard browser readable / jpeg image
+    const fakeJpegBlob = new Blob(['fake-jpg-content'], { type: 'image/jpeg' });
+    const result = await imageConverter.convertHeicToJpeg(fakeJpegBlob, 'test-key-1');
+    expect(result.blob).toBe(fakeJpegBlob);
+    expect(imageConverter.hasCached('test-key-1')).toBe(true);
+    expect(imageConverter.getCached('test-key-1')?.blob).toBe(fakeJpegBlob);
+
+    imageConverter.clearCache();
+    expect(imageConverter.hasCached('test-key-1')).toBe(false);
   });
 });
 

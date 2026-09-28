@@ -611,6 +611,7 @@ class InstagramPipeline {
         const result = await imageConverter.convertHeicToJpeg(target.blob, target.cacheKey);
         if (signal.aborted) break;
 
+        target.mediaRecord.fileBlob = result.blob;
         target.mediaRecord.media_url = result.url;
         target.mediaRecord.thumbnail_url = result.url;
         if (target.parentPost) {
@@ -817,12 +818,22 @@ class InstagramPipeline {
 
               // Check if HEIC conversion to JPEG is requested
               if (blob && (options.convertHeicToJpeg ?? true) && imageConverter.isHeic(child.filename || child.originalPath, blob)) {
-                this.addLog('info', `Converting carousel slide ${c + 1} (${child.filename || 'HEIC'}) to JPEG...`);
-                try {
-                  const converted = await imageConverter.convertHeicToJpeg(blob, `${post.id}-child-${c}`);
-                  blob = converted.blob;
-                } catch (convErr) {
-                  this.addLog('warning', `HEIC conversion fallback for ${child.filename}: ${convErr}`);
+                const cacheKey = child.originalPath || child.filename || child.id || `${post.id}-child-${c}`;
+                const cached = imageConverter.getCached(cacheKey);
+                if (cached) {
+                  blob = cached.blob;
+                  child.fileBlob = cached.blob;
+                } else {
+                  this.addLog('info', `Converting carousel slide ${c + 1} (${child.filename || 'HEIC'}) to JPEG...`);
+                  try {
+                    const converted = await imageConverter.convertHeicToJpeg(blob, cacheKey);
+                    blob = converted.blob;
+                    child.fileBlob = converted.blob;
+                    child.media_url = converted.url;
+                    child.thumbnail_url = converted.url;
+                  } catch (convErr) {
+                    this.addLog('warning', `HEIC conversion fallback for ${child.filename}: ${convErr}`);
+                  }
                 }
               }
 
@@ -864,12 +875,22 @@ class InstagramPipeline {
 
             // Check if HEIC conversion to JPEG is requested
             if (blob && (options.convertHeicToJpeg ?? true) && imageConverter.isHeic(post.filename || post.originalPath, blob)) {
-              this.addLog('info', `Converting photo (${post.filename || 'HEIC'}) to JPEG...`);
-              try {
-                const converted = await imageConverter.convertHeicToJpeg(blob, post.id);
-                blob = converted.blob;
-              } catch (convErr) {
-                this.addLog('warning', `HEIC conversion fallback for ${post.filename}: ${convErr}`);
+              const cacheKey = post.originalPath || post.filename || post.id;
+              const cached = imageConverter.getCached(cacheKey);
+              if (cached) {
+                blob = cached.blob;
+                post.fileBlob = cached.blob;
+              } else {
+                this.addLog('info', `Converting photo (${post.filename || 'HEIC'}) to JPEG...`);
+                try {
+                  const converted = await imageConverter.convertHeicToJpeg(blob, cacheKey);
+                  blob = converted.blob;
+                  post.fileBlob = converted.blob;
+                  post.media_url = converted.url;
+                  post.thumbnail_url = converted.url;
+                } catch (convErr) {
+                  this.addLog('warning', `HEIC conversion fallback for ${post.filename}: ${convErr}`);
+                }
               }
             }
 

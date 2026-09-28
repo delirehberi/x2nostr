@@ -1071,6 +1071,7 @@ export function renderInstagramView(container: HTMLElement): void {
       if (imageConverter.hasCached(cacheKey)) {
         const cached = imageConverter.getCached(cacheKey);
         if (cached) {
+          activeMedia.fileBlob = cached.blob;
           activeMedia.media_url = cached.url;
           activeMedia.thumbnail_url = cached.url;
           render();
@@ -1083,6 +1084,7 @@ export function renderInstagramView(container: HTMLElement): void {
 
       try {
         const result = await imageConverter.convertHeicToJpeg(blob, cacheKey);
+        activeMedia.fileBlob = result.blob;
         activeMedia.media_url = result.url;
         activeMedia.thumbnail_url = result.url;
       } catch (err) {
