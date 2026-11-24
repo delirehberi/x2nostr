@@ -156,7 +156,7 @@ export const es: Record<TranslationKey, string> = {
 
   doc6Content: `<div class="space-y-4 leading-relaxed">
     <h3 class="text-xl font-bold text-slate-900">Manifiesto de Soberanía de Datos y Guía de Documentación</h3>
-    <p>Como mencionamos en nuestros artículos sobre <a href="https://blog.emre.xyz/posts/0d64aa67/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Hugo2Nostr</a> y el <a href="https://blog.emre.xyz/posts/nostr/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">protocolo Nostr</a>, buscamos escapar de los jardines amurallados y publicar directamente en relays sin permiso. Migrar tu huella digital desde plataformas tradicionales nunca debe ser una caja negra.</p>
+    <p>Como mencionamos en nuestros artículos sobre <a href="https://blog.emre.xyz/0d64aa67/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Hugo2Nostr</a> y el <a href="https://blog.emre.xyz/nostr/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">protocolo Nostr</a>, buscamos escapar de los jardines amurallados y publicar directamente en relays sin permiso. Migrar tu huella digital desde plataformas tradicionales nunca debe ser una caja negra.</p>
     <p>Al migrar tus datos, no deberías confiar en un servidor intermediario con tus credenciales o claves privadas. Por eso publicamos la especificación técnica oficial para <a href="https://x2nostr.emre.xyz" class="text-purple-600 underline hover:text-purple-800">x2nostr (move-to-nostr)</a>.</p>
 
     <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
@@ -168,7 +168,7 @@ export const es: Record<TranslationKey, string> = {
       </ul>
     </div>
 
-    <p class="text-xs text-slate-500 pt-2">Lee más sobre nuestro enfoque en <a href="https://blog.emre.xyz/posts/7492c6cf/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Teknofeodalizm</a> y <a href="https://blog.emre.xyz/posts/nostr-nasil-gidiyor/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Nostr Nasıl Gidiyor?</a>.</p>
+    <p class="text-xs text-slate-500 pt-2">Lee más sobre nuestro enfoque en <a href="https://blog.emre.xyz/7492c6cf/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Teknofeodalizm</a> y <a href="https://blog.emre.xyz/nostr-nasil-gidiyor/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Nostr Nasıl Gidiyor?</a>.</p>
   </div>`,
 
 

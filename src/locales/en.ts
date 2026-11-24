@@ -154,7 +154,7 @@ export const en = {
 
   doc6Content: `<div class="space-y-4 leading-relaxed">
     <h3 class="text-xl font-bold text-slate-900">Documenting Data Sovereignty: Introducing the x2nostr Spec & Docs</h3>
-    <p>In our previous posts about <a href="https://blog.emre.xyz/posts/0d64aa67/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Hugo2Nostr</a> and the <a href="https://blog.emre.xyz/posts/nostr/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Nostr protocol</a>, we wrote about escaping walled gardens and publishing content directly to permissionless relays. But moving data out of legacy platforms—whether it's your Goodreads reading history, Letterboxd movie ratings, or Hugo markdown posts—should never feel like a black box.</p>
+    <p>In our previous posts about <a href="https://blog.emre.xyz/0d64aa67/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Hugo2Nostr</a> and the <a href="https://blog.emre.xyz/nostr/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Nostr protocol</a>, we wrote about escaping walled gardens and publishing content directly to permissionless relays. But moving data out of legacy platforms—whether it's your Goodreads reading history, Letterboxd movie ratings, or Hugo markdown posts—should never feel like a black box.</p>
     <p>When you migrate your digital footprint, you shouldn't have to trust an intermediary server with your unencrypted credentials or private keys. That is why we published the official documentation and technical spec for <a href="https://x2nostr.emre.xyz" class="text-purple-600 underline hover:text-purple-800">x2nostr (move-to-nostr)</a>.</p>
     
     <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
@@ -169,7 +169,7 @@ export const en = {
     <h4 class="font-bold text-slate-900">Strict Guidelines for AI & Open-Source Contributors</h4>
     <p>We welcome contributions from developers utilizing AI coding assistants. However, maintainability and code quality come first. Our documentation explicitly outlines our <strong>Strict 500-Line Diff Policy</strong>: Pull requests exceeding 500 lines of code changes will be rejected until decomposed into clean, atomic commits.</p>
     
-    <p class="text-xs text-slate-500 pt-2">Read more about our philosophical approach to escaping digital feudalism on <a href="https://blog.emre.xyz/posts/7492c6cf/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Teknofeodalizm - Dijital Toprak Ağalığı</a> and <a href="https://blog.emre.xyz/posts/nostr-nasil-gidiyor/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Nostr Nasıl Gidiyor?</a>.</p>
+    <p class="text-xs text-slate-500 pt-2">Read more about our philosophical approach to escaping digital feudalism on <a href="https://blog.emre.xyz/7492c6cf/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Teknofeodalizm - Dijital Toprak Ağalığı</a> and <a href="https://blog.emre.xyz/nostr-nasil-gidiyor/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline">Nostr Nasıl Gidiyor?</a>.</p>
   </div>`,
 
 
